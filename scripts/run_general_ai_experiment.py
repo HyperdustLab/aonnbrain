@@ -149,9 +149,14 @@ def run_experiment(
                 print(f"Step {step}: Evolution error: {e}")
             pass
         
-        # 主动推理
+        # 主动推理（在学习之后，确保所有状态都是 detached）
         if len(brain.aspects) > 0:
             try:
+                # 确保所有 Object 状态都是 detached，避免图冲突
+                for obj_name, obj in brain.objects.items():
+                    if hasattr(obj.state, 'grad') and obj.state.grad is not None:
+                        obj.set_state(obj.state.detach())
+                
                 loop = ActiveInferenceLoop(
                     brain.objects,
                     brain.aspects,

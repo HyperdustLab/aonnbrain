@@ -42,10 +42,28 @@ class ActiveInferenceLoop:
                 if self.objects[name].state.grad is not None:
                     self.objects[name].state.grad.zero_()
 
+            # 确保所有 Object 状态都是 detached 的，避免图冲突
+            for name in self.objects:
+                if name not in target_objects:
+                    if hasattr(self.objects[name].state, 'grad') and self.objects[name].state.grad is not None:
+                        self.objects[name].state = self.objects[name].state.detach()
+            
             F = compute_total_free_energy(self.objects, self.aspects)
             # 最后一次迭代不需要 retain_graph
             retain_graph = (iter_idx < num_iters - 1)
-            F.backward(retain_graph=retain_graph)
+            try:
+                F.backward(retain_graph=retain_graph)
+            except RuntimeError as e:
+                if "backward through the graph a second time" in str(e):
+                    # 如果图已经被释放，重新创建所有状态
+                    for name in target_objects:
+                        mu = self.objects[name].clone_detached(requires_grad=True)
+                        self.objects[name].state = mu
+                    # 重新计算自由能
+                    F = compute_total_free_energy(self.objects, self.aspects)
+                    F.backward(retain_graph=retain_graph)
+                else:
+                    raise
 
             with torch.no_grad():
                 for name in target_objects:

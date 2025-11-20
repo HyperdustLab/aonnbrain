@@ -586,8 +586,13 @@ class AONNBrainV3(nn.Module):
         for aspect in self.world_model_aspects.aspects:
             F = F + aspect.free_energy_contrib(self.objects)
         
-        F.backward()
+        F.backward(retain_graph=False)  # 世界模型学习后不需要保留图
         self._world_model_optimizer.step()
+        
+        # 清理梯度，避免影响后续的推理
+        for name in self.objects:
+            if self.objects[name].state.grad is not None:
+                self.objects[name].state.grad = None
         
         # 恢复 observation aspect 的 dst
         for aspect, dst in original_dst.items():
