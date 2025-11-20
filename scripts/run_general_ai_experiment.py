@@ -9,18 +9,39 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+# 加载 .env 文件（如果存在）
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass  # python-dotenv 未安装时忽略
+
 import json
 from typing import Dict
+
 import torch
 from tqdm import tqdm
 
 from aonn.models.general_ai_world_model import GeneralAIWorldModel, GeneralAIWorldInterface
 from aonn.models.aonn_brain_v3 import AONNBrainV3
 from aonn.core.active_inference_loop import ActiveInferenceLoop
-from aonn.clients.mock_llm_client import MockLLMClient
+from aonn.aspects.mock_llm_client import MockLLMClient
+
+try:
+    from aonn.aspects.openai_llm_client import OpenAILLMClient
+except Exception:  # pragma: no cover - optional dependency
+    OpenAILLMClient = None
 
 
-def run_experiment(num_steps: int, config: Dict, device: torch.device, verbose: bool = False):
+def run_experiment(
+    num_steps: int,
+    config: Dict,
+    device: torch.device,
+    *,
+    verbose: bool = False,
+    use_openai_llm: bool = False,
+    openai_api_key: str | None = None,
+):
     """
     运行通用AI智能体实验
     
@@ -49,13 +70,30 @@ def run_experiment(num_steps: int, config: Dict, device: torch.device, verbose: 
     )
     world_interface = GeneralAIWorldInterface(world_model)
     
-    # 创建 LLM 客户端（Mock）
-    llm_client = MockLLMClient(
-        input_dim=config.get("sem_dim", 128),
-        output_dim=config.get("sem_dim", 128),
-        hidden_dim=256,
-        device=device,
-    )
+    llm_client = None
+    sem_dim = config.get("sem_dim", 128)
+    if config.get("disable_llm", False):
+        llm_client = None
+    elif use_openai_llm and OpenAILLMClient is not None:
+        llm_cfg = config.get("llm", {})
+        llm_client = OpenAILLMClient(
+            input_dim=sem_dim,
+            output_dim=sem_dim,
+            api_key=openai_api_key or llm_cfg.get("api_key"),
+            model=llm_cfg.get("model", "gpt-4o-mini"),
+            embedding_model=llm_cfg.get("embedding_model", "text-embedding-3-small"),
+            summary_size=llm_cfg.get("summary_size", 8),
+            max_tokens=llm_cfg.get("max_tokens", 120),
+            temperature=llm_cfg.get("temperature", 0.7),
+            device=device,
+        )
+    else:
+        llm_client = MockLLMClient(
+            input_dim=sem_dim,
+            output_dim=sem_dim,
+            hidden_dims=config.get("llm", {}).get("hidden_dims", [256, 512, 256]),
+            device=device,
+        )
     
     # 创建 AONN Brain
     brain = AONNBrainV3(
@@ -165,6 +203,8 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("data/general_ai_results.json"), help="输出文件")
     parser.add_argument("--verbose", action="store_true", help="实时输出演化快照")
     parser.add_argument("--disable-llm", action="store_true", help="禁用 LLMAspect")
+    parser.add_argument("--use-openai-llm", action="store_true", help="使用 OpenAI 作为 LLMAspect 客户端")
+    parser.add_argument("--openai-api-key", type=str, default=None, help="OpenAI API Key（默认读取 OPENAI_API_KEY）")
     args = parser.parse_args()
     
     device = torch.device(args.device)
@@ -225,10 +265,18 @@ def main():
         "state_clip_value": 10.0,
         "infer_lr": 0.02,
         "learning_rate": 0.0005,
+        "llm": {
+            "model": "gpt-4o-mini",
+            "embedding_model": "text-embedding-3-small",
+            "summary_size": 8,
+            "max_tokens": 120,
+            "temperature": 0.7,
+        },
     }
     
-    if args.disable_llm:
-        config["llm_client"] = None
+    config["disable_llm"] = args.disable_llm
+    if args.use_openai_llm and OpenAILLMClient is None:
+        raise RuntimeError("OpenAILLMClient 无法导入，请确认已安装 openai==1.x 并成功初始化。")
     
     # 运行实验
     result = run_experiment(
@@ -236,6 +284,8 @@ def main():
         config=config,
         device=device,
         verbose=args.verbose,
+        use_openai_llm=args.use_openai_llm,
+        openai_api_key=args.openai_api_key,
     )
     
     # 保存结果
