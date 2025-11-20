@@ -63,8 +63,14 @@ class OpenAILLMClient(nn.Module):
         self.summary_size = summary_size
 
         api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise RuntimeError("OPENAI_API_KEY 未设置，无法初始化 OpenAILLMClient。")
+        if not api_key or api_key == "your_openai_api_key_here":
+            raise RuntimeError(
+                "OPENAI_API_KEY 未设置，无法初始化 OpenAILLMClient。\n"
+                "请执行以下步骤：\n"
+                "1. 复制 .env.example 为 .env: cp .env.example .env\n"
+                "2. 编辑 .env 文件，将 OPENAI_API_KEY 替换为你的真实 API Key\n"
+                "3. 或者通过环境变量设置: export OPENAI_API_KEY='sk-...'"
+            )
         self._client = OpenAI(api_key=api_key)
 
         self.prompt_template = prompt_template or (

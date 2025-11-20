@@ -12,9 +12,17 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 # 加载 .env 文件（如果存在）
 try:
     from dotenv import load_dotenv
-    load_dotenv(Path(__file__).parent.parent / ".env")
+    env_path = Path(__file__).parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(env_path, override=True)
+    else:
+        # 也尝试从当前目录加载
+        load_dotenv(override=True)
 except ImportError:
     pass  # python-dotenv 未安装时忽略
+except Exception as e:
+    import warnings
+    warnings.warn(f"加载 .env 文件时出错: {e}")
 
 import json
 from typing import Dict, Optional
