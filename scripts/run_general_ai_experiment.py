@@ -153,9 +153,14 @@ def run_experiment(
         if len(brain.aspects) > 0:
             try:
                 # 确保所有 Object 状态都是 detached，避免图冲突
+                # 只检查叶子张量，避免警告
                 for obj_name, obj in brain.objects.items():
-                    if hasattr(obj.state, 'grad') and obj.state.grad is not None:
-                        obj.set_state(obj.state.detach())
+                    state = obj.state
+                    if state.requires_grad and state.is_leaf and state.grad is not None:
+                        obj.set_state(state.detach())
+                    elif not state.is_leaf:
+                        # 如果不是叶子张量，直接 detach
+                        obj.set_state(state.detach())
                 
                 loop = ActiveInferenceLoop(
                     brain.objects,

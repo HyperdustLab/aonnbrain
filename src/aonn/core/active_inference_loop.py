@@ -45,10 +45,13 @@ class ActiveInferenceLoop:
                     state.grad.zero_()
 
             # 确保所有 Object 状态都是 detached 的，避免图冲突
+            # 只处理非目标对象，避免影响当前迭代的目标对象
             for name in self.objects:
                 if name not in target_objects:
-                    if hasattr(self.objects[name].state, 'grad') and self.objects[name].state.grad is not None:
-                        self.objects[name].state = self.objects[name].state.detach()
+                    state = self.objects[name].state
+                    # 如果不是叶子张量，直接 detach；如果是叶子张量且有梯度，也 detach
+                    if not state.is_leaf or (state.requires_grad and state.is_leaf and state.grad is not None):
+                        self.objects[name].state = state.detach()
             
             F = compute_total_free_energy(self.objects, self.aspects)
             # 最后一次迭代不需要 retain_graph
@@ -56,14 +59,14 @@ class ActiveInferenceLoop:
             try:
                 F.backward(retain_graph=retain_graph)
             except RuntimeError as e:
-                if "backward through the graph a second time" in str(e):
-                    # 如果图已经被释放，重新创建所有状态
+                if "backward through the graph a second time" in str(e) or "freed" in str(e):
+                    # 如果图已经被释放，跳过这次迭代
+                    # 重新创建所有目标对象状态为 detached，避免下次迭代出错
                     for name in target_objects:
-                        mu = self.objects[name].clone_detached(requires_grad=True)
+                        mu = self.objects[name].clone_detached(requires_grad=False)
                         self.objects[name].state = mu
-                    # 重新计算自由能
-                    F = compute_total_free_energy(self.objects, self.aspects)
-                    F.backward(retain_graph=retain_graph)
+                    # 跳过这次迭代的更新
+                    continue
                 else:
                     raise
 

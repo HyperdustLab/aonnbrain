@@ -1,6 +1,6 @@
 {
   "num_steps": 3,
-  "final_free_energy": 450339.375,
+  "final_free_energy": 6882031.0,
   "final_structure": {
     "num_objects": 13,
     "num_aspects": 551,
@@ -8,31 +8,31 @@
     "objects": {
       "internal": {
         "dim": 1024,
-        "state_norm": 21.220853805541992
+        "state_norm": 84.51118469238281
       },
       "vision": {
         "dim": 512,
-        "state_norm": 9.512248039245605
+        "state_norm": 9.244035720825195
       },
       "language": {
         "dim": 512,
-        "state_norm": 8.984631538391113
+        "state_norm": 9.720622062683105
       },
       "audio": {
         "dim": 128,
-        "state_norm": 5.2371392250061035
+        "state_norm": 4.297940731048584
       },
       "multimodal": {
         "dim": 256,
-        "state_norm": 6.383074760437012
+        "state_norm": 6.4561028480529785
       },
       "action": {
         "dim": 256,
-        "state_norm": 57.24549102783203
+        "state_norm": 61.95697784423828
       },
       "target": {
         "dim": 1024,
-        "state_norm": 12.96985912322998
+        "state_norm": 13.161877632141113
       },
       "semantic_context": {
         "dim": 512,
@@ -44,19 +44,19 @@
       },
       "vision_next": {
         "dim": 512,
-        "state_norm": 9.309850692749023
+        "state_norm": 9.36015796661377
       },
       "language_next": {
         "dim": 512,
-        "state_norm": 8.66145133972168
+        "state_norm": 9.564120292663574
       },
       "audio_next": {
         "dim": 128,
-        "state_norm": 4.942835330963135
+        "state_norm": 4.7543044090271
       },
       "multimodal_next": {
         "dim": 256,
-        "state_norm": 6.487298965454102
+        "state_norm": 6.0089240074157715
       }
     },
     "aspects": [
@@ -5591,7 +5591,7 @@
   "snapshots": [
     {
       "step": 0,
-      "free_energy": 1724.3743896484375,
+      "free_energy": 1795.759033203125,
       "structure": {
         "num_objects": 9,
         "num_aspects": 39,
@@ -5599,31 +5599,31 @@
         "objects": {
           "internal": {
             "dim": 1024,
-            "state_norm": 2.2968451976776123
+            "state_norm": 2.3483388423919678
           },
           "vision": {
             "dim": 512,
-            "state_norm": 9.41465950012207
+            "state_norm": 9.31607723236084
           },
           "language": {
             "dim": 512,
-            "state_norm": 8.688610076904297
+            "state_norm": 9.504796028137207
           },
           "audio": {
             "dim": 128,
-            "state_norm": 4.152548313140869
+            "state_norm": 4.352283477783203
           },
           "multimodal": {
             "dim": 256,
-            "state_norm": 6.267322063446045
+            "state_norm": 5.98504638671875
           },
           "action": {
             "dim": 256,
-            "state_norm": 0.5261227488517761
+            "state_norm": 0.5737136602401733
           },
           "target": {
             "dim": 1024,
-            "state_norm": 3.181537628173828
+            "state_norm": 3.143455982208252
           },
           "semantic_context": {
             "dim": 512,
@@ -6046,7 +6046,7 @@
     },
     {
       "step": 2,
-      "free_energy": 450339.375,
+      "free_energy": 6882031.0,
       "structure": {
         "num_objects": 13,
         "num_aspects": 551,
@@ -6054,31 +6054,31 @@
         "objects": {
           "internal": {
             "dim": 1024,
-            "state_norm": 21.220853805541992
+            "state_norm": 84.51118469238281
           },
           "vision": {
             "dim": 512,
-            "state_norm": 9.512248039245605
+            "state_norm": 9.244035720825195
           },
           "language": {
             "dim": 512,
-            "state_norm": 8.984631538391113
+            "state_norm": 9.720622062683105
           },
           "audio": {
             "dim": 128,
-            "state_norm": 5.2371392250061035
+            "state_norm": 4.297940731048584
           },
           "multimodal": {
             "dim": 256,
-            "state_norm": 6.383074760437012
+            "state_norm": 6.4561028480529785
           },
           "action": {
             "dim": 256,
-            "state_norm": 57.24549102783203
+            "state_norm": 61.95697784423828
           },
           "target": {
             "dim": 1024,
-            "state_norm": 12.96985912322998
+            "state_norm": 13.161877632141113
           },
           "semantic_context": {
             "dim": 512,
@@ -6090,19 +6090,19 @@
           },
           "vision_next": {
             "dim": 512,
-            "state_norm": 9.309850692749023
+            "state_norm": 9.36015796661377
           },
           "language_next": {
             "dim": 512,
-            "state_norm": 8.66145133972168
+            "state_norm": 9.564120292663574
           },
           "audio_next": {
             "dim": 128,
-            "state_norm": 4.942835330963135
+            "state_norm": 4.7543044090271
           },
           "multimodal_next": {
             "dim": 256,
-            "state_norm": 6.487298965454102
+            "state_norm": 6.0089240074157715
           }
         },
         "aspects": [
@@ -11650,71 +11650,71 @@
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3597017.0,
-        "F_after": 3597017.0
+        "F_before": 3678294.5,
+        "F_after": 3678294.5
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3601975.0,
-        "F_after": 3601975.0
+        "F_before": 3683335.5,
+        "F_after": 3683335.5
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3606424.75,
-        "F_after": 3606424.75
+        "F_before": 3687744.0,
+        "F_after": 3687744.0
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3611122.5,
-        "F_after": 3611122.5
+        "F_before": 3692616.0,
+        "F_after": 3692616.0
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3615477.0,
-        "F_after": 3615477.0
+        "F_before": 3697389.75,
+        "F_after": 3697389.75
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3619880.0,
-        "F_after": 3619880.0
+        "F_before": 3702220.5,
+        "F_after": 3702220.5
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3624431.75,
-        "F_after": 3624431.75
+        "F_before": 3706334.5,
+        "F_after": 3706334.5
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3629214.75,
-        "F_after": 3629214.75
+        "F_before": 3711200.75,
+        "F_after": 3711200.75
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3634028.5,
-        "F_after": 3634028.5
+        "F_before": 3716215.5,
+        "F_after": 3716215.5
       },
       {
         "step": 3,
         "type": "create_aspect",
         "condition": "dynamic_creation",
-        "F_before": 3639452.75,
-        "F_after": 3639452.75
+        "F_before": 3721218.5,
+        "F_after": 3721218.5
       }
     ]
   }
