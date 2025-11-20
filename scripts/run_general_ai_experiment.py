@@ -130,7 +130,15 @@ def run_experiment(
                 brain.objects[sense].set_state(value)
         
         # 网络演化
-        brain.evolve_network(obs, target=world_model.get_true_state())
+        # 使用完整状态的前 state_dim 维作为 target（匹配 internal 状态维度）
+        full_state = world_model.get_true_state()
+        if full_state.shape[-1] >= config["state_dim"]:
+            target_state = full_state[:config["state_dim"]]
+        else:
+            # 如果状态维度小于 state_dim，用零填充
+            padding = torch.zeros(config["state_dim"] - full_state.shape[-1], device=device)
+            target_state = torch.cat([full_state, padding], dim=-1)
+        brain.evolve_network(obs, target=target_state)
         
         # 主动推理
         if len(brain.aspects) > 0:
@@ -161,11 +169,18 @@ def run_experiment(
         
         # 学习世界模型
         if prev_obs is not None and prev_action is not None:
+            # 使用完整状态的前 state_dim 维作为 target
+            full_state = world_model.get_true_state()
+            if full_state.shape[-1] >= config["state_dim"]:
+                target_state = full_state[:config["state_dim"]]
+            else:
+                padding = torch.zeros(config["state_dim"] - full_state.shape[-1], device=device)
+                target_state = torch.cat([full_state, padding], dim=-1)
             brain.learn_world_model(
                 observation=prev_obs,
                 action=prev_action,
                 next_observation=obs,
-                target_state=world_model.get_true_state(),
+                target_state=target_state,
                 learning_rate=config.get("learning_rate", 0.0005),
             )
         
