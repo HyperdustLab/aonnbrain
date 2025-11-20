@@ -168,7 +168,7 @@ def run_experiment(
                     infer_lr=config.get("infer_lr", 0.02),
                     device=device,
                 )
-                loop.infer_states(target_objects=("internal",), num_iters=2)
+                loop.infer_states(target_objects=("internal",), num_iters=1)  # 减少迭代次数，更稳定
                 brain.sanitize_states()
             except Exception as e:
                 if verbose:
@@ -195,16 +195,27 @@ def run_experiment(
             else:
                 padding = torch.zeros(config["state_dim"] - full_state.shape[-1], device=device)
                 target_state = torch.cat([full_state, padding], dim=-1)
-            brain.learn_world_model(
-                observation=prev_obs,
-                action=prev_action,
-                next_observation=obs,
-                target_state=target_state,
-                learning_rate=config.get("learning_rate", 0.0005),
-            )
+            try:
+                brain.learn_world_model(
+                    observation=prev_obs,
+                    action=prev_action,
+                    next_observation=obs,
+                    target_state=target_state,
+                    learning_rate=config.get("learning_rate", 0.0005),
+                )
+                # 学习后也清理状态
+                brain.sanitize_states()
+            except Exception as e:
+                if verbose:
+                    print(f"Step {step}: Learning error: {e}")
+                pass
         
         prev_obs = {sense: value.clone() for sense, value in obs.items()}
         prev_action = action.clone()
+        
+        # 定期清理状态，防止累积误差
+        if step % 10 == 0:
+            brain.sanitize_states()
         
         # 记录快照
         if step % 50 == 0 or step == num_steps - 1:
@@ -305,9 +316,9 @@ def main():
             "free_energy_trigger": None,
             "max_depth": 12,
         },
-        "state_clip_value": 10.0,
-        "infer_lr": 0.02,
-        "learning_rate": 0.0005,
+        "state_clip_value": 5.0,  # 降低裁剪值，防止状态爆炸
+        "infer_lr": 0.01,  # 降低推理学习率，更稳定
+        "learning_rate": 0.0001,  # 降低世界模型学习率
         "llm": {
             "model": "gpt-4o-mini",
             "embedding_model": "text-embedding-3-small",

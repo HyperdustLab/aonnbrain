@@ -412,15 +412,12 @@ class AONNBrainV3(nn.Module):
             state = obj.state
             if state is None:
                 continue
-            needs_clean = not torch.isfinite(state).all()
-            if not needs_clean:
-                if clip is not None and clip > 0:
-                    if torch.max(torch.abs(state)).item() > clip:
-                        needs_clean = True
-            if needs_clean:
-                cleaned = torch.nan_to_num(state, nan=0.0, posinf=clip, neginf=-clip)
-                if clip is not None and clip > 0:
-                    cleaned = torch.clamp(cleaned, -clip, clip)
+            # 总是清理：先处理 NaN/Inf，再裁剪范围
+            cleaned = torch.nan_to_num(state, nan=0.0, posinf=clip or 10.0, neginf=-(clip or 10.0))
+            if clip is not None and clip > 0:
+                cleaned = torch.clamp(cleaned, -clip, clip)
+            # 如果状态有变化，更新它
+            if not torch.equal(state, cleaned):
                 obj.set_state(cleaned.detach())
     
     
