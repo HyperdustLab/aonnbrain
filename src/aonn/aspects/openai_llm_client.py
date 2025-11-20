@@ -179,6 +179,15 @@ class OpenAILLMClient(nn.Module):
                 raise ValueError("Empty completion")
             embedding_tensor = self._text_to_embedding(text, dtype=vec.dtype)
             projected = self.output_projector(embedding_tensor)
+            
+            # 更新缓存
+            if use_cache and vec_key is not None:
+                self._call_count += 1
+                if len(self._cache) >= self._cache_max_size:
+                    # 删除最旧的缓存项（简单策略：删除第一个）
+                    self._cache.pop(next(iter(self._cache)))
+                self._cache[vec_key] = projected.detach().clone()
+            
             return projected
         except Exception:
             # 发生错误时退化为恒等映射，避免中断训练/推理
