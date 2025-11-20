@@ -17,7 +17,7 @@ except ImportError:
     pass  # python-dotenv 未安装时忽略
 
 import json
-from typing import Dict
+from typing import Dict, Optional
 
 import torch
 from tqdm import tqdm
@@ -40,7 +40,7 @@ def run_experiment(
     *,
     verbose: bool = False,
     use_openai_llm: bool = False,
-    openai_api_key: str | None = None,
+    openai_api_key: Optional[str] = None,
 ):
     """
     运行通用AI智能体实验
