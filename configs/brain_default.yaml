@@ -1,0 +1,17 @@
+# AONN 大脑结构配置
+obs_dim: 128          # 感官观察维度
+state_dim: 256        # 内部状态维度
+act_dim: 64           # 动作维度
+sem_dim: 128          # 语义向量维度
+
+# 训练参数
+batch_size: 32
+lr: 0.001
+num_epochs: 100
+
+# LLM 配置
+llm:
+  provider: "openai"  # 或 "local", "http"
+  model: "gpt-4"
+  temperature: 0.7
+  max_tokens: 512

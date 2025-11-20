@@ -1,0 +1,22 @@
+# 训练参数配置
+batch_size: 32
+learning_rate: 0.001
+num_epochs: 100
+save_interval: 10
+checkpoint_dir: "checkpoints/"
+
+# 优化器配置
+optimizer: "adam"
+adam_beta1: 0.9
+adam_beta2: 0.999
+weight_decay: 0.0001
+
+# 学习率调度
+lr_scheduler: "cosine"
+warmup_epochs: 5
+
+# 推理参数
+inference:
+  infer_lr: 0.1
+  num_infer_iters: 5
+  target_objects: ["internal", "action"]

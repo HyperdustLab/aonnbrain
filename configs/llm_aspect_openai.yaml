@@ -1,0 +1,23 @@
+# LLMAspect 对接 OpenAI 配置
+llm:
+  provider: "openai"
+  api_key: null  # 从环境变量 OPENAI_API_KEY 读取
+  model: "gpt-4"
+  temperature: 0.7
+  max_tokens: 512
+  top_p: 1.0
+
+# 编码器配置
+encoder:
+  type: "simple"  # 或 "text_encoder"
+  input_dim: 128
+  output_dim: 128
+
+# 解码器配置
+decoder:
+  type: "simple"  # 或 "text_decoder"
+  input_dim: 128
+  output_dim: 128
+
+# 损失权重
+loss_weight: 1.0
