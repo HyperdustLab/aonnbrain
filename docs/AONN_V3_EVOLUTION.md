@@ -29,6 +29,23 @@ V3 从最小网络开始：
 - 跟踪自由能变化
 - 分析演化历史
 
+## 设计哲学
+
+1. **状态-计算解耦**  
+   `ObjectNode` 只存储 μ 状态、`AspectBase` 只负责计算误差并回写增量（见 `src/aonn/core/object.py`、`src/aonn/core/aspect_base.py`）。这种“Object = 细胞（状态），Aspect = 神经元（计算）”的分层，是所有演化/学习规则的基础。
+
+2. **自由能作为唯一驱动力**  
+   `compute_total_free_energy` 将所有感官、先验、偏好项整合成单一标量，主动推理循环与世界模型学习都以“降低 F”为目标（`src/aonn/core/active_inference_loop.py`，`WorldModelAspectSet`）。因此网络拓扑调整与参数更新共享同一最优化准则。
+
+3. **演化器 = 神经生成规则**  
+   `NetworkEvolution`（`src/aonn/core/evolution.py`）像“基因程序”：只定义何时创建/剪枝 Object、Aspect、Pipeline，以及批量增殖策略。真正的结构实例在运行过程中自发长出，使网络能从最小骨架扩展到复杂拓扑，同时保持全局可控。
+
+4. **Pipeline 充当介神经层**  
+   `AspectPipeline` 串联多层低秩算子，形成 `internal→latent→...→action` 的“中枢通路”。其深度/宽度由演化器根据自由能自动扩张，承担多模态整合和动作规划，呼应线虫实验中的介神经网络。
+
+5. **世界模型与自我模型共振**  
+   世界模型提供可学习的 Dynamics/Observation/Preference 因子，自我模型负责结构演化，二者共享同一组 Object 状态。于是“环境统计”“内部拓扑”“主动推理”被统一在自由能框架内，真正形成可解释、可演化的自由能大脑。
+
 ## 架构设计
 
 ### 初始架构
