@@ -590,9 +590,11 @@ class AONNBrainV3(nn.Module):
         self._world_model_optimizer.step()
         
         # 清理梯度，避免影响后续的推理
+        # 只清理叶子张量的梯度，避免警告
         for name in self.objects:
-            if self.objects[name].state.grad is not None:
-                self.objects[name].state.grad = None
+            state = self.objects[name].state
+            if state.requires_grad and state.is_leaf and state.grad is not None:
+                state.grad = None
         
         # 恢复 observation aspect 的 dst
         for aspect, dst in original_dst.items():

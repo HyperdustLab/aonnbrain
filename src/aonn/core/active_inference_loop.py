@@ -38,9 +38,11 @@ class ActiveInferenceLoop:
                 self.objects[name].state = mu
 
             # 梯度清零（这里只对 state 做手动更新）
+            # 只处理叶子张量，避免警告
             for name in target_objects:
-                if self.objects[name].state.grad is not None:
-                    self.objects[name].state.grad.zero_()
+                state = self.objects[name].state
+                if state.requires_grad and state.is_leaf and state.grad is not None:
+                    state.grad.zero_()
 
             # 确保所有 Object 状态都是 detached 的，避免图冲突
             for name in self.objects:
@@ -68,7 +70,8 @@ class ActiveInferenceLoop:
             with torch.no_grad():
                 for name in target_objects:
                     mu = self.objects[name].state
-                    if mu.grad is not None:
+                    # 只处理叶子张量的梯度
+                    if mu.requires_grad and mu.is_leaf and mu.grad is not None:
                         mu = mu - self.infer_lr * mu.grad
                     self.objects[name].state = mu.detach()
 
