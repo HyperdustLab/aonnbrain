@@ -30,17 +30,41 @@ def demo_v3_evolution():
     print("=" * 70)
     
     # 配置
+    sense_dims = {"vision": 512, "olfactory": 128, "proprio": 64}
     config = {
-        "obs_dim": 16,
-        "state_dim": 32,
-        "act_dim": 8,
+        "obs_dim": sum(sense_dims.values()),
+        "state_dim": 256,
+        "act_dim": 64,
         "enable_world_model_learning": True,  # 启用世界模型学习
+        "vision_dim": sense_dims["vision"],
+        "olfactory_dim": sense_dims["olfactory"],
+        "proprio_dim": sense_dims["proprio"],
+        "sense_dims": sense_dims,
         "evolution": {
-            "free_energy_threshold": 0.5,
+            "free_energy_threshold": 0.08,
             "prune_threshold": 0.01,
-            "max_objects": 20,
-            "max_aspects": 100,
-        }
+            "max_objects": 60,
+            "max_aspects": 360,
+            "error_ema_alpha": 0.4,
+            "batch_growth": {
+                "base": 12,
+                "max_per_step": 36,
+                "max_total": 120,
+                "min_per_sense": 4,
+                "error_threshold": 0.05,
+                "error_multiplier": 0.8,
+            },
+        },
+        "pipeline_growth": {
+            "initial_depth": 2,
+            "initial_width": 32,
+            "depth_increment": 1,
+            "width_increment": 8,
+            "max_stages": 3,
+            "min_interval": 80,
+            "free_energy_trigger": None,
+            "max_depth": 6,
+        },
     }
     
     device = torch.device("cpu")
@@ -48,6 +72,7 @@ def demo_v3_evolution():
     # ========== 1. 创建最小初始网络 ==========
     print("\n[步骤 1] 创建最小初始网络...")
     brain = AONNBrainV3(config=config, device=device, enable_evolution=True)
+    senses = brain.senses
     print("初始网络结构:")
     print(brain.visualize_network())
     
@@ -61,13 +86,20 @@ def demo_v3_evolution():
         state_dim=config["state_dim"],
         action_dim=config["act_dim"],
         obs_dim=config["obs_dim"],
-        device=device
+        device=device,
+        state_noise_std=0.1,
+        observation_noise_std=0.05,
+        target_drift_std=0.02,
+        vision_dim=sense_dims["vision"],
+        olfactory_dim=sense_dims["olfactory"],
+        proprio_dim=sense_dims["proprio"],
     )
     world_interface = WorldModelInterface(world_model)
     
     # 重置环境
     initial_obs = world_interface.reset()
-    print(f"初始观察: shape={initial_obs.shape}, norm={torch.norm(initial_obs).item():.4f}")
+    obs_norms = ", ".join(f"{sense}: {torch.norm(initial_obs[sense]).item():.4f}" for sense in senses)
+    print(f"初始观察: {obs_norms}")
     
     # ========== 3. 交互和演化循环 ==========
     print("\n[步骤 3] 开始交互和演化循环...")
@@ -95,12 +127,10 @@ def demo_v3_evolution():
             obs = initial_obs
         else:
             obs, reward = world_interface.step(action)
-            print(f"观察: norm={torch.norm(obs).item():.4f}, 奖励: {reward.item():.4f}")
+            obs_norms = ", ".join(f"{sense}: {torch.norm(obs[sense]).item():.4f}" for sense in senses)
+            print(f"观察: {obs_norms}, 奖励: {reward.item():.4f}")
         
         # 设置观察到 brain
-        brain.objects["sensory"].set_state(obs)
-        
-        # 网络演化
         brain.evolve_network(obs)
         
         # 主动推理（更新 internal 状态）
@@ -114,6 +144,7 @@ def demo_v3_evolution():
                     device=device
                 )
                 infer_loop.infer_states(target_objects=("internal",), num_iters=1)
+                brain.sanitize_states()
             except Exception:
                 # 如果推理失败，跳过（可能是梯度图问题）
                 pass
@@ -124,13 +155,12 @@ def demo_v3_evolution():
         
         # 生成动作（如果有 action Object）
         if "action" in brain.objects:
-            # 如果有 Pipeline，使用 Pipeline
             if len(brain.aspect_pipelines) > 0:
-                internal_state = brain.objects["internal"].state
-                action = brain.aspect_pipelines[0](internal_state)
+                action = brain.objects["internal"].state
+                for pipeline in brain.aspect_pipelines:
+                    action = pipeline(action)
                 brain.objects["action"].set_state(action)
             else:
-                # 否则随机动作
                 action = torch.randn(config["act_dim"], device=device) * 0.1
                 brain.objects["action"].set_state(action)
         else:
@@ -151,7 +181,7 @@ def demo_v3_evolution():
             )
         
         # 保存当前观察和动作（用于下一步学习）
-        prev_obs = obs.clone()
+        prev_obs = {sense: value.clone() for sense, value in obs.items()}
         prev_action = action.clone()
         
         # 观察自我模型（每5步）

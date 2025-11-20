@@ -61,26 +61,73 @@ class AONNBrainV3(nn.Module):
         obs_dim = config.get("obs_dim", 16)
         state_dim = config.get("state_dim", 32)
         act_dim = config.get("act_dim", 8)
+
+        # 感官维度配置
+        vision_dim = config.get("vision_dim", max(obs_dim * 3 // 4, 8))
+        olfactory_dim = config.get("olfactory_dim", max(obs_dim // 5, 4))
+        proprio_dim = config.get("proprio_dim", max(obs_dim - vision_dim - olfactory_dim, 4))
+        default_sense_dims = {
+            "vision": vision_dim,
+            "olfactory": olfactory_dim,
+            "proprio": proprio_dim,
+        }
+        self.sense_dims = config.get("sense_dims", default_sense_dims)
+        # 确保所有维度为正
+        for sense, dim in self.sense_dims.items():
+            if dim <= 0:
+                raise ValueError(f"感官 {sense} 的维度必须为正，当前: {dim}")
+        self.senses = list(self.sense_dims.keys())
+        self._sensory_aspect_counters = {sense: 0 for sense in self.senses}
+        
+        evo_cfg = config.get("evolution", {})
+        batch_cfg = evo_cfg.get("batch_growth", {})
+        self.batch_growth_cfg = {
+            "base": batch_cfg.get("base", 8),
+            "max_per_step": batch_cfg.get("max_per_step", 64),
+            "max_total": batch_cfg.get("max_total", 256),
+            "error_multiplier": batch_cfg.get("error_multiplier", 1.0),
+            "min_per_sense": batch_cfg.get("min_per_sense", 1),
+            "error_threshold": batch_cfg.get("error_threshold", evo_cfg.get("free_energy_threshold", 1.0)),
+        }
+        self.error_ema_alpha = batch_cfg.get("error_ema_alpha", evo_cfg.get("error_ema_alpha", 0.3))
+        self.sensory_error_ema = {sense: 0.0 for sense in self.senses}
+        self.state_clip_value = float(config.get("state_clip_value", 10.0))
         
         self.objects: Dict[str, ObjectNode] = {
-            "sensory": ObjectNode("sensory", dim=obs_dim, device=self.device),
             "internal": ObjectNode("internal", dim=state_dim, device=self.device),
         }
+        for sense_name, dim in self.sense_dims.items():
+            self.objects[sense_name] = ObjectNode(sense_name, dim=dim, device=self.device)
         
         # 初始 Aspect（最小）
         self.aspects: List[AspectBase] = []
         
         # 初始 Pipeline（无）
         self.aspect_pipelines: List[AspectPipeline] = []
+        self.pipeline_specs: List[Dict] = []
         self.aspect_modules = nn.ModuleList()
+        pipeline_cfg = config.get("pipeline_growth", {})
+        self.pipeline_growth_cfg = {
+            "enable": pipeline_cfg.get("enable", True),
+            "initial_depth": pipeline_cfg.get("initial_depth", 2),
+            "initial_width": pipeline_cfg.get("initial_width", 16),
+            "depth_increment": pipeline_cfg.get("depth_increment", 1),
+            "width_increment": pipeline_cfg.get("width_increment", 0),
+            "max_stages": max(1, pipeline_cfg.get("max_stages", 3)),
+            "min_interval": pipeline_cfg.get("min_interval", 80),
+            "free_energy_trigger": pipeline_cfg.get("free_energy_trigger"),
+            "max_depth": pipeline_cfg.get("max_depth", 8),
+        }
+        self.pipeline_growth_state = {"last_expand_step": 0}
         
         # ========== 演化管理器 ==========
         if enable_evolution:
             self.evolution = NetworkEvolution(
-                free_energy_threshold=config.get("evolution", {}).get("free_energy_threshold", 1.0),
-                prune_threshold=config.get("evolution", {}).get("prune_threshold", 0.01),
-                max_objects=config.get("evolution", {}).get("max_objects", 100),
-                max_aspects=config.get("evolution", {}).get("max_aspects", 1000),
+                free_energy_threshold=evo_cfg.get("free_energy_threshold", 1.0),
+                prune_threshold=evo_cfg.get("prune_threshold", 0.01),
+                max_objects=evo_cfg.get("max_objects", 100),
+                max_aspects=evo_cfg.get("max_aspects", 1000),
+                batch_growth=batch_cfg,
             )
         else:
             self.evolution = None
@@ -101,7 +148,7 @@ class AONNBrainV3(nn.Module):
             self.world_model_aspects = WorldModelAspectSet(
                 state_dim=state_dim,
                 action_dim=act_dim,
-                obs_dim=obs_dim,
+                observation_dims=self.sense_dims,
                 device=self.device
             )
             # 将世界模型 Aspect 添加到 aspects 列表
@@ -173,6 +220,7 @@ class AONNBrainV3(nn.Module):
         aspect_type: str,
         src_names: List[str],
         dst_names: List[str],
+        name: Optional[str] = None,
         **kwargs
     ) -> AspectBase:
         """
@@ -183,10 +231,12 @@ class AONNBrainV3(nn.Module):
                 internal_name=src_names[0],
                 sensory_name=dst_names[0],
                 state_dim=self.objects[src_names[0]].dim,
-                obs_dim=self.objects[dst_names[0]].dim,
+                obs_dim=kwargs.get("obs_dim", self.objects[dst_names[0]].dim),
+                name=name,
             )
         elif aspect_type == "llm":
             aspect = LLMAspect(
+                name=name or "llm_aspect",
                 src_names=src_names,
                 dst_names=dst_names,
                 llm_client=kwargs.get("llm_client"),
@@ -216,12 +266,40 @@ class AONNBrainV3(nn.Module):
         
         return aspect
     
+    def create_sensory_aspect_batch(
+        self,
+        sense_name: str,
+        count: int,
+    ) -> List[AspectBase]:
+        """
+        批量创建感官 Aspect，用于快速扩展“神经元”数量
+        """
+        created: List[AspectBase] = []
+        if count <= 0:
+            return created
+        
+        for _ in range(count):
+            self._sensory_aspect_counters[sense_name] += 1
+            asp_name = f"sensory_{sense_name}_{self._sensory_aspect_counters[sense_name]}"
+            created.append(
+                self.create_aspect(
+                    "sensory",
+                    src_names=["internal"],
+                    dst_names=[sense_name],
+                    name=asp_name,
+                    obs_dim=self.sense_dims[sense_name],
+                )
+            )
+        return created
+    
     def create_pipeline(
         self,
         input_layer_name: str,
         output_layer_name: str,
         num_aspects: int = 32,
         depth: int = 4,
+        position: Optional[int] = None,
+        metadata: Optional[Dict] = None,
     ) -> AspectPipeline:
         """
         动态创建新 Pipeline
@@ -237,7 +315,20 @@ class AONNBrainV3(nn.Module):
             use_gate=False,
         )
         
-        self.aspect_pipelines.append(pipeline)
+        if position is None or position >= len(self.aspect_pipelines):
+            self.aspect_pipelines.append(pipeline)
+            self.pipeline_specs.append({
+                "input": input_layer_name,
+                "output": output_layer_name,
+                "metadata": metadata or {},
+            })
+        else:
+            self.aspect_pipelines.insert(position, pipeline)
+            self.pipeline_specs.insert(position, {
+                "input": input_layer_name,
+                "output": output_layer_name,
+                "metadata": metadata or {},
+            })
         if not hasattr(self, 'aspect_modules') or self.aspect_modules is None:
             self.aspect_modules = nn.ModuleList()
         self.aspect_modules.append(pipeline)
@@ -247,7 +338,14 @@ class AONNBrainV3(nn.Module):
             F_after = self.compute_free_energy().item()
             self.evolution.record_event(
                 "create_pipeline",
-                {"input": input_layer_name, "output": output_layer_name, "depth": depth},
+                {
+                    "input": input_layer_name,
+                    "output": output_layer_name,
+                    "depth": depth,
+                    "num_aspects": num_aspects,
+                    "position": position if position is not None else len(self.aspect_pipelines) - 1,
+                    "metadata": metadata or {},
+                },
                 "dynamic_creation",
                 F_before,
                 F_after
@@ -255,7 +353,78 @@ class AONNBrainV3(nn.Module):
         
         return pipeline
     
-    def evolve_network(self, observation: torch.Tensor, target: Optional[torch.Tensor] = None):
+    def ensure_action_pipeline(self):
+        """
+        确保至少存在一条 internal→action 的 Pipeline 作为最终动作头
+        """
+        if "action" not in self.objects:
+            return
+        if len(self.aspect_pipelines) == 0:
+            self.create_pipeline(
+                "internal",
+                "action",
+                num_aspects=self.pipeline_growth_cfg.get("initial_width", 16),
+                depth=self.pipeline_growth_cfg.get("initial_depth", 2),
+                metadata={"stage": "action"}
+            )
+    
+    def maybe_expand_action_pipeline(self, free_energy_value: float):
+        """
+        根据自由能和演化步数，动态插入新的 internal→internal Pipeline，
+        增加动作头之前的深度
+        """
+        if not self.pipeline_growth_cfg.get("enable", True):
+            return
+        if len(self.aspect_pipelines) == 0 or self.evolution is None:
+            return
+        if len(self.aspect_pipelines) >= self.pipeline_growth_cfg.get("max_stages", 3):
+            return
+        step = self.evolution.step_count
+        last_expand = self.pipeline_growth_state.get("last_expand_step", 0)
+        if step - last_expand < self.pipeline_growth_cfg.get("min_interval", 80):
+            return
+        trigger = self.pipeline_growth_cfg.get("free_energy_trigger")
+        if trigger is not None and free_energy_value > trigger:
+            return
+        stage_index = len(self.aspect_pipelines) - 1  # 预留最后一个动作头
+        width = max(4, self.pipeline_growth_cfg.get("initial_width", 16) + stage_index * self.pipeline_growth_cfg.get("width_increment", 0))
+        depth = min(
+            self.pipeline_growth_cfg.get("initial_depth", 2) + stage_index * self.pipeline_growth_cfg.get("depth_increment", 1),
+            self.pipeline_growth_cfg.get("max_depth", 8),
+        )
+        insert_pos = max(0, len(self.aspect_pipelines) - 1)
+        self.create_pipeline(
+            "internal",
+            "internal",
+            num_aspects=width,
+            depth=depth,
+            position=insert_pos,
+            metadata={"stage": f"latent_{len(self.aspect_pipelines)}"}
+        )
+        self.pipeline_growth_state["last_expand_step"] = step
+    
+    def sanitize_states(self):
+        """
+        保证所有 Object state 有限且处于可控范围，避免 NaN/Inf 继续扩散
+        """
+        clip = self.state_clip_value
+        for obj in self.objects.values():
+            state = obj.state
+            if state is None:
+                continue
+            needs_clean = not torch.isfinite(state).all()
+            if not needs_clean:
+                if clip is not None and clip > 0:
+                    if torch.max(torch.abs(state)).item() > clip:
+                        needs_clean = True
+            if needs_clean:
+                cleaned = torch.nan_to_num(state, nan=0.0, posinf=clip, neginf=-clip)
+                if clip is not None and clip > 0:
+                    cleaned = torch.clamp(cleaned, -clip, clip)
+                obj.set_state(cleaned.detach())
+    
+    
+    def evolve_network(self, observation: Dict[str, torch.Tensor], target: Optional[torch.Tensor] = None):
         """
         网络演化：根据自由能决定是否创建新组件
         """
@@ -265,37 +434,77 @@ class AONNBrainV3(nn.Module):
         self.evolution.increment_step()
         
         # 设置当前观察
-        self.objects["sensory"].set_state(observation)
-        if target is not None:
-            if "semantic_prediction" in self.objects:
-                self.objects["semantic_prediction"].set_state(target)
+        for sense, value in observation.items():
+            if sense in self.objects:
+                self.objects[sense].set_state(value)
+        if target is not None and "target" in self.objects:
+            self.objects["target"].set_state(target)
         
         # 计算当前自由能
         F_current = self.compute_free_energy().item()
         
-        # 检查是否需要创建新 Aspect（sensory → internal）
-        if len([a for a in self.aspects if isinstance(a, LinearGenerativeAspect)]) == 0:
-            # 创建基础 sensory aspect
-            self.create_aspect(
-                "sensory",
-                src_names=["internal"],
-                dst_names=["sensory"]
-            )
+        # 感官 Aspect 的自由能贡献统计
+        sense_error_map = {sense: 0.0 for sense in self.senses}
+        sense_aspect_count = {sense: 0 for sense in self.senses}
+        for aspect in self.aspects:
+            if not isinstance(aspect, LinearGenerativeAspect):
+                continue
+            sense_name = aspect.dst_names[0]
+            sense_aspect_count[sense_name] = sense_aspect_count.get(sense_name, 0) + 1
+            try:
+                contrib = aspect.free_energy_contrib(self.objects)
+                sense_error_map[sense_name] = sense_error_map.get(sense_name, 0.0) + float(contrib.detach().item())
+            except Exception:
+                continue
+        
+        # 更新 EMA
+        alpha = max(0.0, min(1.0, self.error_ema_alpha))
+        for sense in self.senses:
+            prev = self.sensory_error_ema.get(sense, 0.0)
+            current = sense_error_map.get(sense, 0.0)
+            ema = current if alpha == 0.0 else (1 - alpha) * prev + alpha * current
+            self.sensory_error_ema[sense] = ema
+        
+        # 确保每个感官至少拥有最小数量的 Aspect
+        min_required = self.batch_growth_cfg.get("min_per_sense", 1)
+        if min_required > 0:
+            for sense in self.senses:
+                current_count = sense_aspect_count.get(sense, 0)
+                if current_count < min_required:
+                    needed = min_required - current_count
+                    self.create_sensory_aspect_batch(sense, needed)
+                    sense_aspect_count[sense] = current_count + needed
+        
+        # 批量扩增高误差感官的 Aspect
+        remaining_capacity = 0
+        if self.evolution is not None:
+            remaining_capacity = max(0, self.evolution.max_aspects - len(self.aspects))
+        if remaining_capacity > 0:
+            for sense in self.senses:
+                if remaining_capacity <= 0:
+                    break
+                error_metric = self.sensory_error_ema[sense] * self.batch_growth_cfg.get("error_multiplier", 1.0)
+                current_count = sense_aspect_count.get(sense, 0)
+                plan = self.evolution.plan_aspect_batch(
+                    error_value=error_metric,
+                    current_target_count=current_count,
+                    remaining_capacity=remaining_capacity,
+                    growth_policy=self.batch_growth_cfg,
+                )
+                if plan > 0:
+                    self.create_sensory_aspect_batch(sense, plan)
+                    sense_aspect_count[sense] = current_count + plan
+                    remaining_capacity = max(0, self.evolution.max_aspects - len(self.aspects))
         
         # 检查是否需要创建新 Object（如 action）
         if "action" not in self.objects and F_current > self.evolution.free_energy_threshold:
             act_dim = self.config.get("act_dim", 8)
             self.create_object("action", dim=act_dim)
         
-        # 检查是否需要创建 Pipeline
-        if len(self.aspect_pipelines) == 0 and "action" in self.objects:
-            # 创建 internal → action 的 pipeline
-            self.create_pipeline(
-                "internal",
-                "action",
-                num_aspects=16,
-                depth=2
-            )
+        # 确保存在动作 Pipeline，并在自由能较低时增加深度
+        self.ensure_action_pipeline()
+        self.maybe_expand_action_pipeline(F_current)
+        self.sanitize_states()
     
     def compute_free_energy(self) -> torch.Tensor:
         """计算总自由能"""
@@ -303,9 +512,9 @@ class AONNBrainV3(nn.Module):
     
     def learn_world_model(
         self,
-        observation: torch.Tensor,
+        observation: Dict[str, torch.Tensor],
         action: torch.Tensor,
-        next_observation: torch.Tensor,
+        next_observation: Dict[str, torch.Tensor],
         target_state: Optional[torch.Tensor] = None,
         learning_rate: float = 0.001,
     ):
@@ -329,8 +538,10 @@ class AONNBrainV3(nn.Module):
                 lr=learning_rate
             )
         
-        # 设置 Object 状态（使用 detach 避免梯度图问题）
-        self.objects["sensory"].set_state(observation.detach())
+        # 设置感官 Object 状态（使用 detach 避免梯度图问题）
+        for sense, value in observation.items():
+            if sense in self.objects:
+                self.objects[sense].set_state(value.detach())
         if "action" in self.objects:
             self.objects["action"].set_state(action.detach())
         
@@ -343,13 +554,21 @@ class AONNBrainV3(nn.Module):
         )
         
         # 设置下一观察（用于计算 observation aspect 的自由能）
-        if "sensory_next" not in self.objects:
-            self.objects["sensory_next"] = ObjectNode("sensory_next", dim=observation.shape[-1], device=self.device)
-        self.objects["sensory_next"].set_state(next_observation.detach())
+        next_targets = {}
+        for sense, value in next_observation.items():
+            target_name = f"{sense}_next"
+            if target_name not in self.objects:
+                self.objects[target_name] = ObjectNode(target_name, dim=value.shape[-1], device=self.device)
+            self.objects[target_name].set_state(value.detach())
+            next_targets[sense] = target_name
         
-        # 临时修改 observation aspect 的 dst 为 sensory_next
-        original_dst = self.world_model_aspects.observation.dst_names[0]
-        self.world_model_aspects.observation.dst_names[0] = "sensory_next"
+        # 临时修改 observation aspects 的目标
+        original_dst = {}
+        for aspect in getattr(self.world_model_aspects, "observation_aspects", []):
+            sense_name = aspect.dst_names[0]
+            original_dst[aspect] = sense_name
+            if sense_name in next_targets:
+                aspect.dst_names[0] = next_targets[sense_name]
         
         # 设置目标状态（用于 preference）
         if target_state is not None and "target" in self.objects:
@@ -361,7 +580,6 @@ class AONNBrainV3(nn.Module):
         
         # 重新设置 internal 为可微的（用于计算梯度）
         self.objects["internal"].set_state(pred_next_internal)
-        self.objects["sensory"].set_state(observation)  # 也需要可微
         
         # 只计算世界模型 Aspect 的自由能
         F = torch.tensor(0.0, device=self.device)
@@ -372,10 +590,12 @@ class AONNBrainV3(nn.Module):
         self._world_model_optimizer.step()
         
         # 恢复 observation aspect 的 dst
-        self.world_model_aspects.observation.dst_names[0] = original_dst
+        for aspect, dst in original_dst.items():
+            aspect.dst_names[0] = dst
         
         # 恢复 internal 为 detach 状态
         self.objects["internal"].set_state(pred_next_internal.detach())
+        self.sanitize_states()
     
     def set_world_model_target(self, target_state: torch.Tensor):
         """设置世界模型的目标状态（用于 preference）"""
@@ -384,12 +604,14 @@ class AONNBrainV3(nn.Module):
             if "target" in self.objects:
                 self.objects["target"].set_state(target_state)
     
-    def forward(self, x: Optional[torch.Tensor] = None) -> torch.Tensor:
+    def forward(self, x: Optional[Dict[str, torch.Tensor]] = None) -> torch.Tensor:
         """
         前向传播
         """
         if x is not None:
-            self.objects["sensory"].set_state(x)
+            for sense, value in x.items():
+                if sense in self.objects:
+                    self.objects[sense].set_state(value)
         
         # 如果有 Pipeline，使用 Pipeline
         if len(self.aspect_pipelines) > 0:
@@ -427,8 +649,9 @@ class AONNBrainV3(nn.Module):
                     "num_aspects": p.num_aspects,
                     "input_dim": p.input_dim,
                     "output_dim": p.output_dim,
+                    "spec": self.pipeline_specs[i],
                 }
-                for p in self.aspect_pipelines
+                for i, p in enumerate(self.aspect_pipelines)
             ],
         }
     

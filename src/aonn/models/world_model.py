@@ -29,6 +29,9 @@ class SimpleWorldModel:
         state_noise_std: float = 0.01,
         observation_noise_std: float = 0.01,
         target_drift_std: float = 0.0,
+        vision_dim: Optional[int] = None,
+        olfactory_dim: Optional[int] = None,
+        proprio_dim: Optional[int] = None,
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim
@@ -38,6 +41,19 @@ class SimpleWorldModel:
         self.state_noise_std = state_noise_std
         self.observation_noise_std = observation_noise_std
         self.target_drift_std = target_drift_std
+
+        # 感官维度配置（若未提供则按照 obs_dim 拆分）
+        if vision_dim is None and olfactory_dim is None and proprio_dim is None:
+            vision_dim = obs_dim * 3 // 4
+            olfactory_dim = max(obs_dim // 5, 4)
+            proprio_dim = obs_dim - vision_dim - olfactory_dim
+        elif vision_dim is None or olfactory_dim is None or proprio_dim is None:
+            raise ValueError("必须同时提供 vision_dim/olfactory_dim/proprio_dim 或全部省略。")
+
+        self.vision_dim = vision_dim
+        self.olfactory_dim = olfactory_dim
+        self.proprio_dim = proprio_dim
+        self.obs_dim = self.vision_dim + self.olfactory_dim + self.proprio_dim
         
         # 环境状态（隐藏状态）
         self.hidden_state = torch.randn(state_dim, device=self.device) * 0.1
@@ -49,11 +65,21 @@ class SimpleWorldModel:
             nn.Linear(state_dim * 2, state_dim),
         ).to(self.device)
         
-        # 观察模型（从状态到观察）
-        self.observation_model = nn.Sequential(
-            nn.Linear(state_dim, obs_dim * 2),
+        # 观察模型（多模态）
+        self.vision_model = nn.Sequential(
+            nn.Linear(state_dim, max(self.vision_dim * 2, state_dim)),
             nn.ReLU(),
-            nn.Linear(obs_dim * 2, obs_dim),
+            nn.Linear(max(self.vision_dim * 2, state_dim), self.vision_dim),
+        ).to(self.device)
+        self.olfactory_model = nn.Sequential(
+            nn.Linear(state_dim, max(self.olfactory_dim * 2, state_dim)),
+            nn.ReLU(),
+            nn.Linear(max(self.olfactory_dim * 2, state_dim), self.olfactory_dim),
+        ).to(self.device)
+        self.proprio_model = nn.Sequential(
+            nn.Linear(state_dim, max(self.proprio_dim * 2, state_dim)),
+            nn.ReLU(),
+            nn.Linear(max(self.proprio_dim * 2, state_dim), self.proprio_dim),
         ).to(self.device)
         
         # 奖励模型（从状态和动作到奖励）
@@ -69,7 +95,7 @@ class SimpleWorldModel:
     def reset(self) -> torch.Tensor:
         """重置环境，返回初始观察"""
         self.hidden_state = torch.randn(self.state_dim, device=self.device) * 0.1
-        return self.get_observation()
+        return self.get_multimodal_observation()
     
     def step(self, action: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, bool]:
         """
@@ -87,7 +113,7 @@ class SimpleWorldModel:
         self.hidden_state = self.dynamics(combined) + noise
         
         # 获取观察
-        observation = self.get_observation()
+        observation = self.get_multimodal_observation()
         
         # 计算奖励
         reward = self.get_reward(action)
@@ -97,12 +123,25 @@ class SimpleWorldModel:
         
         return observation, reward, done
     
-    def get_observation(self) -> torch.Tensor:
-        """获取当前观察（部分可观察）"""
-        obs = self.observation_model(self.hidden_state)
+    def get_multimodal_observation(self) -> Dict[str, torch.Tensor]:
+        """获取多模态观察"""
+        vision = self.vision_model(self.hidden_state)
+        olfactory = self.olfactory_model(self.hidden_state)
+        proprio = self.proprio_model(self.hidden_state)
         if self.observation_noise_std > 0:
-            obs = obs + self.observation_noise_std * torch.randn_like(obs)
-        return obs
+            vision = vision + self.observation_noise_std * torch.randn_like(vision)
+            olfactory = olfactory + self.observation_noise_std * torch.randn_like(olfactory)
+            proprio = proprio + self.observation_noise_std * torch.randn_like(proprio)
+        return {
+            "vision": vision,
+            "olfactory": olfactory,
+            "proprio": proprio,
+        }
+
+    def get_observation(self) -> torch.Tensor:
+        """兼容旧接口：返回拼接后的观察向量"""
+        obs_dict = self.get_multimodal_observation()
+        return torch.cat([obs_dict["vision"], obs_dict["olfactory"], obs_dict["proprio"]], dim=-1)
     
     def get_reward(self, action: torch.Tensor) -> torch.Tensor:
         """计算奖励"""
@@ -135,16 +174,16 @@ class WorldModelInterface:
     def __init__(self, world_model: SimpleWorldModel):
         self.world_model = world_model
     
-    def get_observation(self) -> torch.Tensor:
-        """获取观察（对应 sensory Object）"""
-        return self.world_model.get_observation()
+    def get_observation(self) -> Dict[str, torch.Tensor]:
+        """获取观察（返回多模态字典）"""
+        return self.world_model.get_multimodal_observation()
     
     def get_reward(self, action: torch.Tensor) -> torch.Tensor:
         """获取奖励（用于学习）"""
         return self.world_model.get_reward(action)
     
-    def step(self, action: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        """执行动作，返回观察和奖励"""
+    def step(self, action: torch.Tensor) -> Tuple[Dict[str, torch.Tensor], torch.Tensor]:
+        """执行动作，返回多模态观察和奖励"""
         obs, reward, done = self.world_model.step(action)
         return obs, reward
     

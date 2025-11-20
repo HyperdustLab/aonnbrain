@@ -14,10 +14,16 @@ class LinearGenerativeAspect(AspectBase, nn.Module):
     F = 0.5 * ||sensory - pred||^2
     """
 
-    def __init__(self, internal_name="internal", sensory_name="sensory",
-                 state_dim=128, obs_dim=128):
+    def __init__(
+        self,
+        internal_name="internal",
+        sensory_name="sensory",
+        state_dim=128,
+        obs_dim=128,
+        name: str = None,
+    ):
         AspectBase.__init__(self,
-                            name="linear_int2sens",
+                            name=name or f"linear_int2sens_{sensory_name}",
                             src_names=[internal_name],
                             dst_names=[sensory_name])
         nn.Module.__init__(self)

@@ -1,7 +1,7 @@
 [
   {
-    "num_steps": 100,
-    "final_free_energy": 0.20251020789146423,
+    "num_steps": 200,
+    "final_free_energy": 0.21082685887813568,
     "final_structure": {
       "num_objects": 5,
       "num_aspects": 4,
@@ -9,23 +9,23 @@
       "objects": {
         "sensory": {
           "dim": 16,
-          "state_norm": 0.5131815671920776
+          "state_norm": 0.5206490755081177
         },
         "internal": {
           "dim": 32,
-          "state_norm": 0.48227646946907043
+          "state_norm": 0.38526299595832825
         },
         "action": {
           "dim": 8,
-          "state_norm": 0.23067305982112885
+          "state_norm": 0.1464887112379074
         },
         "target": {
           "dim": 32,
-          "state_norm": 0.5618932843208313
+          "state_norm": 0.498195618391037
         },
         "sensory_next": {
           "dim": 16,
-          "state_norm": 0.47508445382118225
+          "state_norm": 0.5290222764015198
         }
       },
       "aspects": [
@@ -89,91 +89,8 @@
     },
     "snapshots": [
       {
-        "step": 10,
-        "free_energy": 0.5421110987663269,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.5377303957939148
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.3602878749370575
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.18180476129055023
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5407605767250061
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.5143610835075378
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.386164574578288
-      },
-      {
         "step": 20,
-        "free_energy": 0.3708651065826416,
+        "free_energy": 0.2757619619369507,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -181,23 +98,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.5033051371574402
+              "state_norm": 0.5359371900558472
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.36243999004364014
+              "state_norm": 0.38807806372642517
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.18563461303710938
+              "state_norm": 0.15844108164310455
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5358026027679443
+              "state_norm": 0.3943180739879608
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4907824993133545
+              "state_norm": 0.5116097331047058
             }
           },
           "aspects": [
@@ -252,94 +169,11 @@
             }
           ]
         },
-        "world_model_F": 0.22657429851824418
-      },
-      {
-        "step": 30,
-        "free_energy": 0.3426016867160797,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.5334999561309814
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.4496365189552307
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.19555887579917908
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5386407971382141
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.4747333526611328
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.16121136555739213
+        "world_model_F": 0.1448207024950534
       },
       {
         "step": 40,
-        "free_energy": 0.26507920026779175,
+        "free_energy": 0.23690196871757507,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -347,23 +181,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4778677225112915
+              "state_norm": 0.5621889233589172
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5275668501853943
+              "state_norm": 0.4630107283592224
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.21347422897815704
+              "state_norm": 0.16328303515911102
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5788033604621887
+              "state_norm": 0.42538511753082275
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.49750620126724243
+              "state_norm": 0.5370187163352966
             }
           },
           "aspects": [
@@ -418,94 +252,11 @@
             }
           ]
         },
-        "world_model_F": 0.11083607425098307
-      },
-      {
-        "step": 50,
-        "free_energy": 0.2093980312347412,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.49506595730781555
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5484958291053772
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.22172100841999054
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5564544200897217
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.517772376537323
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.04605784082377795
+        "world_model_F": 0.07015033614152344
       },
       {
         "step": 60,
-        "free_energy": 0.22328409552574158,
+        "free_energy": 0.17826628684997559,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -513,23 +264,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4934437572956085
+              "state_norm": 0.5133096575737
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5180758833885193
+              "state_norm": 0.429774671792984
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.22693049907684326
+              "state_norm": 0.15132445096969604
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.629753053188324
+              "state_norm": 0.550832986831665
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4782421588897705
+              "state_norm": 0.5763061046600342
             }
           },
           "aspects": [
@@ -584,94 +335,11 @@
             }
           ]
         },
-        "world_model_F": 0.06907957371731754
-      },
-      {
-        "step": 70,
-        "free_energy": 0.2031669020652771,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.49564796686172485
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5128089785575867
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.23540663719177246
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.6422107815742493
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.48574748635292053
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.04938145805863314
+        "world_model_F": 0.03512856053748692
       },
       {
         "step": 80,
-        "free_energy": 0.2038351446390152,
+        "free_energy": 0.2209118753671646,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -679,23 +347,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4940713047981262
+              "state_norm": 0.5479583144187927
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5158860683441162
+              "state_norm": 0.39816004037857056
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.24020354449748993
+              "state_norm": 0.15111683309078217
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5686864256858826
+              "state_norm": 0.49805590510368347
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.49421045184135437
+              "state_norm": 0.5063849091529846
             }
           },
           "aspects": [
@@ -750,94 +418,11 @@
             }
           ]
         },
-        "world_model_F": 0.057705511011590715
-      },
-      {
-        "step": 90,
-        "free_energy": 0.19840162992477417,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.4977792203426361
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.487811803817749
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.22871534526348114
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5499580502510071
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.48383936285972595
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.05246474984414817
+        "world_model_F": 0.05740279245583224
       },
       {
         "step": 100,
-        "free_energy": 0.20251020789146423,
+        "free_energy": 0.20795400440692902,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -845,23 +430,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.5131815671920776
+              "state_norm": 0.5566003918647766
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.48227646946907043
+              "state_norm": 0.41443929076194763
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.23067305982112885
+              "state_norm": 0.155745729804039
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5618932843208313
+              "state_norm": 0.5103638768196106
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.47508445382118225
+              "state_norm": 0.5315713882446289
             }
           },
           "aspects": [
@@ -916,351 +501,11 @@
             }
           ]
         },
-        "world_model_F": 0.04058221887316904
-      }
-    ]
-  },
-  {
-    "num_steps": 300,
-    "final_free_energy": 0.1692095398902893,
-    "final_structure": {
-      "num_objects": 5,
-      "num_aspects": 4,
-      "num_pipelines": 1,
-      "objects": {
-        "sensory": {
-          "dim": 16,
-          "state_norm": 0.4788867235183716
-        },
-        "internal": {
-          "dim": 32,
-          "state_norm": 0.5044292211532593
-        },
-        "action": {
-          "dim": 8,
-          "state_norm": 0.09698230028152466
-        },
-        "target": {
-          "dim": 32,
-          "state_norm": 0.5972126722335815
-        },
-        "sensory_next": {
-          "dim": 16,
-          "state_norm": 0.5079206824302673
-        }
-      },
-      "aspects": [
-        {
-          "name": "dynamics",
-          "src": [
-            "internal",
-            "action"
-          ],
-          "dst": [
-            "internal"
-          ],
-          "type": "DynamicsAspect"
-        },
-        {
-          "name": "observation",
-          "src": [
-            "internal"
-          ],
-          "dst": [
-            "sensory"
-          ],
-          "type": "ObservationAspect"
-        },
-        {
-          "name": "preference",
-          "src": [
-            "internal"
-          ],
-          "dst": [
-            "target"
-          ],
-          "type": "PreferenceAspect"
-        },
-        {
-          "name": "linear_int2sens",
-          "src": [
-            "internal"
-          ],
-          "dst": [
-            "sensory"
-          ],
-          "type": "LinearGenerativeAspect"
-        }
-      ],
-      "pipelines": [
-        {
-          "depth": 2,
-          "num_aspects": 16,
-          "input_dim": 32,
-          "output_dim": 8
-        }
-      ]
-    },
-    "total_events": 2,
-    "event_stats": {
-      "create_object": 0,
-      "create_aspect": 1,
-      "create_pipeline": 1,
-      "prune": 0
-    },
-    "snapshots": [
-      {
-        "step": 30,
-        "free_energy": 0.2234707474708557,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.4590749144554138
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.38807177543640137
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.1019328236579895
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5849036574363708
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.4575083255767822
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.11067434510914609
-      },
-      {
-        "step": 60,
-        "free_energy": 0.18198704719543457,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.4588763415813446
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5576903223991394
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.09064482152462006
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.6489309072494507
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.45667019486427307
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.0719210386632767
-      },
-      {
-        "step": 90,
-        "free_energy": 0.1432306319475174,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.45805659890174866
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5322210788726807
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.09396973252296448
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5712118148803711
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.5098121166229248
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.03717512973162229
+        "world_model_F": 0.05092700994646293
       },
       {
         "step": 120,
-        "free_energy": 0.14408816397190094,
+        "free_energy": 0.21836231648921967,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -1268,23 +513,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.41656869649887085
+              "state_norm": 0.5309855937957764
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.49433696269989014
+              "state_norm": 0.3792307674884796
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.09221851825714111
+              "state_norm": 0.14860625565052032
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.627676784992218
+              "state_norm": 0.46372899413108826
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.5027780532836914
+              "state_norm": 0.5439648032188416
             }
           },
           "aspects": [
@@ -1339,11 +584,11 @@
             }
           ]
         },
-        "world_model_F": 0.04855084335758875
+        "world_model_F": 0.06343828482567915
       },
       {
-        "step": 150,
-        "free_energy": 0.1499263495206833,
+        "step": 140,
+        "free_energy": 0.21210631728172302,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -1351,23 +596,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4591332972049713
+              "state_norm": 0.5430356860160828
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5065134167671204
+              "state_norm": 0.38454437255859375
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.09082219004631042
+              "state_norm": 0.1442052125930786
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5510284304618835
+              "state_norm": 0.5162675380706787
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.46372655034065247
+              "state_norm": 0.5486505627632141
             }
           },
           "aspects": [
@@ -1422,11 +667,94 @@
             }
           ]
         },
-        "world_model_F": 0.04680821007787017
+        "world_model_F": 0.06071575620990188
+      },
+      {
+        "step": 160,
+        "free_energy": 0.19536885619163513,
+        "structure": {
+          "num_objects": 5,
+          "num_aspects": 4,
+          "num_pipelines": 1,
+          "objects": {
+            "sensory": {
+              "dim": 16,
+              "state_norm": 0.5146558284759521
+            },
+            "internal": {
+              "dim": 32,
+              "state_norm": 0.39869117736816406
+            },
+            "action": {
+              "dim": 8,
+              "state_norm": 0.14749562740325928
+            },
+            "target": {
+              "dim": 32,
+              "state_norm": 0.47531139850616455
+            },
+            "sensory_next": {
+              "dim": 16,
+              "state_norm": 0.5136663317680359
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "sensory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "sensory"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 32,
+              "output_dim": 8
+            }
+          ]
+        },
+        "world_model_F": 0.04433916005291394
       },
       {
         "step": 180,
-        "free_energy": 0.1568504124879837,
+        "free_energy": 0.21498893201351166,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -1434,23 +762,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4787026047706604
+              "state_norm": 0.572377622127533
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5157039761543274
+              "state_norm": 0.39339369535446167
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.09015297889709473
+              "state_norm": 0.14507465064525604
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5737724900245667
+              "state_norm": 0.4174111783504486
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.45719072222709656
+              "state_norm": 0.5347376465797424
             }
           },
           "aspects": [
@@ -1505,11 +833,11 @@
             }
           ]
         },
-        "world_model_F": 0.029694993505472667
+        "world_model_F": 0.04841103830767679
       },
       {
-        "step": 210,
-        "free_energy": 0.18012592196464539,
+        "step": 200,
+        "free_energy": 0.21082685887813568,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -1517,23 +845,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.477774977684021
+              "state_norm": 0.5206490755081177
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5455331802368164
+              "state_norm": 0.38526299595832825
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.09205976128578186
+              "state_norm": 0.1464887112379074
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.594189465045929
+              "state_norm": 0.498195618391037
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.44243505597114563
+              "state_norm": 0.5290222764015198
             }
           },
           "aspects": [
@@ -1588,262 +916,13 @@
             }
           ]
         },
-        "world_model_F": 0.05562095825916913
-      },
-      {
-        "step": 240,
-        "free_energy": 0.16815322637557983,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.4520208239555359
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5298762321472168
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.09229500591754913
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5962525010108948
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.45576876401901245
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.05549146634803037
-      },
-      {
-        "step": 270,
-        "free_energy": 0.16930696368217468,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.42605626583099365
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5181769132614136
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.0929403081536293
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.6614620685577393
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.4746684730052948
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.059840224512299756
-      },
-      {
-        "step": 300,
-        "free_energy": 0.1692095398902893,
-        "structure": {
-          "num_objects": 5,
-          "num_aspects": 4,
-          "num_pipelines": 1,
-          "objects": {
-            "sensory": {
-              "dim": 16,
-              "state_norm": 0.4788867235183716
-            },
-            "internal": {
-              "dim": 32,
-              "state_norm": 0.5044292211532593
-            },
-            "action": {
-              "dim": 8,
-              "state_norm": 0.09698230028152466
-            },
-            "target": {
-              "dim": 32,
-              "state_norm": 0.5972126722335815
-            },
-            "sensory_next": {
-              "dim": 16,
-              "state_norm": 0.5079206824302673
-            }
-          },
-          "aspects": [
-            {
-              "name": "dynamics",
-              "src": [
-                "internal",
-                "action"
-              ],
-              "dst": [
-                "internal"
-              ],
-              "type": "DynamicsAspect"
-            },
-            {
-              "name": "observation",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "ObservationAspect"
-            },
-            {
-              "name": "preference",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "target"
-              ],
-              "type": "PreferenceAspect"
-            },
-            {
-              "name": "linear_int2sens",
-              "src": [
-                "internal"
-              ],
-              "dst": [
-                "sensory"
-              ],
-              "type": "LinearGenerativeAspect"
-            }
-          ],
-          "pipelines": [
-            {
-              "depth": 2,
-              "num_aspects": 16,
-              "input_dim": 32,
-              "output_dim": 8
-            }
-          ]
-        },
-        "world_model_F": 0.043230169743765146
+        "world_model_F": 0.06742407505225856
       }
     ]
   },
   {
     "num_steps": 500,
-    "final_free_energy": 0.17708276212215424,
+    "final_free_energy": 0.21348676085472107,
     "final_structure": {
       "num_objects": 5,
       "num_aspects": 4,
@@ -1851,23 +930,23 @@
       "objects": {
         "sensory": {
           "dim": 16,
-          "state_norm": 0.5064958930015564
+          "state_norm": 0.4790947437286377
         },
         "internal": {
           "dim": 32,
-          "state_norm": 0.5493507981300354
+          "state_norm": 0.5295814275741577
         },
         "action": {
           "dim": 8,
-          "state_norm": 0.24121984839439392
+          "state_norm": 0.2608185410499573
         },
         "target": {
           "dim": 32,
-          "state_norm": 0.6313124299049377
+          "state_norm": 0.6426790952682495
         },
         "sensory_next": {
           "dim": 16,
-          "state_norm": 0.47828665375709534
+          "state_norm": 0.5456119775772095
         }
       },
       "aspects": [
@@ -1932,7 +1011,7 @@
     "snapshots": [
       {
         "step": 50,
-        "free_energy": 0.16059425473213196,
+        "free_energy": 0.28483450412750244,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -1940,23 +1019,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.49977579712867737
+              "state_norm": 0.5336902737617493
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.583286464214325
+              "state_norm": 0.5905678868293762
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.24110770225524902
+              "state_norm": 0.2824614644050598
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6189494729042053
+              "state_norm": 0.6156570911407471
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.46746763586997986
+              "state_norm": 0.5602828860282898
             }
           },
           "aspects": [
@@ -2011,11 +1090,11 @@
             }
           ]
         },
-        "world_model_F": 0.058509221955318935
+        "world_model_F": 0.08226415533863474
       },
       {
         "step": 100,
-        "free_energy": 0.12860994040966034,
+        "free_energy": 0.2587040066719055,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2023,23 +1102,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4592510461807251
+              "state_norm": 0.5516371130943298
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5457977056503296
+              "state_norm": 0.56943678855896
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.2394752949476242
+              "state_norm": 0.264896422624588
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6786697506904602
+              "state_norm": 0.6687516570091248
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.45077627897262573
+              "state_norm": 0.5258614420890808
             }
           },
           "aspects": [
@@ -2094,11 +1173,11 @@
             }
           ]
         },
-        "world_model_F": 0.04516932153273956
+        "world_model_F": 0.04826045066329243
       },
       {
         "step": 150,
-        "free_energy": 0.15292727947235107,
+        "free_energy": 0.23442944884300232,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2106,23 +1185,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.48196184635162354
+              "state_norm": 0.5357373952865601
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5263699293136597
+              "state_norm": 0.5412591695785522
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.21972185373306274
+              "state_norm": 0.2546149790287018
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6474959254264832
+              "state_norm": 0.580895185470581
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.49078869819641113
+              "state_norm": 0.4794308543205261
             }
           },
           "aspects": [
@@ -2177,11 +1256,11 @@
             }
           ]
         },
-        "world_model_F": 0.05897841191654152
+        "world_model_F": 0.038115076652502466
       },
       {
         "step": 200,
-        "free_energy": 0.11918852478265762,
+        "free_energy": 0.22190921008586884,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2189,23 +1268,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.420987606048584
+              "state_norm": 0.49154406785964966
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5260035991668701
+              "state_norm": 0.5403479337692261
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.2320634126663208
+              "state_norm": 0.2586071789264679
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6517044901847839
+              "state_norm": 0.5357620716094971
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.5043417811393738
+              "state_norm": 0.5376611948013306
             }
           },
           "aspects": [
@@ -2260,11 +1339,11 @@
             }
           ]
         },
-        "world_model_F": 0.04647233147989027
+        "world_model_F": 0.04454014739530976
       },
       {
         "step": 250,
-        "free_energy": 0.14861169457435608,
+        "free_energy": 0.2575322985649109,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2272,23 +1351,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.5014632344245911
+              "state_norm": 0.5401059985160828
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.558941662311554
+              "state_norm": 0.5345038771629333
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.23792724311351776
+              "state_norm": 0.2573463022708893
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5809375047683716
+              "state_norm": 0.6425734162330627
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.47551417350769043
+              "state_norm": 0.5205159783363342
             }
           },
           "aspects": [
@@ -2343,11 +1422,11 @@
             }
           ]
         },
-        "world_model_F": 0.048082968596645514
+        "world_model_F": 0.053155301855440484
       },
       {
         "step": 300,
-        "free_energy": 0.14087951183319092,
+        "free_energy": 0.2509150803089142,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2355,23 +1434,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.46581265330314636
+              "state_norm": 0.5370430946350098
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5480420589447021
+              "state_norm": 0.5532045960426331
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.22843009233474731
+              "state_norm": 0.25056400895118713
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5887448191642761
+              "state_norm": 0.6626151204109192
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.5033276081085205
+              "state_norm": 0.5180484652519226
             }
           },
           "aspects": [
@@ -2426,11 +1505,11 @@
             }
           ]
         },
-        "world_model_F": 0.05406913834667648
+        "world_model_F": 0.05020459325169213
       },
       {
         "step": 350,
-        "free_energy": 0.1264597773551941,
+        "free_energy": 0.23305563628673553,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2438,23 +1517,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4573878347873688
+              "state_norm": 0.5265136957168579
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5357331037521362
+              "state_norm": 0.5537396669387817
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.2355654239654541
+              "state_norm": 0.25349539518356323
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6530339121818542
+              "state_norm": 0.6091874837875366
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4545343816280365
+              "state_norm": 0.5603039860725403
             }
           },
           "aspects": [
@@ -2509,11 +1588,11 @@
             }
           ]
         },
-        "world_model_F": 0.041251919592468766
+        "world_model_F": 0.042192053690996545
       },
       {
         "step": 400,
-        "free_energy": 0.122404545545578,
+        "free_energy": 0.23833142220973969,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2521,23 +1600,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4672289788722992
+              "state_norm": 0.5366460084915161
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5482602119445801
+              "state_norm": 0.5701833367347717
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.23206141591072083
+              "state_norm": 0.2665543258190155
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6118099689483643
+              "state_norm": 0.576152503490448
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4779644310474396
+              "state_norm": 0.5340671539306641
             }
           },
           "aspects": [
@@ -2592,11 +1671,11 @@
             }
           ]
         },
-        "world_model_F": 0.03461198252989561
+        "world_model_F": 0.03682980113080703
       },
       {
         "step": 450,
-        "free_energy": 0.12505340576171875,
+        "free_energy": 0.27832236886024475,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2604,23 +1683,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.453797310590744
+              "state_norm": 0.5634362697601318
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5224234461784363
+              "state_norm": 0.5533266067504883
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.22419559955596924
+              "state_norm": 0.2642088234424591
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5824892520904541
+              "state_norm": 0.6295624375343323
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.47489601373672485
+              "state_norm": 0.5098646879196167
             }
           },
           "aspects": [
@@ -2675,11 +1754,11 @@
             }
           ]
         },
-        "world_model_F": 0.04830023553586216
+        "world_model_F": 0.06378014085203176
       },
       {
         "step": 500,
-        "free_energy": 0.17708276212215424,
+        "free_energy": 0.21348676085472107,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2687,23 +1766,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.5064958930015564
+              "state_norm": 0.4790947437286377
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.5493507981300354
+              "state_norm": 0.5295814275741577
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.24121984839439392
+              "state_norm": 0.2608185410499573
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6313124299049377
+              "state_norm": 0.6426790952682495
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.47828665375709534
+              "state_norm": 0.5456119775772095
             }
           },
           "aspects": [
@@ -2758,13 +1837,13 @@
             }
           ]
         },
-        "world_model_F": 0.061820551767596044
+        "world_model_F": 0.05343300732602074
       }
     ]
   },
   {
     "num_steps": 1000,
-    "final_free_energy": 0.143609881401062,
+    "final_free_energy": 0.2158661037683487,
     "final_structure": {
       "num_objects": 5,
       "num_aspects": 4,
@@ -2772,23 +1851,23 @@
       "objects": {
         "sensory": {
           "dim": 16,
-          "state_norm": 0.4207768440246582
+          "state_norm": 0.5147205591201782
         },
         "internal": {
           "dim": 32,
-          "state_norm": 0.43825259804725647
+          "state_norm": 0.496483713388443
         },
         "action": {
           "dim": 8,
-          "state_norm": 0.17628169059753418
+          "state_norm": 0.23967069387435913
         },
         "target": {
           "dim": 32,
-          "state_norm": 0.448425829410553
+          "state_norm": 0.5585932731628418
         },
         "sensory_next": {
           "dim": 16,
-          "state_norm": 0.3648826777935028
+          "state_norm": 0.5205376744270325
         }
       },
       "aspects": [
@@ -2853,7 +1932,7 @@
     "snapshots": [
       {
         "step": 100,
-        "free_energy": 0.15760785341262817,
+        "free_energy": 0.19709672033786774,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2861,23 +1940,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.41097548604011536
+              "state_norm": 0.4748314619064331
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.4389246702194214
+              "state_norm": 0.48132839798927307
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.17419637739658356
+              "state_norm": 0.24229373037815094
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.4921604096889496
+              "state_norm": 0.5905238389968872
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.3594808280467987
+              "state_norm": 0.5142440795898438
             }
           },
           "aspects": [
@@ -2932,11 +2011,11 @@
             }
           ]
         },
-        "world_model_F": 0.05443988303159131
+        "world_model_F": 0.05129326626411057
       },
       {
         "step": 200,
-        "free_energy": 0.1776212453842163,
+        "free_energy": 0.2274729460477829,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -2944,23 +2023,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.405948281288147
+              "state_norm": 0.5108035206794739
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.43061092495918274
+              "state_norm": 0.4722868502140045
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.16379863023757935
+              "state_norm": 0.23592333495616913
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5334738492965698
+              "state_norm": 0.4698965847492218
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.38197648525238037
+              "state_norm": 0.5332252383232117
             }
           },
           "aspects": [
@@ -3015,11 +2094,11 @@
             }
           ]
         },
-        "world_model_F": 0.059556865202466724
+        "world_model_F": 0.054430216467153514
       },
       {
         "step": 300,
-        "free_energy": 0.15842828154563904,
+        "free_energy": 0.24266064167022705,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3027,23 +2106,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4060370624065399
+              "state_norm": 0.5388112664222717
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.43281126022338867
+              "state_norm": 0.4944426417350769
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.146766796708107
+              "state_norm": 0.23677417635917664
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5467488169670105
+              "state_norm": 0.6116526126861572
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.3787303566932678
+              "state_norm": 0.5069016814231873
             }
           },
           "aspects": [
@@ -3098,11 +2177,11 @@
             }
           ]
         },
-        "world_model_F": 0.05252447274324368
+        "world_model_F": 0.052248434665671084
       },
       {
         "step": 400,
-        "free_energy": 0.1662946343421936,
+        "free_energy": 0.22457551956176758,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3110,23 +2189,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.3906863033771515
+              "state_norm": 0.4971572756767273
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.4516903758049011
+              "state_norm": 0.46362200379371643
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.16637098789215088
+              "state_norm": 0.2402658760547638
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5045369267463684
+              "state_norm": 0.5842351317405701
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4046795666217804
+              "state_norm": 0.5254164338111877
             }
           },
           "aspects": [
@@ -3181,11 +2260,11 @@
             }
           ]
         },
-        "world_model_F": 0.04941771420817531
+        "world_model_F": 0.0610583261877764
       },
       {
         "step": 500,
-        "free_energy": 0.1433272361755371,
+        "free_energy": 0.2162030041217804,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3193,23 +2272,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4166107177734375
+              "state_norm": 0.5018094778060913
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.4511018395423889
+              "state_norm": 0.4979211091995239
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.17706292867660522
+              "state_norm": 0.23905940353870392
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5073464512825012
+              "state_norm": 0.6179946064949036
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.42275387048721313
+              "state_norm": 0.5001176595687866
             }
           },
           "aspects": [
@@ -3264,11 +2343,11 @@
             }
           ]
         },
-        "world_model_F": 0.038497326688229805
+        "world_model_F": 0.048422939971715095
       },
       {
         "step": 600,
-        "free_energy": 0.17219355702400208,
+        "free_energy": 0.22924698889255524,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3276,23 +2355,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4005569815635681
+              "state_norm": 0.5192157626152039
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.4480525851249695
+              "state_norm": 0.4873006343841553
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.173441082239151
+              "state_norm": 0.23686055839061737
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.6073295474052429
+              "state_norm": 0.6550754904747009
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4079245328903198
+              "state_norm": 0.5051820874214172
             }
           },
           "aspects": [
@@ -3347,11 +2426,11 @@
             }
           ]
         },
-        "world_model_F": 0.06809401832015283
+        "world_model_F": 0.04756349084163958
       },
       {
         "step": 700,
-        "free_energy": 0.14523161947727203,
+        "free_energy": 0.21383211016654968,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3359,23 +2438,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.42164015769958496
+              "state_norm": 0.5154723525047302
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.45707160234451294
+              "state_norm": 0.469632625579834
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.1563381403684616
+              "state_norm": 0.2342943251132965
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.5583091378211975
+              "state_norm": 0.6074061989784241
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.4182050824165344
+              "state_norm": 0.5294305086135864
             }
           },
           "aspects": [
@@ -3430,11 +2509,11 @@
             }
           ]
         },
-        "world_model_F": 0.03053795194318809
+        "world_model_F": 0.03990768657604349
       },
       {
         "step": 800,
-        "free_energy": 0.1586388647556305,
+        "free_energy": 0.24312087893486023,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3442,23 +2521,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4154951274394989
+              "state_norm": 0.5365038514137268
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.44948142766952515
+              "state_norm": 0.48336321115493774
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.17114919424057007
+              "state_norm": 0.23629896342754364
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.4521714448928833
+              "state_norm": 0.5499341487884521
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.36745622754096985
+              "state_norm": 0.47669345140457153
             }
           },
           "aspects": [
@@ -3513,11 +2592,11 @@
             }
           ]
         },
-        "world_model_F": 0.04638042453916569
+        "world_model_F": 0.05460481782210991
       },
       {
         "step": 900,
-        "free_energy": 0.15330684185028076,
+        "free_energy": 0.20749136805534363,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3525,23 +2604,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.38517823815345764
+              "state_norm": 0.49433454871177673
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.43333733081817627
+              "state_norm": 0.4946281909942627
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.17348264157772064
+              "state_norm": 0.2386631816625595
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.4881167709827423
+              "state_norm": 0.5887494683265686
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.37426629662513733
+              "state_norm": 0.4962339401245117
             }
           },
           "aspects": [
@@ -3596,11 +2675,11 @@
             }
           ]
         },
-        "world_model_F": 0.04970016831157409
+        "world_model_F": 0.038194051954633323
       },
       {
         "step": 1000,
-        "free_energy": 0.143609881401062,
+        "free_energy": 0.2158661037683487,
         "structure": {
           "num_objects": 5,
           "num_aspects": 4,
@@ -3608,23 +2687,23 @@
           "objects": {
             "sensory": {
               "dim": 16,
-              "state_norm": 0.4207768440246582
+              "state_norm": 0.5147205591201782
             },
             "internal": {
               "dim": 32,
-              "state_norm": 0.43825259804725647
+              "state_norm": 0.496483713388443
             },
             "action": {
               "dim": 8,
-              "state_norm": 0.17628169059753418
+              "state_norm": 0.23967069387435913
             },
             "target": {
               "dim": 32,
-              "state_norm": 0.448425829410553
+              "state_norm": 0.5585932731628418
             },
             "sensory_next": {
               "dim": 16,
-              "state_norm": 0.3648826777935028
+              "state_norm": 0.5205376744270325
             }
           },
           "aspects": [
@@ -3679,7 +2758,7 @@
             }
           ]
         },
-        "world_model_F": 0.033085816974562476
+        "world_model_F": 0.039011579610814806
       }
     ]
   }

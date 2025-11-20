@@ -229,38 +229,45 @@ class PreferenceAspect(AspectBase, nn.Module):
 
 class WorldModelAspectSet:
     """
-    世界模型 Aspect 集合：统一管理 dynamics, observation, preference
+    世界模型 Aspect 集合：统一管理 dynamics, observation(多感官), preference
     """
     
     def __init__(
         self,
         state_dim: int = 32,
         action_dim: int = 8,
-        obs_dim: int = 16,
+        observation_dims: Optional[Dict[str, int]] = None,
         device=None,
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim
-        self.obs_dim = obs_dim
+        self.observation_dims = observation_dims or {"vision": 16, "olfactory": 8, "proprio": 4}
         self.device = device or torch.device("cpu")
         
-        # 创建三个 Aspect
+        # Dynamics
         self.dynamics = DynamicsAspect(
             state_dim=state_dim,
             action_dim=action_dim,
         ).to(self.device)
         
-        self.observation = ObservationAspect(
-            state_dim=state_dim,
-            obs_dim=obs_dim,
-        ).to(self.device)
+        # Observation aspects（多感官）
+        self.observation_aspects = []
+        for sense_name, dim in self.observation_dims.items():
+            aspect = ObservationAspect(
+                internal_name="internal",
+                sensory_name=sense_name,
+                state_dim=state_dim,
+                obs_dim=dim,
+            ).to(self.device)
+            self.observation_aspects.append(aspect)
         
+        # Preference
         self.preference = PreferenceAspect(
             state_dim=state_dim,
         ).to(self.device)
         
-        # Aspect 列表
-        self.aspects = [self.dynamics, self.observation, self.preference]
+        # 汇总
+        self.aspects = [self.dynamics, *self.observation_aspects, self.preference]
     
     def get_all_parameters(self):
         """获取所有可训练参数"""

@@ -8,6 +8,7 @@ import torch
 import torch.nn as nn
 from dataclasses import dataclass
 from collections import defaultdict
+import math
 
 from .object import ObjectNode
 from .aspect_base import AspectBase
@@ -43,12 +44,14 @@ class NetworkEvolution:
         max_objects: int = 100,
         max_aspects: int = 1000,
         evolution_rate: float = 0.1,
+        batch_growth: Optional[Dict] = None,
     ):
         self.free_energy_threshold = free_energy_threshold
         self.prune_threshold = prune_threshold
         self.max_objects = max_objects
         self.max_aspects = max_aspects
         self.evolution_rate = evolution_rate
+        self.batch_growth = batch_growth or {}
         
         # 演化历史
         self.evolution_history: List[EvolutionEvent] = []
@@ -131,6 +134,45 @@ class NetworkEvolution:
             return True, "negative_contribution"
         
         return False, None
+    
+    def plan_aspect_batch(
+        self,
+        error_value: float,
+        current_target_count: int,
+        remaining_capacity: int,
+        growth_policy: Optional[Dict] = None,
+    ) -> int:
+        """
+        根据误差和策略决定一次性创建多少个 Aspect
+        """
+        if remaining_capacity <= 0 or error_value <= 0:
+            return 0
+        if not math.isfinite(error_value):
+            return 0
+        
+        policy = growth_policy or self.batch_growth
+        threshold = policy.get("error_threshold", self.free_energy_threshold)
+        if threshold <= 0:
+            threshold = self.free_energy_threshold
+        if threshold <= 0:
+            threshold = 1e-6
+        
+        if error_value < threshold:
+            return 0
+        
+        base = max(1, int(policy.get("base", 4)))
+        max_per_step = max(1, int(policy.get("max_per_step", 32)))
+        max_total = policy.get("max_total", None)
+        
+        error_ratio = max(1, int(error_value / threshold))
+        plan = base * error_ratio
+        plan = min(plan, max_per_step, remaining_capacity)
+        
+        if max_total is not None:
+            remaining_for_target = max(0, int(max_total) - current_target_count)
+            plan = min(plan, remaining_for_target)
+        
+        return max(plan, 0)
     
     def record_event(
         self,

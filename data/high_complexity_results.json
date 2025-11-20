@@ -1,0 +1,1539 @@
+[
+  {
+    "num_steps": 1000,
+    "final_free_energy": 4.58518123626709,
+    "final_structure": {
+      "num_objects": 9,
+      "num_aspects": 8,
+      "num_pipelines": 1,
+      "objects": {
+        "internal": {
+          "dim": 256,
+          "state_norm": 0.45748797059059143
+        },
+        "vision": {
+          "dim": 528,
+          "state_norm": 1.3958619832992554
+        },
+        "olfactory": {
+          "dim": 140,
+          "state_norm": 0.7617630958557129
+        },
+        "proprio": {
+          "dim": 36,
+          "state_norm": 0.39923956990242004
+        },
+        "action": {
+          "dim": 64,
+          "state_norm": 0.1721617579460144
+        },
+        "target": {
+          "dim": 256,
+          "state_norm": 1.85294771194458
+        },
+        "vision_next": {
+          "dim": 528,
+          "state_norm": 1.292813777923584
+        },
+        "olfactory_next": {
+          "dim": 140,
+          "state_norm": 0.8302469253540039
+        },
+        "proprio_next": {
+          "dim": 36,
+          "state_norm": 0.43637093901634216
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "vision"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "olfactory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "proprio"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "vision"
+          ],
+          "type": "LinearGenerativeAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "olfactory"
+          ],
+          "type": "LinearGenerativeAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "proprio"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 256,
+          "output_dim": 64
+        }
+      ]
+    },
+    "total_events": 4,
+    "event_stats": {
+      "create_object": 0,
+      "create_aspect": 3,
+      "create_pipeline": 1,
+      "prune": 0
+    },
+    "snapshots": [
+      {
+        "step": 100,
+        "free_energy": 5.055502891540527,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.5234213471412659
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.3975273370742798
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.8219903111457825
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.36048364639282227
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.1761183738708496
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.767636775970459
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.4268467426300049
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.7174950838088989
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.4019662141799927
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.5885465983883478
+      },
+      {
+        "step": 200,
+        "free_energy": 4.572378158569336,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.49424126744270325
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.4892796277999878
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.721380889415741
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.4554951786994934
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.1678381711244583
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.5107688903808594
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.3727235794067383
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.7857205867767334
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.4167322516441345
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.2924314799456624
+      },
+      {
+        "step": 300,
+        "free_energy": 4.388673305511475,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.45658615231513977
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.327557921409607
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.8281800746917725
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.4130670130252838
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.17412197589874268
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.7914438247680664
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.421574354171753
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.8283568620681763
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.4368751347064972
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.429461660096422
+      },
+      {
+        "step": 400,
+        "free_energy": 4.50515079498291,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.47788164019584656
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.3827556371688843
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.7336953282356262
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.4493735432624817
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.174222931265831
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.6859699487686157
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.4004056453704834
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.7852546572685242
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.40666478872299194
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.296289572121168
+      },
+      {
+        "step": 500,
+        "free_energy": 4.646047592163086,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.46598926186561584
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.453240156173706
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.7213959097862244
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.4246023893356323
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.17556852102279663
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.798741102218628
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.3703490495681763
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.7933549880981445
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.41148266196250916
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.527931841177633
+      },
+      {
+        "step": 600,
+        "free_energy": 4.515336990356445,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.49226564168930054
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.3249231576919556
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.8050892949104309
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.3862304389476776
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.18231980502605438
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.7259442806243896
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.3842605352401733
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.8318904638290405
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.4241388142108917
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.3070137849590537
+      },
+      {
+        "step": 700,
+        "free_energy": 4.8418779373168945,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.49253931641578674
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.3861764669418335
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.8023319840431213
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.38362568616867065
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.17254744470119476
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.8351653814315796
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.3798261880874634
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.827907919883728
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.4537885785102844
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.5095112502167467
+      },
+      {
+        "step": 800,
+        "free_energy": 4.7170867919921875,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.47746244072914124
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.4258079528808594
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.7504212260246277
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.3852151930332184
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.17588654160499573
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.829322099685669
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.4511122703552246
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.733392596244812
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.3863530158996582
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.5265152932661294
+      },
+      {
+        "step": 900,
+        "free_energy": 4.698873996734619,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.5121896266937256
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.405396580696106
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.7908107042312622
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.5151239633560181
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.17433808743953705
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.5990967750549316
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.4611012935638428
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.8455328941345215
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.37904390692710876
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.290094555055475
+      },
+      {
+        "step": 1000,
+        "free_energy": 4.58518123626709,
+        "structure": {
+          "num_objects": 9,
+          "num_aspects": 8,
+          "num_pipelines": 1,
+          "objects": {
+            "internal": {
+              "dim": 256,
+              "state_norm": 0.45748797059059143
+            },
+            "vision": {
+              "dim": 528,
+              "state_norm": 1.3958619832992554
+            },
+            "olfactory": {
+              "dim": 140,
+              "state_norm": 0.7617630958557129
+            },
+            "proprio": {
+              "dim": 36,
+              "state_norm": 0.39923956990242004
+            },
+            "action": {
+              "dim": 64,
+              "state_norm": 0.1721617579460144
+            },
+            "target": {
+              "dim": 256,
+              "state_norm": 1.85294771194458
+            },
+            "vision_next": {
+              "dim": 528,
+              "state_norm": 1.292813777923584
+            },
+            "olfactory_next": {
+              "dim": 140,
+              "state_norm": 0.8302469253540039
+            },
+            "proprio_next": {
+              "dim": 36,
+              "state_norm": 0.43637093901634216
+            }
+          },
+          "aspects": [
+            {
+              "name": "dynamics",
+              "src": [
+                "internal",
+                "action"
+              ],
+              "dst": [
+                "internal"
+              ],
+              "type": "DynamicsAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "observation",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "ObservationAspect"
+            },
+            {
+              "name": "preference",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "target"
+              ],
+              "type": "PreferenceAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "vision"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "olfactory"
+              ],
+              "type": "LinearGenerativeAspect"
+            },
+            {
+              "name": "linear_int2sens",
+              "src": [
+                "internal"
+              ],
+              "dst": [
+                "proprio"
+              ],
+              "type": "LinearGenerativeAspect"
+            }
+          ],
+          "pipelines": [
+            {
+              "depth": 2,
+              "num_aspects": 16,
+              "input_dim": 256,
+              "output_dim": 64
+            }
+          ]
+        },
+        "world_model_F": 2.6294635466956606
+      }
+    ]
+  }
+]

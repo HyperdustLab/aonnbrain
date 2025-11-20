@@ -23,12 +23,13 @@ internal_t + action → internal_{t+1}
 #### ObservationAspect（观察生成模型）
 ```python
 # 学习：p(o_t | s_t)
-internal → sensory
+internal → vision/olfactory/proprio
 ```
 
-- **功能**: 从状态生成观察
+- **功能**: 从状态生成多模态观察（视觉、嗅觉、躯体感知）
 - **自由能**: F = 0.5 * ||sensory - pred(internal)||²
 - **参数**: 可学习的神经网络
+- **扩展**: 支持任意感官组合。通过配置 `sense_dims`，可以变为 `chemo/thermo/touch` 等线虫级通道
 
 #### PreferenceAspect（偏好/目标模型）
 ```python
@@ -224,6 +225,82 @@ for step in range(num_steps):
     target_state = world_model.get_true_state()
     brain.learn_world_model(obs, action, next_obs, target_state)
 ```
+
+## 批量 Aspect 演化实践
+
+为了让 AONN 在几十/几百步内生成“数百个神经元”并自动停止在目标规模，可在配置中添加 `batch_growth`：
+
+```python
+"evolution": {
+    "free_energy_threshold": 0.04,
+    "max_aspects": 360,
+    "error_ema_alpha": 0.4,
+    "batch_growth": {
+        "base": 8,
+        "max_per_step": 32,
+        "max_total": 96,
+        "min_per_sense": 4,
+        "error_threshold": 0.04,
+        "error_multiplier": 0.7
+    }
+}
+```
+
+演化循环会：
+1. 统计各感官 `LinearGenerativeAspect` 的自由能贡献；
+2. 通过 EMA 平滑高误差感官；
+3. 一次性创建 `base * error_ratio` 个新 Aspect，直到达到 `max_per_step` 或 `max_total`。
+
+### Pipeline 深度扩展
+
+为获得 “latent → latent → action” 的多级动作路径，可在根配置添加：
+
+```python
+"pipeline_growth": {
+    "initial_depth": 2,
+    "initial_width": 24,
+    "depth_increment": 1,
+    "width_increment": 8,
+    "max_stages": 3,
+    "min_interval": 80,
+    "free_energy_trigger": None,
+    "max_depth": 6
+}
+```
+
+网络会先创建 `internal → action` 的动作头，然后每经过 `min_interval` 步就在末端前插入新的 `internal → internal` Pipeline，使动作生成链条越变越深。
+
+### 300 个神经元级 Aspect（稳定）
+
+```
+python scripts/run_long_evolution.py \
+  --steps 400 \
+  --state-dim 64 --action-dim 16 --obs-dim 48 \
+  --free-energy-threshold 0.04 \
+  --state-noise 0.05 --obs-noise 0.03 --target-drift 0.02 \
+  --output data/long_run_400.json
+```
+
+- 400 步后拥有 `293` 个 Aspect（绝大多数是感官神经元），并自动形成 3 条 Pipeline（2 条 latent + 终端动作头）
+- 自由能降低到 `19.47`，对象范数维持在 `[0.16, 0.68]`
+- 结果保存在 `data/long_run_400.json`，可作为“稳定 300 神经元 + 深度 pipeline”案例
+
+### 线虫模式（多模态 + 350 神经元）
+
+`scripts/run_lineworm_experiment.py` 默认：
+
+- `max_aspects=420`，`batch_growth.max_total=120`，让感官神经元稳定在 350±30
+- `pipeline_growth` 允许最多 4 条管线，初始深度 3
+- `ActiveInferenceLoop(infer_lr=0.02)` 以减少高噪声世界带来的数值发散
+- `LineWormWorldModel(noise_config=...)` 使用时间相关 + 空间相关噪声（默认 `chemo_std=0.04, temporal_corr=0.97, spatial_scale=3.0`；`thermo_std=0.03, temporal_corr=0.95, spatial_scale=4.5`），模拟真实实验中化学/温度场的波动。可以为 `noise_config["chemo" or "thermo"]` 提供 `std/temporal_corr/spatial_scale/basis_size/amplitude` 以贴近不同环境。
+
+若仍观察到 `NaN`，可进一步降低 `infer_lr` 或缩短演化步数，尤其是在 `LineWormWorldModel` 的高噪声场景中。
+
+## 脚本与场景
+
+- `scripts/run_long_evolution.py`：适用于果蝇/高复杂度设置，可配置状态/动作/观察维度以及噪声、目标漂移
+- `scripts/run_lineworm_experiment.py`：线虫世界模型（化学梯度、温度场、触觉障碍），观察是否自动演化出多感官 → 中枢 → 动作的结构
+- `scripts/plot_long_run.py`：从任意结果 JSON 中绘制自由能曲线
 
 ## 总结
 
