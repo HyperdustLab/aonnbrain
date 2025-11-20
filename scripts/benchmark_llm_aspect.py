@@ -2,6 +2,10 @@
 """
 单独测试 LLMAspect（使用 MockLLMClient）
 """
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
 import torch
 from aonn.core.object import ObjectNode
 from aonn.aspects.llm_aspect import LLMAspect
@@ -31,6 +35,9 @@ def test_llm_aspect():
         device=device,
     )
     
+    # 设置为评估模式，避免随机噪声
+    mock_client.eval()
+    
     # 创建 LLMAspect
     llm_aspect = LLMAspect(
         src_names=("semantic_context",),
@@ -43,14 +50,16 @@ def test_llm_aspect():
     initial_F = llm_aspect.free_energy_contrib(objects)
     logger.info(f"初始自由能: {initial_F.item():.4f}")
 
-    # 让 target 接近预测（应该降低自由能）
+    # 获取稳定的预测（评估模式下）
     pred = llm_aspect._call_llm(objects)
-    pred_obj.set_state(pred)
+    # 让 target 等于预测（应该使自由能接近0）
+    pred_obj.set_state(pred.clone())
     
     final_F = llm_aspect.free_energy_contrib(objects)
-    logger.info(f"目标接近预测后的自由能: {final_F.item():.4f}")
+    logger.info(f"目标等于预测后的自由能: {final_F.item():.4f}")
 
-    assert final_F < initial_F, "自由能应该下降"
+    # 验证：当目标等于预测时，自由能应该接近0
+    assert final_F < initial_F * 0.5, f"自由能应该显著下降（初始: {initial_F.item():.4f}, 最终: {final_F.item():.4f}）"
     logger.info("✓ 测试通过：自由能随目标接近预测而下降")
     
     # 测试可训练性

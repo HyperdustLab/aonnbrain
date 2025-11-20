@@ -2,6 +2,10 @@
 """
 演示 MockLLMClient 的使用
 """
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
 import torch
 from aonn.aspects.mock_llm_client import MockLLMClient, create_default_mock_llm_client
 from aonn.utils.logging import setup_logger

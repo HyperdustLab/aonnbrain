@@ -16,9 +16,11 @@ class InferenceAgent:
     """
     def __init__(self, brain: AONNBrain, infer_lr: float = 0.1):
         self.brain = brain
+        # 获取 aspects 列表（兼容 ModuleList 和普通列表）
+        aspects = brain.aspects if isinstance(brain.aspects, list) else list(brain.aspects)
         self.infer_loop = ActiveInferenceLoop(
             objects=brain.objects,
-            aspects=list(brain.aspects),
+            aspects=aspects,
             infer_lr=infer_lr,
             device=brain.device,
         )
@@ -42,9 +44,11 @@ class InferenceAgent:
         """
         获取当前自由能
         """
+        # 获取 aspects 列表（兼容 ModuleList 和普通列表）
+        aspects = self.brain.aspects if isinstance(self.brain.aspects, list) else list(self.brain.aspects)
         F = compute_total_free_energy(
             self.brain.objects,
-            list(self.brain.aspects)
+            aspects
         )
         return F.item()
 

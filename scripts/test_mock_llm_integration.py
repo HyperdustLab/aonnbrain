@@ -59,15 +59,21 @@ def test_integration():
     
     # 5. 测试自由能
     print("\n5. 测试自由能计算...")
+    # 设置为评估模式，避免随机噪声
+    mock_client.eval()
+    
+    # 获取预测（评估模式下应该更稳定）
+    pred_stable = llm_aspect._call_llm(objects)
     F_initial = llm_aspect.free_energy_contrib(objects)
     print(f"   初始自由能: {F_initial.item():.4f}")
     
-    # 让目标接近预测
-    pred_obj.set_state(pred)
+    # 让目标等于预测（应该使自由能接近0）
+    pred_obj.set_state(pred_stable.clone())
     F_final = llm_aspect.free_energy_contrib(objects)
-    print(f"   目标接近预测后的自由能: {F_final.item():.4f}")
+    print(f"   目标等于预测后的自由能: {F_final.item():.4f}")
     
-    assert F_final < F_initial, "自由能应该下降"
+    # 验证：当目标等于预测时，自由能应该接近0（或至少比初始值小很多）
+    assert F_final < F_initial * 0.9, f"自由能应该下降（初始: {F_initial.item():.4f}, 最终: {F_final.item():.4f}）"
     print(f"   ✓ 自由能下降验证通过")
     
     # 6. 测试可训练性

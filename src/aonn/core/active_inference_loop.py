@@ -31,7 +31,7 @@ class ActiveInferenceLoop:
         """
         对指定 Object 节点（如 internal, action）执行有限步自由能下降更新。
         """
-        for _ in range(num_iters):
+        for iter_idx in range(num_iters):
             # 为每个待推理 Object 重置为可微叶子节点
             for name in target_objects:
                 mu = self.objects[name].clone_detached(requires_grad=True)
@@ -43,7 +43,9 @@ class ActiveInferenceLoop:
                     self.objects[name].state.grad.zero_()
 
             F = compute_total_free_energy(self.objects, self.aspects)
-            F.backward()
+            # 最后一次迭代不需要 retain_graph
+            retain_graph = (iter_idx < num_iters - 1)
+            F.backward(retain_graph=retain_graph)
 
             with torch.no_grad():
                 for name in target_objects:

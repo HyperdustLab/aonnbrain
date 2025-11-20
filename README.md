@@ -71,9 +71,34 @@ python scripts/run_active_inference.py
 python scripts/benchmark_llm_aspect.py
 ```
 
+### 完整验证 AONN 大脑
+
+```bash
+python scripts/verify_aonn_brain.py
+```
+
+这个脚本会执行 10 项全面验证：
+1. 大脑创建
+2. Object 完整性
+3. Aspect 完整性
+4. 自由能计算
+5. 推理代理
+6. 观察设置
+7. 主动推理循环
+8. 状态访问
+9. 自由能单调性
+10. 训练能力
+
 ## 运行测试
 
 ```bash
+# 基础功能测试
+python scripts/run_tests.py
+
+# 完整验证（推荐）
+python scripts/verify_aonn_brain.py
+
+# 使用 pytest（如果已安装）
 pytest tests/
 ```
 

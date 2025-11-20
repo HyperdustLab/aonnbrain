@@ -1,0 +1,650 @@
+[
+  {
+    "step": 5,
+    "free_energy": 0.47570955753326416,
+    "structure": {
+      "num_objects": 5,
+      "num_aspects": 4,
+      "num_pipelines": 1,
+      "objects": {
+        "sensory": {
+          "dim": 16,
+          "state_norm": 0.5057585835456848
+        },
+        "internal": {
+          "dim": 32,
+          "state_norm": 0.4455985426902771
+        },
+        "action": {
+          "dim": 8,
+          "state_norm": 0.2456364631652832
+        },
+        "target": {
+          "dim": 32,
+          "state_norm": 0.469405859708786
+        },
+        "sensory_next": {
+          "dim": 16,
+          "state_norm": 0.5026795268058777
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 32,
+          "output_dim": 8
+        }
+      ]
+    },
+    "evolution_stats": {
+      "total_steps": 5,
+      "total_events": 2,
+      "stats": {
+        "objects_created": 0,
+        "aspects_created": 1,
+        "pipelines_created": 1,
+        "pruned_count": 0
+      },
+      "recent_events": [
+        {
+          "step": 1,
+          "type": "create_aspect",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        },
+        {
+          "step": 1,
+          "type": "create_pipeline",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        }
+      ]
+    }
+  },
+  {
+    "step": 10,
+    "free_energy": 0.3882860839366913,
+    "structure": {
+      "num_objects": 5,
+      "num_aspects": 4,
+      "num_pipelines": 1,
+      "objects": {
+        "sensory": {
+          "dim": 16,
+          "state_norm": 0.5151567459106445
+        },
+        "internal": {
+          "dim": 32,
+          "state_norm": 0.37518906593322754
+        },
+        "action": {
+          "dim": 8,
+          "state_norm": 0.2618393898010254
+        },
+        "target": {
+          "dim": 32,
+          "state_norm": 0.45773544907569885
+        },
+        "sensory_next": {
+          "dim": 16,
+          "state_norm": 0.49725067615509033
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 32,
+          "output_dim": 8
+        }
+      ]
+    },
+    "evolution_stats": {
+      "total_steps": 10,
+      "total_events": 2,
+      "stats": {
+        "objects_created": 0,
+        "aspects_created": 1,
+        "pipelines_created": 1,
+        "pruned_count": 0
+      },
+      "recent_events": [
+        {
+          "step": 1,
+          "type": "create_aspect",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        },
+        {
+          "step": 1,
+          "type": "create_pipeline",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        }
+      ]
+    }
+  },
+  {
+    "step": 15,
+    "free_energy": 0.3006807267665863,
+    "structure": {
+      "num_objects": 5,
+      "num_aspects": 4,
+      "num_pipelines": 1,
+      "objects": {
+        "sensory": {
+          "dim": 16,
+          "state_norm": 0.4862050712108612
+        },
+        "internal": {
+          "dim": 32,
+          "state_norm": 0.3354264795780182
+        },
+        "action": {
+          "dim": 8,
+          "state_norm": 0.2705437242984772
+        },
+        "target": {
+          "dim": 32,
+          "state_norm": 0.4727505147457123
+        },
+        "sensory_next": {
+          "dim": 16,
+          "state_norm": 0.4952760636806488
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 32,
+          "output_dim": 8
+        }
+      ]
+    },
+    "evolution_stats": {
+      "total_steps": 15,
+      "total_events": 2,
+      "stats": {
+        "objects_created": 0,
+        "aspects_created": 1,
+        "pipelines_created": 1,
+        "pruned_count": 0
+      },
+      "recent_events": [
+        {
+          "step": 1,
+          "type": "create_aspect",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        },
+        {
+          "step": 1,
+          "type": "create_pipeline",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        }
+      ]
+    }
+  },
+  {
+    "step": 20,
+    "free_energy": 0.2521364092826843,
+    "structure": {
+      "num_objects": 5,
+      "num_aspects": 4,
+      "num_pipelines": 1,
+      "objects": {
+        "sensory": {
+          "dim": 16,
+          "state_norm": 0.4943641424179077
+        },
+        "internal": {
+          "dim": 32,
+          "state_norm": 0.3227322995662689
+        },
+        "action": {
+          "dim": 8,
+          "state_norm": 0.27748966217041016
+        },
+        "target": {
+          "dim": 32,
+          "state_norm": 0.4679943919181824
+        },
+        "sensory_next": {
+          "dim": 16,
+          "state_norm": 0.5041524767875671
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 32,
+          "output_dim": 8
+        }
+      ]
+    },
+    "evolution_stats": {
+      "total_steps": 20,
+      "total_events": 2,
+      "stats": {
+        "objects_created": 0,
+        "aspects_created": 1,
+        "pipelines_created": 1,
+        "pruned_count": 0
+      },
+      "recent_events": [
+        {
+          "step": 1,
+          "type": "create_aspect",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        },
+        {
+          "step": 1,
+          "type": "create_pipeline",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        }
+      ]
+    }
+  },
+  {
+    "step": 25,
+    "free_energy": 0.22592869400978088,
+    "structure": {
+      "num_objects": 5,
+      "num_aspects": 4,
+      "num_pipelines": 1,
+      "objects": {
+        "sensory": {
+          "dim": 16,
+          "state_norm": 0.5070669054985046
+        },
+        "internal": {
+          "dim": 32,
+          "state_norm": 0.3324628174304962
+        },
+        "action": {
+          "dim": 8,
+          "state_norm": 0.28291454911231995
+        },
+        "target": {
+          "dim": 32,
+          "state_norm": 0.4597429931163788
+        },
+        "sensory_next": {
+          "dim": 16,
+          "state_norm": 0.5093975067138672
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 32,
+          "output_dim": 8
+        }
+      ]
+    },
+    "evolution_stats": {
+      "total_steps": 25,
+      "total_events": 2,
+      "stats": {
+        "objects_created": 0,
+        "aspects_created": 1,
+        "pipelines_created": 1,
+        "pruned_count": 0
+      },
+      "recent_events": [
+        {
+          "step": 1,
+          "type": "create_aspect",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        },
+        {
+          "step": 1,
+          "type": "create_pipeline",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        }
+      ]
+    }
+  },
+  {
+    "step": 30,
+    "free_energy": 0.18917056918144226,
+    "structure": {
+      "num_objects": 5,
+      "num_aspects": 4,
+      "num_pipelines": 1,
+      "objects": {
+        "sensory": {
+          "dim": 16,
+          "state_norm": 0.5108199715614319
+        },
+        "internal": {
+          "dim": 32,
+          "state_norm": 0.3570012152194977
+        },
+        "action": {
+          "dim": 8,
+          "state_norm": 0.28684571385383606
+        },
+        "target": {
+          "dim": 32,
+          "state_norm": 0.4683866798877716
+        },
+        "sensory_next": {
+          "dim": 16,
+          "state_norm": 0.5074634552001953
+        }
+      },
+      "aspects": [
+        {
+          "name": "dynamics",
+          "src": [
+            "internal",
+            "action"
+          ],
+          "dst": [
+            "internal"
+          ],
+          "type": "DynamicsAspect"
+        },
+        {
+          "name": "observation",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "ObservationAspect"
+        },
+        {
+          "name": "preference",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "target"
+          ],
+          "type": "PreferenceAspect"
+        },
+        {
+          "name": "linear_int2sens",
+          "src": [
+            "internal"
+          ],
+          "dst": [
+            "sensory"
+          ],
+          "type": "LinearGenerativeAspect"
+        }
+      ],
+      "pipelines": [
+        {
+          "depth": 2,
+          "num_aspects": 16,
+          "input_dim": 32,
+          "output_dim": 8
+        }
+      ]
+    },
+    "evolution_stats": {
+      "total_steps": 30,
+      "total_events": 2,
+      "stats": {
+        "objects_created": 0,
+        "aspects_created": 1,
+        "pipelines_created": 1,
+        "pruned_count": 0
+      },
+      "recent_events": [
+        {
+          "step": 1,
+          "type": "create_aspect",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        },
+        {
+          "step": 1,
+          "type": "create_pipeline",
+          "condition": "dynamic_creation",
+          "F_before": 4.592582702636719,
+          "F_after": 4.592582702636719
+        }
+      ]
+    }
+  }
+]

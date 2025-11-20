@@ -31,7 +31,9 @@ def train_epoch(
         # ...
 
         optimizer.zero_grad()
-        F = compute_total_free_energy(brain.objects, list(brain.aspects))
+        # 使用 aspects 列表（包含所有 aspects）
+        aspects = brain.aspects if hasattr(brain, 'aspects') and isinstance(brain.aspects, list) else list(brain.aspects)
+        F = compute_total_free_energy(brain.objects, aspects)
         F.backward()
         optimizer.step()
 
