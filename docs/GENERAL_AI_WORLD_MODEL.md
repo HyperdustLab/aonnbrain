@@ -137,6 +137,23 @@ python scripts/run_general_ai_experiment.py \
   --verbose
 ```
 
+### 启用 OpenAI LLM
+
+```bash
+export OPENAI_API_KEY="sk-..."  # 或使用 --openai-api-key 传参
+
+python scripts/run_general_ai_experiment.py \
+  --steps 500 \
+  --use-openai-llm \
+  --openai-api-key "$OPENAI_API_KEY"
+```
+
+参数说明：
+
+- `--use-openai-llm`：使用 `OpenAILLMClient`，把 LLMAspect 接到 OpenAI Chat/Embedding API
+- `--openai-api-key`：可选，默认读取 `OPENAI_API_KEY`
+- 配置项 `config["llm"]` 可调整 `model`（默认 `gpt-4o-mini`）、`embedding_model`（默认 `text-embedding-3-small`）、`summary_size`、`max_tokens` 等
+
 ### 参数说明
 
 - `--steps`: 演化步数（默认 500）
@@ -144,6 +161,7 @@ python scripts/run_general_ai_experiment.py \
 - `--output`: 输出文件路径
 - `--verbose`: 实时输出演化快照
 - `--disable-llm`: 禁用 LLMAspect（用于对比实验）
+- `--use-openai-llm`: 启用真实 OpenAI LLM，实现语义先验与语义因子
 
 ## 配置参数
 

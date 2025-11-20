@@ -25,6 +25,7 @@ except Exception as e:
     warnings.warn(f"加载 .env 文件时出错: {e}")
 
 import json
+import sys
 from typing import Dict, Optional
 
 import torch
@@ -119,8 +120,11 @@ def run_experiment(
     # 演化历史
     snapshots = []
     
-    progress = tqdm(range(num_steps), desc=f"GeneralAI {num_steps}")
+    progress = tqdm(range(num_steps), desc=f"GeneralAI {num_steps}", mininterval=0.5, file=sys.stdout)
     for step in progress:
+        if verbose and step == 0:
+            print(f"开始步骤 {step}...")
+        
         if step > 0:
             obs, reward = world_interface.step(action)
         
@@ -138,7 +142,12 @@ def run_experiment(
             # 如果状态维度小于 state_dim，用零填充
             padding = torch.zeros(config["state_dim"] - full_state.shape[-1], device=device)
             target_state = torch.cat([full_state, padding], dim=-1)
-        brain.evolve_network(obs, target=target_state)
+        try:
+            brain.evolve_network(obs, target=target_state)
+        except Exception as e:
+            if verbose:
+                print(f"Step {step}: Evolution error: {e}")
+            pass
         
         # 主动推理
         if len(brain.aspects) > 0:
@@ -190,28 +199,29 @@ def run_experiment(
         # 记录快照
         if step % 50 == 0 or step == num_steps - 1:
             F = brain.compute_free_energy().item()
+            self_model_snapshot = brain.observe_self_model()
             snapshot = {
                 "step": step,
                 "free_energy": F,
-                "structure": brain.observe_self_model(),
+                "structure": self_model_snapshot.get("structure", {}),
             }
             snapshots.append(snapshot)
             
             if verbose:
-                structure = snapshot["structure"]
+                structure = snapshot.get("structure", {})
                 print(f"Step {step}: F={F:.4f}, "
-                      f"Objects={structure['num_objects']}, "
-                      f"Aspects={structure['num_aspects']}, "
-                      f"Pipelines={structure['num_pipelines']}")
+                      f"Objects={structure.get('num_objects', 0)}, "
+                      f"Aspects={structure.get('num_aspects', 0)}, "
+                      f"Pipelines={structure.get('num_pipelines', 0)}")
     
     # 最终结果
-    final_structure = brain.observe_self_model()
+    final_snapshot = brain.observe_self_model()
     final_F = brain.compute_free_energy().item()
     
     result = {
         "num_steps": num_steps,
         "final_free_energy": final_F,
-        "final_structure": final_structure,
+        "final_structure": final_snapshot.get("structure", {}),
         "snapshots": snapshots,
         "evolution_summary": brain.evolution.get_evolution_summary() if brain.evolution else {},
     }

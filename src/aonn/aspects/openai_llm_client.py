@@ -86,6 +86,12 @@ class OpenAILLMClient(nn.Module):
         self.output_projector = nn.Linear(self.embedding_dim, output_dim).to(self.device)
         nn.init.xavier_uniform_(self.output_projector.weight, gain=0.8)
         nn.init.zeros_(self.output_projector.bias)
+        
+        # 缓存机制：避免频繁调用 API
+        self._cache = {}
+        self._cache_max_size = 100
+        self._call_count = 0
+        self._cache_hits = 0
 
     @staticmethod
     def _infer_embedding_dim(model_name: str) -> int:
@@ -107,22 +113,36 @@ class OpenAILLMClient(nn.Module):
         return self.prompt_template.format(summary=summary)
 
     def _chat_completion(self, prompt: str) -> str:
-        response = self._client.chat.completions.create(
-            model=self.model,
-            temperature=self.temperature,
-            max_tokens=self.max_tokens,
-            messages=[
-                {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": prompt},
-            ],
-        )
-        return response.choices[0].message.content or ""
+        try:
+            response = self._client.chat.completions.create(
+                model=self.model,
+                temperature=self.temperature,
+                max_tokens=self.max_tokens,
+                messages=[
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
+                timeout=30.0,  # 30秒超时
+            )
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            # 如果 API 调用失败，返回默认文本
+            import warnings
+            warnings.warn(f"OpenAI API 调用失败: {e}，使用默认响应")
+            return "Default semantic description due to API error."
 
     def _text_to_embedding(self, text: str, dtype: torch.dtype) -> torch.Tensor:
-        embedding = self._client.embeddings.create(
-            model=self.embedding_model,
-            input=text,
-        ).data[0].embedding
+        try:
+            embedding = self._client.embeddings.create(
+                model=self.embedding_model,
+                input=text,
+                timeout=30.0,  # 30秒超时
+            ).data[0].embedding
+        except Exception as e:
+            # 如果 API 调用失败，返回零向量
+            import warnings
+            warnings.warn(f"OpenAI Embedding API 调用失败: {e}，使用零向量")
+            embedding = [0.0] * self.embedding_dim
         emb_tensor = torch.tensor(embedding, dtype=dtype, device=self.device)
         if emb_tensor.shape[0] != self.embedding_dim:
             # 调整 projector 输入维度
@@ -132,7 +152,7 @@ class OpenAILLMClient(nn.Module):
             nn.init.zeros_(self.output_projector.bias)
         return emb_tensor
 
-    def semantic_predict(self, context_vec: torch.Tensor, **kwargs) -> torch.Tensor:
+    def semantic_predict(self, context_vec: torch.Tensor, use_cache: bool = True, **kwargs) -> torch.Tensor:
         """
         Args:
             context_vec: [input_dim] 或 [batch, input_dim] 的语义向量
@@ -144,7 +164,14 @@ class OpenAILLMClient(nn.Module):
             preds.append(self._predict_single(row, **kwargs))
         return torch.stack(preds, dim=0)
 
-    def _predict_single(self, vec: torch.Tensor, **kwargs) -> torch.Tensor:
+    def _predict_single(self, vec: torch.Tensor, use_cache: bool = True, **kwargs) -> torch.Tensor:
+        # 使用向量哈希作为缓存键（只使用前几个值）
+        vec_key = tuple(vec[:8].detach().cpu().tolist()) if use_cache else None
+        
+        if use_cache and vec_key in self._cache:
+            self._cache_hits += 1
+            return self._cache[vec_key].to(vec.device)
+        
         prompt = self._vector_to_prompt(vec)
         try:
             text = self._chat_completion(prompt)
