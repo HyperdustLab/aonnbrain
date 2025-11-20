@@ -107,6 +107,118 @@ for step in range(num_steps):
     brain.learn_world_model(obs, action, next_obs, target_state)
 ```
 
+## 批量感官 Aspect 演化
+
+AONN Brain V3 支持在演化阶段一次性生成一整组感官 `LinearGenerativeAspect`。通过在配置里添加 `evolution.batch_growth` 字段，可以精细控制“神经元”扩张节奏：
+
+```python
+"evolution": {
+    "free_energy_threshold": 0.05,
+    "max_aspects": 600,
+    "error_ema_alpha": 0.35,
+    "batch_growth": {
+        "base": 16,              # 每次最少新增 16 个 Aspect
+        "max_per_step": 96,      # 单步最多新增 96 个
+        "max_total": 256,        # 每个感官的上限
+        "min_per_sense": 4,      # 每个感官至少持有 4 个
+        "error_threshold": 0.025,# EMA 误差低于该值时不增殖
+        "error_multiplier": 1.0  # 可放大/缩小误差
+    }
+}
+```
+
+演化管理器会统计每个感官 Aspect 的自由能贡献，计算 EMA 后的误差，再调用批量创建接口。这样只需几十个演化步就能扩展到“数百个神经元级 Aspect”，同时仍由自由能驱动。
+
+### 动作 Pipeline 深度控制
+
+想要在几百步之后形成“深度管线”，可以启用 `pipeline_growth`：
+
+```python
+"pipeline_growth": {
+    "initial_depth": 2,
+    "initial_width": 24,
+    "depth_increment": 1,
+    "width_increment": 8,
+    "max_stages": 3,
+    "min_interval": 80,   # 至少间隔多少演化步再扩一层
+    "free_energy_trigger": None,  # 设为 None 表示只按步数
+    "max_depth": 6
+}
+```
+
+默认会先创建 `internal → action` 的动作头，然后在满足间隔条件时在末端前插入新的 `internal → internal` Pipeline，自动形成“latent → latent → action”多级结构。脚本(`run_long_evolution.py` / `run_lineworm_experiment.py`)都会连续调用 `pipeline` 列表，从而真正得到深度处理链。
+
+## 长周期演化实验
+
+```bash
+# 运行更长步数并提高任务难度
+python scripts/run_long_evolution.py \
+  --steps 200 500 1000 \
+  --state-dim 256 \
+  --action-dim 64 \
+  --obs-dim 704 \
+  --free-energy-threshold 0.1 \
+  --state-noise 0.1 \
+  --obs-noise 0.05 \
+  --target-drift 0.02
+
+# 绘制自由能曲线
+python scripts/plot_long_run.py
+```
+
+- 输出：
+  - `data/long_run_results.json`：记录各步数的演化日志、自由能、世界模型贡献
+  - `data/long_run_free_energy.png`：自由能曲线
+- 参数含义：
+  - `state/action/obs dim`：控制内部状态与多模态感官维度（默认拆成 vision/olfactory/proprio）
+  - `free-energy-threshold`：越小越容易触发新结构
+  - `state/obs noise`：提高真实世界噪声
+  - `target-drift`：目标状态漂移，模拟动态偏好
+
+### 百级神经元演化记录
+
+- 命令示例：
+
+  ```bash
+  python scripts/run_long_evolution.py \
+    --steps 60 \
+    --state-dim 64 \
+    --action-dim 16 \
+    --obs-dim 48 \
+    --free-energy-threshold 0.05 \
+    --state-noise 0.05 \
+    --obs-noise 0.03 \
+    --target-drift 0.02 \
+    --output data/test_long_small.json
+  ```
+
+- 稳定示例：`python scripts/run_long_evolution.py --steps 400 ... --output data/long_run_400.json`
+  - 400 步后 `293` 个 Aspect（3 条 Pipeline，包含 2 条 latent pipeline + 终端动作头）
+  - 自由能降至 `19.47`，结构长期停留在 280~310 区间，满足“数百个神经元且稳定”的预期
+  - 快照保存在 `data/long_run_400.json`，可用 `scripts/plot_long_run.py --input data/long_run_400.json` 绘制自由能曲线
+
+## 线虫级世界模型实验
+
+```bash
+python scripts/run_lineworm_experiment.py \
+  --steps 200 500 1000 \
+  --device cpu \
+  --output data/lineworm_results.json
+```
+
+- 世界模型：包含化学梯度、温度场和触觉障碍物，动作是推进和转向；默认感官维度 `{"chemo":128,"thermo":32,"touch":64}`。  
+- AONN 初始结构仅包含 `internal + 感官 + action`；默认阈值 0.045、`max_aspects=420`，借助 `batch_growth` 自动停留在 350±30 区间。若需要更激进的增长，可调大 `batch_growth.max_total` 与 `max_aspects`。  
+- 线虫环境噪声更大，脚本默认将主动推理学习率降到 `infer_lr=0.02`，若仍出现 `NaN` 可进一步降低或减少演化步数。  
+- `LineWormWorldModel` 现在提供真实感的化学/温度波动：内部使用时间相关（Ornstein-Uhlenbeck）噪声和高斯平滑的空间相关噪声来驱动场强变化，可通过 `noise_config` 覆盖默认的 `std/temporal_corr/spatial_scale/basis_size` 等参数；想进一步增加难度，可以把 `scripts/run_lineworm_experiment.py` 里的 `noise_config` 放大或设置 `max_aspects=280`、`pipeline_growth.max_stages=6` 等，推动动作管线在 400 步后仍持续扩张。  
+- 输出：
+  - `data/lineworm_results.json`：记录 200/500/1000 步演化过程
+  - 可使用 `scripts/plot_long_run.py --input data/lineworm_results.json --output data/lineworm_free_energy.png` 绘制自由能曲线
+
+- 观察指标：
+  - 是否出现新的感官/动作 Pipeline
+  - 感官对象的自由能贡献
+  - 结构是否向线虫脑的多通路拓扑演化
+
 ## 关键文件
 
 - `src/aonn/aspects/world_model_aspects.py` - 世界模型 Aspect

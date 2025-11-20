@@ -25,13 +25,19 @@ class SimpleWorldModel:
         action_dim: int = 8,
         obs_dim: int = 16,
         reward_dim: int = 1,
-        device=None
+        device=None,
+        state_noise_std: float = 0.01,
+        observation_noise_std: float = 0.01,
+        target_drift_std: float = 0.0,
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.obs_dim = obs_dim
         self.reward_dim = reward_dim
         self.device = device or torch.device("cpu")
+        self.state_noise_std = state_noise_std
+        self.observation_noise_std = observation_noise_std
+        self.target_drift_std = target_drift_std
         
         # 环境状态（隐藏状态）
         self.hidden_state = torch.randn(state_dim, device=self.device) * 0.1
@@ -77,7 +83,8 @@ class SimpleWorldModel:
         """
         # 状态转移
         combined = torch.cat([self.hidden_state, action], dim=-1)
-        self.hidden_state = self.dynamics(combined) + 0.01 * torch.randn_like(self.hidden_state)
+        noise = self.state_noise_std * torch.randn_like(self.hidden_state)
+        self.hidden_state = self.dynamics(combined) + noise
         
         # 获取观察
         observation = self.get_observation()
@@ -93,8 +100,8 @@ class SimpleWorldModel:
     def get_observation(self) -> torch.Tensor:
         """获取当前观察（部分可观察）"""
         obs = self.observation_model(self.hidden_state)
-        # 添加噪声
-        obs = obs + 0.01 * torch.randn_like(obs)
+        if self.observation_noise_std > 0:
+            obs = obs + self.observation_noise_std * torch.randn_like(obs)
         return obs
     
     def get_reward(self, action: torch.Tensor) -> torch.Tensor:
@@ -103,6 +110,11 @@ class SimpleWorldModel:
         state_error = torch.norm(self.hidden_state - self.target_state)
         action_penalty = 0.1 * torch.norm(action)
         reward = -state_error - action_penalty
+
+        # 目标状态轻微漂移，增加任务难度
+        if self.target_drift_std > 0:
+            drift = self.target_drift_std * torch.randn_like(self.target_state)
+            self.target_state = (self.target_state + drift).clamp(-2.0, 2.0)
         
         return reward.unsqueeze(0)  # [1]
     
