@@ -101,6 +101,7 @@ class ObservationAspect(AspectBase, nn.Module):
     观察生成模型：internal → sensory
     
     学习观察生成：p(o_t | s_t)
+    支持卷积解码器（用于图像数据）和线性解码器（用于向量数据）
     """
     
     def __init__(
@@ -110,6 +111,8 @@ class ObservationAspect(AspectBase, nn.Module):
         state_dim: int = 32,
         obs_dim: int = 16,
         hidden_dim: Optional[int] = None,
+        use_conv: bool = True,
+        image_size: Optional[int] = None,
     ):
         AspectBase.__init__(
             self,
@@ -121,24 +124,87 @@ class ObservationAspect(AspectBase, nn.Module):
         
         self.state_dim = state_dim
         self.obs_dim = obs_dim
-        hidden_dim = hidden_dim or (obs_dim * 2)
+        self.use_conv = use_conv
         
-        # 观察生成模型（可学习）
-        self.observation_model = nn.Sequential(
-            nn.Linear(state_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Linear(hidden_dim, obs_dim),
-        )
+        # 推断图像尺寸
+        if image_size is None and use_conv:
+            # 假设是正方形图像
+            import math
+            image_size = int(math.sqrt(obs_dim))
+            if image_size * image_size != obs_dim:
+                # 如果不是完全平方数，使用线性解码器
+                use_conv = False
+        
+        self.image_size = image_size
+        
+        if use_conv and image_size is not None:
+            # 卷积解码器（用于图像数据）
+            # 输入：128 维向量
+            # 输出：1 x 28 x 28
+            # 标准 VAE 解码器架构：128 -> 1152 -> 3 -> 7 -> 14 -> 28
+            # 使用 View 层来替代 Unflatten（更兼容）
+            class View(nn.Module):
+                def __init__(self, shape):
+                    super().__init__()
+                    self.shape = shape
+                def forward(self, x):
+                    return x.view(-1, *self.shape)
+            
+            self.observation_model = nn.Sequential(
+                # 线性层：128 -> 1152
+                nn.Linear(state_dim, 128 * 3 * 3),
+                nn.ReLU(),
+                # Reshape: 1152 -> 128 x 3 x 3
+                View((128, 3, 3)),
+                # 转置卷积：3x3 -> 7x7 (使用 output_padding=1)
+                nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1, output_padding=1),  # 3 -> 7
+                nn.ReLU(),
+                # 转置卷积：7x7 -> 14x14
+                nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),  # 7 -> 14
+                nn.ReLU(),
+                # 转置卷积：14x14 -> 28x28
+                nn.ConvTranspose2d(32, 1, kernel_size=4, stride=2, padding=1),  # 14 -> 28
+                nn.Sigmoid(),  # 输出像素值在 [0, 1]
+            )
+        else:
+            # 线性解码器（用于向量数据）
+            hidden_dim = hidden_dim or (obs_dim * 2)
+            self.observation_model = nn.Sequential(
+                nn.Linear(state_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Linear(hidden_dim, obs_dim),
+            )
     
     def forward(self, objects: Dict[str, ObjectNode]) -> Dict[str, torch.Tensor]:
         """
         预测观察：pred_obs = f(internal)
         """
         internal = objects[self.src_names[0]].state
+        target_obs = objects[self.dst_names[0]].state
+        
+        # 确保 internal 是 2D [batch, dim] 或 1D [dim]
+        if internal.dim() == 1:
+            internal = internal.unsqueeze(0)
+        
         pred_obs = self.observation_model(internal)
         
+        # 如果是卷积解码器，需要 flatten
+        if self.use_conv and self.image_size is not None:
+            if pred_obs.dim() == 4:
+                # [batch, 1, 28, 28] -> [batch, 784]
+                batch_size = pred_obs.shape[0]
+                pred_obs = pred_obs.view(batch_size, -1)
+            elif pred_obs.dim() == 3:
+                # [1, 28, 28] -> [784]
+                pred_obs = pred_obs.view(-1)
+        
+        # 确保 pred_obs 和 target_obs 维度匹配
+        if pred_obs.dim() > 1:
+            pred_obs = pred_obs.squeeze(0)
+        if target_obs.dim() > 1:
+            target_obs = target_obs.squeeze(0)
+        
         # 返回预测误差
-        target_obs = objects[self.dst_names[0]].state
         error = target_obs - pred_obs
         
         return {self.dst_names[0]: error}
@@ -150,14 +216,49 @@ class ObservationAspect(AspectBase, nn.Module):
         internal = objects[self.src_names[0]].state
         target_obs = objects[self.dst_names[0]].state
         
+        # 确保 internal 是 2D
+        if internal.dim() == 1:
+            internal = internal.unsqueeze(0)
+        
         pred_obs = self.observation_model(internal)
+        
+        # 如果是卷积解码器，需要 flatten
+        if self.use_conv and self.image_size is not None:
+            if pred_obs.dim() == 4:
+                batch_size = pred_obs.shape[0]
+                pred_obs = pred_obs.view(batch_size, -1)
+            elif pred_obs.dim() == 3:
+                pred_obs = pred_obs.view(-1)
+        
+        # 确保维度匹配
+        if pred_obs.dim() > 1:
+            pred_obs = pred_obs.squeeze(0)
+        if target_obs.dim() > 1:
+            target_obs = target_obs.squeeze(0)
+        
         error = target_obs - pred_obs
         
         return 0.5 * (error ** 2).sum()
     
     def predict_observation(self, internal: torch.Tensor) -> torch.Tensor:
         """预测观察（用于推理）"""
-        return self.observation_model(internal)
+        if internal.dim() == 1:
+            internal = internal.unsqueeze(0)
+        
+        pred_obs = self.observation_model(internal)
+        
+        # 如果是卷积解码器，需要 flatten
+        if self.use_conv and self.image_size is not None:
+            if pred_obs.dim() == 4:
+                batch_size = pred_obs.shape[0]
+                pred_obs = pred_obs.view(batch_size, -1)
+            elif pred_obs.dim() == 3:
+                pred_obs = pred_obs.view(-1)
+        
+        if pred_obs.dim() > 1:
+            pred_obs = pred_obs.squeeze(0)
+        
+        return pred_obs
     
     def parameters(self):
         return list(self.observation_model.parameters())

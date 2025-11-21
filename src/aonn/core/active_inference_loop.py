@@ -60,7 +60,14 @@ class ActiveInferenceLoop:
                     if not state.is_leaf or (state.requires_grad and state.is_leaf and state.grad is not None):
                         self.objects[name].state = state.detach()
             
-            F = compute_total_free_energy(self.objects, self.aspects)
+            # 传递迭代信息给 aspects（用于 LLMAspect 等控制调用频率）
+            is_last_iter = (iter_idx == num_iters - 1)
+            F = compute_total_free_energy(
+                self.objects, 
+                self.aspects,
+                iteration_idx=iter_idx,
+                is_last_iter=is_last_iter
+            )
             # 最后一次迭代不需要 retain_graph
             retain_graph = (iter_idx < num_iters - 1)
             try:

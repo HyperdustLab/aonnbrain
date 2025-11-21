@@ -1,0 +1,4056 @@
+{
+  "num_epochs": 5,
+  "trained_steps": 2345,
+  "final_free_energy": 0.05151037499308586,
+  "final_accuracy": 0.9832291668653488,
+  "final_structure": {
+    "num_objects": 3,
+    "num_aspects": 130,
+    "num_independent_aspects": 2,
+    "num_pipeline_aspects": 128,
+    "num_pipelines": 0,
+    "has_llm_aspect": false,
+    "llm_aspect_name": null,
+    "objects": {
+      "internal": {
+        "dim": 128,
+        "state_norm": 363.6589050292969
+      },
+      "vision": {
+        "dim": 784,
+        "state_norm": 268.84979248046875
+      },
+      "target": {
+        "dim": 10,
+        "state_norm": 9.797959327697754
+      }
+    },
+    "aspects": [
+      {
+        "name": "vision_pipeline",
+        "src": [
+          "vision"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "PipelineAspect",
+        "is_pipeline_aspect": true,
+        "pipeline_depth": 4,
+        "pipeline_num_aspects": 32
+      },
+      {
+        "name": "mnist_classifier",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "ClassificationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      }
+    ],
+    "pipelines": []
+  },
+  "snapshots": [
+    {
+      "epoch": 0,
+      "batch_index": 49,
+      "step": 50,
+      "free_energy": 0.3582969903945923,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.3582969903945923
+      },
+      "classification_free_energy": 0.3582969903945923,
+      "accuracy": 0.8828125,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 390.3647155761719
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 323.39996337890625
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 99,
+      "step": 100,
+      "free_energy": 0.21230708062648773,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.21230708062648773
+      },
+      "classification_free_energy": 0.21230708062648773,
+      "accuracy": 0.9140625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 380.5391845703125
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 321.3258361816406
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 149,
+      "step": 150,
+      "free_energy": 0.26428812742233276,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.26428812742233276
+      },
+      "classification_free_energy": 0.26428812742233276,
+      "accuracy": 0.90625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 371.2247009277344
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 317.7435607910156
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 199,
+      "step": 200,
+      "free_energy": 0.203902930021286,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.203902930021286
+      },
+      "classification_free_energy": 0.203902930021286,
+      "accuracy": 0.9453125,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 383.0006408691406
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 311.2436218261719
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 249,
+      "step": 250,
+      "free_energy": 0.3377666473388672,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.3377666473388672
+      },
+      "classification_free_energy": 0.3377666473388672,
+      "accuracy": 0.890625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 388.5412292480469
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 322.8224182128906
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 299,
+      "step": 300,
+      "free_energy": 0.17313265800476074,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.17313265800476074
+      },
+      "classification_free_energy": 0.17313265800476074,
+      "accuracy": 0.9453125,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 386.82781982421875
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 319.4400939941406
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 349,
+      "step": 350,
+      "free_energy": 0.1155126690864563,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.1155126690864563
+      },
+      "classification_free_energy": 0.1155126690864563,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 390.31866455078125
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 323.3579406738281
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 399,
+      "step": 400,
+      "free_energy": 0.21200625598430634,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.21200625598430634
+      },
+      "classification_free_energy": 0.21200625598430634,
+      "accuracy": 0.9375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 376.2335205078125
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 312.3908996582031
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 0,
+      "batch_index": 449,
+      "step": 450,
+      "free_energy": 0.08600926399230957,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.08600926399230957
+      },
+      "classification_free_energy": 0.08600926399230957,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 371.2818298339844
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 313.32586669921875
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 30,
+      "step": 500,
+      "free_energy": 0.11826049536466599,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.11826049536466599
+      },
+      "classification_free_energy": 0.11826049536466599,
+      "accuracy": 0.9609375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 384.78326416015625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 314.30487060546875
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 80,
+      "step": 550,
+      "free_energy": 0.11070650815963745,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.11070650815963745
+      },
+      "classification_free_energy": 0.11070650815963745,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 367.3847961425781
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 308.7809753417969
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 130,
+      "step": 600,
+      "free_energy": 0.09043538570404053,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.09043538570404053
+      },
+      "classification_free_energy": 0.09043538570404053,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 398.5297546386719
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 319.06402587890625
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 180,
+      "step": 650,
+      "free_energy": 0.23757123947143555,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.23757123947143555
+      },
+      "classification_free_energy": 0.23757123947143555,
+      "accuracy": 0.9140625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 381.7898864746094
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 313.6921081542969
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 230,
+      "step": 700,
+      "free_energy": 0.12430521100759506,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.12430521100759506
+      },
+      "classification_free_energy": 0.12430521100759506,
+      "accuracy": 0.953125,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 371.8318786621094
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 308.9615173339844
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 280,
+      "step": 750,
+      "free_energy": 0.1064024493098259,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.1064024493098259
+      },
+      "classification_free_energy": 0.1064024493098259,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 374.2607116699219
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 310.1925964355469
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 330,
+      "step": 800,
+      "free_energy": 0.14171762764453888,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.14171762764453888
+      },
+      "classification_free_energy": 0.14171762764453888,
+      "accuracy": 0.953125,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 382.8048095703125
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 313.390625
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 380,
+      "step": 850,
+      "free_energy": 0.11282661557197571,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.11282661557197571
+      },
+      "classification_free_energy": 0.11282661557197571,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 385.2301940917969
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 317.7711486816406
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 1,
+      "batch_index": 430,
+      "step": 900,
+      "free_energy": 0.11776874959468842,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.11776874959468842
+      },
+      "classification_free_energy": 0.11776874959468842,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 381.13287353515625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 319.4809265136719
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 11,
+      "step": 950,
+      "free_energy": 0.031343974173069,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.031343974173069
+      },
+      "classification_free_energy": 0.031343974173069,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 369.8298645019531
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 314.9347229003906
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 61,
+      "step": 1000,
+      "free_energy": 0.06847009807825089,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.06847009807825089
+      },
+      "classification_free_energy": 0.06847009807825089,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 410.1561584472656
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.33526611328125
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 111,
+      "step": 1050,
+      "free_energy": 0.049369633197784424,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.049369633197784424
+      },
+      "classification_free_energy": 0.049369633197784424,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 425.4548034667969
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 313.7857360839844
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 161,
+      "step": 1100,
+      "free_energy": 0.07572528719902039,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.07572528719902039
+      },
+      "classification_free_energy": 0.07572528719902039,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 416.5918273925781
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 311.9232482910156
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 211,
+      "step": 1150,
+      "free_energy": 0.0581011101603508,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.0581011101603508
+      },
+      "classification_free_energy": 0.0581011101603508,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 405.8101501464844
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 313.4266052246094
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 261,
+      "step": 1200,
+      "free_energy": 0.09910895675420761,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.09910895675420761
+      },
+      "classification_free_energy": 0.09910895675420761,
+      "accuracy": 0.9609375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 403.26824951171875
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 306.2530212402344
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 311,
+      "step": 1250,
+      "free_energy": 0.0423896424472332,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.0423896424472332
+      },
+      "classification_free_energy": 0.0423896424472332,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 390.792236328125
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 311.50518798828125
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 361,
+      "step": 1300,
+      "free_energy": 0.03055180236697197,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.03055180236697197
+      },
+      "classification_free_energy": 0.03055180236697197,
+      "accuracy": 1.0,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 412.7060546875
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 322.1323547363281
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 411,
+      "step": 1350,
+      "free_energy": 0.09359510987997055,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.09359510987997055
+      },
+      "classification_free_energy": 0.09359510987997055,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 426.39617919921875
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 321.0436706542969
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 2,
+      "batch_index": 461,
+      "step": 1400,
+      "free_energy": 0.09709183126688004,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.09709183126688004
+      },
+      "classification_free_energy": 0.09709183126688004,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 405.42303466796875
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 320.04693603515625
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 42,
+      "step": 1450,
+      "free_energy": 0.053848639130592346,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.053848639130592346
+      },
+      "classification_free_energy": 0.053848639130592346,
+      "accuracy": 0.984375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 393.0502624511719
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 317.2580261230469
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 92,
+      "step": 1500,
+      "free_energy": 0.0241905115544796,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.0241905115544796
+      },
+      "classification_free_energy": 0.0241905115544796,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 428.97265625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 318.2178039550781
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 142,
+      "step": 1550,
+      "free_energy": 0.0148471025750041,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.0148471025750041
+      },
+      "classification_free_energy": 0.0148471025750041,
+      "accuracy": 1.0,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 433.78619384765625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.9187316894531
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 192,
+      "step": 1600,
+      "free_energy": 0.030459128320217133,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.030459128320217133
+      },
+      "classification_free_energy": 0.030459128320217133,
+      "accuracy": 0.984375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 443.54498291015625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 321.72711181640625
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 242,
+      "step": 1650,
+      "free_energy": 0.1157984808087349,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.1157984808087349
+      },
+      "classification_free_energy": 0.1157984808087349,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 416.8743896484375
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 310.41790771484375
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 292,
+      "step": 1700,
+      "free_energy": 0.04154714196920395,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.04154714196920395
+      },
+      "classification_free_energy": 0.04154714196920395,
+      "accuracy": 0.984375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 419.2806091308594
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.9609069824219
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 342,
+      "step": 1750,
+      "free_energy": 0.05920173227787018,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.05920173227787018
+      },
+      "classification_free_energy": 0.05920173227787018,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 412.250244140625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 319.1126708984375
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 392,
+      "step": 1800,
+      "free_energy": 0.026959313079714775,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.026959313079714775
+      },
+      "classification_free_energy": 0.026959313079714775,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 406.4900207519531
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 311.45916748046875
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 3,
+      "batch_index": 442,
+      "step": 1850,
+      "free_energy": 0.021307306364178658,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.021307306364178658
+      },
+      "classification_free_energy": 0.021307306364178658,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 410.19183349609375
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 312.1292419433594
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 23,
+      "step": 1900,
+      "free_energy": 0.04152768850326538,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.04152768850326538
+      },
+      "classification_free_energy": 0.04152768850326538,
+      "accuracy": 0.9765625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 402.4515686035156
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 321.9374694824219
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 73,
+      "step": 1950,
+      "free_energy": 0.042578574270009995,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.042578574270009995
+      },
+      "classification_free_energy": 0.042578574270009995,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 429.6354064941406
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.4195251464844
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 123,
+      "step": 2000,
+      "free_energy": 0.049783509224653244,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.049783509224653244
+      },
+      "classification_free_energy": 0.049783509224653244,
+      "accuracy": 0.984375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 449.1578674316406
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 321.6536560058594
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 173,
+      "step": 2050,
+      "free_energy": 0.01581396721303463,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.01581396721303463
+      },
+      "classification_free_energy": 0.01581396721303463,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 410.0340270996094
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 313.4423828125
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 223,
+      "step": 2100,
+      "free_energy": 0.04354962706565857,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.04354962706565857
+      },
+      "classification_free_energy": 0.04354962706565857,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 431.8097229003906
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.6407775878906
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 273,
+      "step": 2150,
+      "free_energy": 0.04798124358057976,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.04798124358057976
+      },
+      "classification_free_energy": 0.04798124358057976,
+      "accuracy": 0.984375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 457.1356506347656
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 327.7019958496094
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 323,
+      "step": 2200,
+      "free_energy": 0.061093319207429886,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.061093319207429886
+      },
+      "classification_free_energy": 0.061093319207429886,
+      "accuracy": 0.96875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 427.8426513671875
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 316.11016845703125
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 373,
+      "step": 2250,
+      "free_energy": 0.026452194899320602,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.026452194899320602
+      },
+      "classification_free_energy": 0.026452194899320602,
+      "accuracy": 0.9921875,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 432.5215148925781
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.40045166015625
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 423,
+      "step": 2300,
+      "free_energy": 0.1155237928032875,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.1155237928032875
+      },
+      "classification_free_energy": 0.1155237928032875,
+      "accuracy": 0.984375,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 440.0318603515625
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 312.16204833984375
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "epoch": 4,
+      "batch_index": 468,
+      "step": 2345,
+      "free_energy": 0.05151037499308586,
+      "free_energy_contributions": {
+        "ClassificationAspect": 0.05151037499308586
+      },
+      "classification_free_energy": 0.05151037499308586,
+      "accuracy": 0.9791666865348816,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 363.6589050292969
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 268.84979248046875
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 9.797959327697754
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    }
+  ],
+  "accuracy_history": [
+    0.9453125,
+    0.9609375,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.96875,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.96875,
+    0.9765625,
+    0.9609375,
+    1.0,
+    0.9765625,
+    0.9609375,
+    0.9609375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9609375,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.9921875,
+    0.9609375,
+    0.96875,
+    0.9765625,
+    0.96875,
+    0.953125,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.96875,
+    0.9765625,
+    0.9765625,
+    0.9609375,
+    0.96875,
+    0.9921875,
+    0.984375,
+    0.9453125,
+    0.96875,
+    0.953125,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    0.9375,
+    0.9765625,
+    0.96875,
+    0.984375,
+    0.984375,
+    1.0,
+    0.96875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.9921875,
+    1.0,
+    0.9765625,
+    0.984375,
+    0.96875,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9609375,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    1.0,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.96875,
+    0.984375,
+    1.0,
+    0.9765625,
+    0.96875,
+    1.0,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9609375,
+    1.0,
+    1.0,
+    0.984375,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9609375,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.96875,
+    1.0,
+    0.984375,
+    0.9609375,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9453125,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9765625,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.984375,
+    0.9765625,
+    1.0,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.9609375,
+    0.96875,
+    1.0,
+    1.0,
+    0.9765625,
+    0.984375,
+    0.96875,
+    0.96875,
+    1.0,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.953125,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9765625,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.96875,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.9609375,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9609375,
+    1.0,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.96875,
+    0.9765625,
+    0.9765625,
+    0.96875,
+    1.0,
+    0.9765625,
+    0.9921875,
+    0.9609375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.9609375,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9609375,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9609375,
+    0.9609375,
+    0.984375,
+    1.0,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.953125,
+    0.96875,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9609375,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9609375,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9609375,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.984375,
+    0.96875,
+    1.0,
+    0.9921875,
+    1.0,
+    0.96875,
+    1.0,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    1.0,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.9375,
+    0.984375,
+    1.0,
+    0.9609375,
+    0.984375,
+    0.9921875,
+    0.953125,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.953125,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    0.953125,
+    0.9921875,
+    0.9765625,
+    0.953125,
+    0.9765625,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    0.96875,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.9453125,
+    0.96875,
+    0.9765625,
+    0.9765625,
+    1.0,
+    0.9609375,
+    0.9921875,
+    0.96875,
+    0.9765625,
+    0.96875,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9453125,
+    0.984375,
+    0.984375,
+    0.96875,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.96875,
+    0.9375,
+    0.9609375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9609375,
+    0.9453125,
+    0.96875,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    1.0,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.953125,
+    0.9765625,
+    0.984375,
+    0.9453125,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.953125,
+    0.96875,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.96875,
+    0.9765625,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.96875,
+    0.9921875,
+    1.0,
+    0.96875,
+    0.984375,
+    0.984375,
+    0.9609375,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.984375,
+    0.9765625,
+    1.0,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9453125,
+    0.96875,
+    0.984375,
+    0.9453125,
+    0.9765625,
+    0.984375,
+    0.96875,
+    1.0,
+    0.984375,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9609375,
+    0.9765625,
+    1.0,
+    1.0,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.953125,
+    0.9765625,
+    0.9765625,
+    0.9765625,
+    0.9453125,
+    0.9765625,
+    0.96875,
+    0.96875,
+    0.9921875,
+    0.9765625,
+    1.0,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9765625,
+    0.953125,
+    0.9765625,
+    0.9609375,
+    0.9609375,
+    0.96875,
+    0.9609375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9609375,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.96875,
+    0.953125,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.9765625,
+    0.9921875,
+    0.9453125,
+    0.9609375,
+    0.9765625,
+    0.9921875,
+    0.96875,
+    0.96875,
+    0.984375,
+    0.984375,
+    0.96875,
+    0.9609375,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.9609375,
+    0.9921875,
+    0.9453125,
+    0.9895833134651184,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.96875,
+    0.984375,
+    0.96875,
+    0.9921875,
+    1.0,
+    0.9921875,
+    1.0,
+    1.0,
+    1.0,
+    0.984375,
+    1.0,
+    0.984375,
+    1.0,
+    1.0,
+    0.9765625,
+    0.9765625,
+    1.0,
+    0.9765625,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.984375,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.9609375,
+    1.0,
+    0.984375,
+    1.0,
+    1.0,
+    0.9765625,
+    0.9921875,
+    1.0,
+    0.984375,
+    1.0,
+    0.953125,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.96875,
+    0.984375,
+    1.0,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.96875,
+    1.0,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.984375,
+    1.0,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.984375,
+    1.0,
+    0.9609375,
+    0.984375,
+    0.96875,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.96875,
+    1.0,
+    1.0,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    1.0,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.96875,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.984375,
+    1.0,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    1.0,
+    1.0,
+    0.9921875,
+    0.96875,
+    0.984375,
+    1.0,
+    0.953125,
+    0.9921875,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    0.953125,
+    0.984375,
+    0.984375,
+    1.0,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9609375,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.9609375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9453125,
+    0.9765625,
+    0.9765625,
+    1.0,
+    0.984375,
+    1.0,
+    0.9765625,
+    0.9765625,
+    0.96875,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.984375,
+    1.0,
+    0.9921875,
+    0.96875,
+    0.96875,
+    0.984375,
+    1.0,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.9921875,
+    1.0,
+    0.9765625,
+    0.9609375,
+    1.0,
+    0.9765625,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.9609375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9765625,
+    1.0,
+    0.96875,
+    0.984375,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.9765625,
+    1.0,
+    0.96875,
+    0.984375,
+    0.9609375,
+    1.0,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    1.0,
+    0.9921875,
+    1.0,
+    1.0,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.96875,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.9765625,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.9609375,
+    0.984375,
+    0.9609375,
+    0.9609375,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.9453125,
+    0.953125,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.9765625,
+    1.0,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.96875,
+    0.9765625,
+    0.9921875,
+    0.9609375,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.9765625,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.9765625,
+    0.9609375,
+    0.9921875,
+    0.9921875,
+    0.984375,
+    1.0,
+    0.9921875,
+    1.0,
+    0.9765625,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.9921875,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.96875,
+    0.9921875,
+    0.9765625,
+    0.96875,
+    1.0,
+    1.0,
+    0.9921875,
+    0.9765625,
+    0.984375,
+    0.9765625,
+    0.9921875,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.984375,
+    0.984375,
+    0.9765625,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.984375,
+    0.9765625,
+    0.9765625,
+    0.984375,
+    1.0,
+    0.9921875,
+    0.9921875,
+    1.0,
+    0.96875,
+    0.953125,
+    0.96875,
+    0.984375,
+    0.9921875,
+    0.96875,
+    0.9765625,
+    0.984375,
+    0.953125,
+    0.9791666865348816
+  ],
+  "evolution_summary": {
+    "total_steps": 0,
+    "total_events": 3,
+    "stats": {
+      "objects_created": 1,
+      "aspects_created": 2,
+      "pipelines_created": 0,
+      "pruned_count": 0
+    },
+    "recent_events": [
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 0.0,
+        "F_after": 0.0
+      },
+      {
+        "step": 0,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 0.06175661459565163,
+        "F_after": 0.06175661459565163
+      },
+      {
+        "step": 0,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 2.326287269592285,
+        "F_after": 2.326287269592285
+      }
+    ]
+  }
+}

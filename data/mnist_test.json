@@ -1,0 +1,160 @@
+{
+  "num_epochs": 1,
+  "trained_steps": 2,
+  "final_free_energy": 2.103435516357422,
+  "final_accuracy": 0.2578125,
+  "final_structure": {
+    "num_objects": 3,
+    "num_aspects": 130,
+    "num_independent_aspects": 2,
+    "num_pipeline_aspects": 128,
+    "num_pipelines": 0,
+    "has_llm_aspect": false,
+    "llm_aspect_name": null,
+    "objects": {
+      "internal": {
+        "dim": 128,
+        "state_norm": 58.29607009887695
+      },
+      "vision": {
+        "dim": 784,
+        "state_norm": 315.3146057128906
+      },
+      "target": {
+        "dim": 10,
+        "state_norm": 11.313708305358887
+      }
+    },
+    "aspects": [
+      {
+        "name": "vision_pipeline",
+        "src": [
+          "vision"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "PipelineAspect",
+        "is_pipeline_aspect": true,
+        "pipeline_depth": 4,
+        "pipeline_num_aspects": 32
+      },
+      {
+        "name": "mnist_classifier",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "ClassificationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      }
+    ],
+    "pipelines": []
+  },
+  "snapshots": [
+    {
+      "epoch": 0,
+      "batch_index": 1,
+      "step": 2,
+      "free_energy": 2.103435516357422,
+      "free_energy_contributions": {
+        "ClassificationAspect": 2.103435516357422
+      },
+      "classification_free_energy": 2.103435516357422,
+      "accuracy": 0.4140625,
+      "structure": {
+        "num_objects": 3,
+        "num_aspects": 130,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 128,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 58.29607009887695
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 315.3146057128906
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 11.313708305358887
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    }
+  ],
+  "accuracy_history": [
+    0.1015625,
+    0.4140625
+  ],
+  "evolution_summary": {
+    "total_steps": 0,
+    "total_events": 3,
+    "stats": {
+      "objects_created": 1,
+      "aspects_created": 2,
+      "pipelines_created": 0,
+      "pruned_count": 0
+    },
+    "recent_events": [
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 0.0,
+        "F_after": 0.0
+      },
+      {
+        "step": 0,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 0.06209680065512657,
+        "F_after": 0.06209680065512657
+      },
+      {
+        "step": 0,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 2.3801679611206055,
+        "F_after": 2.3801679611206055
+      }
+    ]
+  }
+}

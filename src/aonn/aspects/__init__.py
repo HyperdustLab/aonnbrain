@@ -7,6 +7,7 @@ from .llm_aspect import LLMAspect
 from .mock_llm_client import MockLLMClient, create_default_mock_llm_client
 from .pipeline_aspect import PipelineAspect
 from .classification_aspect import ClassificationAspect
+from .encoder_aspect import EncoderAspect
 
 __all__ = [
     "LinearGenerativeAspect",
@@ -15,5 +16,6 @@ __all__ = [
     "create_default_mock_llm_client",
     "PipelineAspect",
     "ClassificationAspect",
+    "EncoderAspect",
 ]
 

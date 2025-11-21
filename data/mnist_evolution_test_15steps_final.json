@@ -1,0 +1,1282 @@
+{
+  "num_steps": 15,
+  "final_free_energy": 363.8077697753906,
+  "final_accuracy": 0.06666666666666667,
+  "val_accuracy": 0.102,
+  "final_structure": {
+    "num_objects": 5,
+    "num_aspects": 7,
+    "num_independent_aspects": 7,
+    "num_pipeline_aspects": 0,
+    "num_pipelines": 0,
+    "has_llm_aspect": false,
+    "llm_aspect_name": null,
+    "objects": {
+      "internal": {
+        "dim": 128,
+        "state_norm": 2.021897315979004
+      },
+      "vision": {
+        "dim": 784,
+        "state_norm": 25.754743576049805
+      },
+      "action": {
+        "dim": 10,
+        "state_norm": 0.317457914352417
+      },
+      "target": {
+        "dim": 128,
+        "state_norm": 1.0
+      },
+      "internal_next": {
+        "dim": 128,
+        "state_norm": 2.021897315979004
+      }
+    },
+    "aspects": [
+      {
+        "name": "dynamics",
+        "src": [
+          "internal",
+          "action"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "DynamicsAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "ObservationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "preference",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "PreferenceAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "vision_encoder",
+        "src": [
+          "vision"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "EncoderAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "ObservationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "dynamics",
+        "src": [
+          "internal",
+          "action"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "DynamicsAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "classification",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "ClassificationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      }
+    ],
+    "pipelines": []
+  },
+  "snapshots": [
+    {
+      "step": 0,
+      "free_energy": 376.44622802734375,
+      "free_energy_obs": 374.12579345703125,
+      "free_energy_dyn": 0.0,
+      "free_energy_class": 2.3204429149627686,
+      "accuracy": 0.0,
+      "structure": {
+        "num_objects": 4,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.2961271405220032
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 27.399375915527344
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.31645336747169495
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      },
+      "evolution_decision": null
+    },
+    {
+      "step": 3,
+      "free_energy": 321.07275390625,
+      "free_energy_obs": 318.2575988769531,
+      "free_energy_dyn": 0.4958454370498657,
+      "free_energy_class": 2.319305419921875,
+      "accuracy": 0.0,
+      "structure": {
+        "num_objects": 5,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.9750851392745972
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 25.716541290283203
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.3165110945701599
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          },
+          "internal_next": {
+            "dim": 128,
+            "state_norm": 0.9750851392745972
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      },
+      "evolution_decision": null
+    },
+    {
+      "step": 6,
+      "free_energy": 360.1523742675781,
+      "free_energy_obs": 357.098876953125,
+      "free_energy_dyn": 0.7056912183761597,
+      "free_energy_class": 2.3478052616119385,
+      "accuracy": 0.14285714285714285,
+      "structure": {
+        "num_objects": 5,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 1.560636043548584
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 28.052431106567383
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.316986083984375
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          },
+          "internal_next": {
+            "dim": 128,
+            "state_norm": 1.560636043548584
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      },
+      "evolution_decision": null
+    },
+    {
+      "step": 9,
+      "free_energy": 206.0751190185547,
+      "free_energy_obs": 203.4475860595703,
+      "free_energy_dyn": 0.31471213698387146,
+      "free_energy_class": 2.312819242477417,
+      "accuracy": 0.1,
+      "structure": {
+        "num_objects": 5,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 1.3813025951385498
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 22.16033172607422
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.31679919362068176
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          },
+          "internal_next": {
+            "dim": 128,
+            "state_norm": 1.3813025951385498
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      },
+      "evolution_decision": null
+    },
+    {
+      "step": 12,
+      "free_energy": 353.18475341796875,
+      "free_energy_obs": 350.484619140625,
+      "free_energy_dyn": 0.3439728617668152,
+      "free_energy_class": 2.3561789989471436,
+      "accuracy": 0.07692307692307693,
+      "structure": {
+        "num_objects": 5,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 1.9631719589233398
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 30.224340438842773
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.31729140877723694
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          },
+          "internal_next": {
+            "dim": 128,
+            "state_norm": 1.9631719589233398
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      },
+      "evolution_decision": null
+    },
+    {
+      "step": 14,
+      "free_energy": 363.8077697753906,
+      "free_energy_obs": 361.388916015625,
+      "free_energy_dyn": 0.25005775690078735,
+      "free_energy_class": 2.1687867641448975,
+      "accuracy": 0.06666666666666667,
+      "structure": {
+        "num_objects": 5,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 2.021897315979004
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 30.582599639892578
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.317457914352417
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          },
+          "internal_next": {
+            "dim": 128,
+            "state_norm": 2.021897315979004
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      },
+      "evolution_decision": null
+    }
+  ],
+  "free_energy_history": [
+    376.44622802734375,
+    339.89373779296875,
+    382.6776123046875,
+    321.07275390625,
+    518.6790771484375,
+    356.3497314453125,
+    360.1523742675781,
+    378.37274169921875,
+    300.8541259765625,
+    206.0751190185547,
+    315.7183532714844,
+    391.8381042480469,
+    353.18475341796875,
+    280.8272705078125,
+    363.8077697753906
+  ],
+  "F_obs_history": [
+    374.12579345703125,
+    337.3004455566406,
+    380.0062255859375,
+    318.2575988769531,
+    515.8633422851562,
+    353.42669677734375,
+    357.098876953125,
+    375.54669189453125,
+    297.8817138671875,
+    203.4475860595703,
+    313.09149169921875,
+    389.3096923828125,
+    350.484619140625,
+    278.32354736328125,
+    361.388916015625
+  ],
+  "F_dyn_history": [
+    0.0,
+    0.2667991518974304,
+    0.342742383480072,
+    0.4958454370498657,
+    0.574832558631897,
+    0.7157189846038818,
+    0.7056912183761597,
+    0.4738076329231262,
+    0.6301135420799255,
+    0.31471213698387146,
+    0.28074583411216736,
+    0.32158374786376953,
+    0.3439728617668152,
+    0.3127451539039612,
+    0.25005775690078735
+  ],
+  "F_class_history": [
+    2.3204429149627686,
+    2.3264975547790527,
+    2.328657865524292,
+    2.319305419921875,
+    2.2409024238586426,
+    2.2073168754577637,
+    2.3478052616119385,
+    2.3522300720214844,
+    2.3422930240631104,
+    2.312819242477417,
+    2.346118688583374,
+    2.206829309463501,
+    2.3561789989471436,
+    2.190972328186035,
+    2.1687867641448975
+  ],
+  "accuracy_history": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "evolution_events": [
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 704.7313232421875,
+      "free_energy_after": 704.7313232421875
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 704.7313232421875,
+      "free_energy_after": 704.7313232421875
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 790.8765869140625,
+      "free_energy_after": 790.8765869140625
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 671.3076171875,
+      "free_energy_after": 671.3076171875
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 1074.9346923828125,
+      "free_energy_after": 1074.9346923828125
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 765.4476928710938,
+      "free_energy_after": 765.4476928710938
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 773.7769165039062,
+      "free_energy_after": 773.7769165039062
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 802.30419921875,
+      "free_energy_after": 802.30419921875
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 711.649169921875,
+      "free_energy_after": 711.649169921875
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 472.17718505859375,
+      "free_energy_after": 472.17718505859375
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 707.4902954101562,
+      "free_energy_after": 707.4902954101562
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 914.0358276367188,
+      "free_energy_after": 914.0358276367188
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 829.052490234375,
+      "free_energy_after": 829.052490234375
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 648.7003784179688,
+      "free_energy_after": 648.7003784179688
+    },
+    {
+      "step": 0,
+      "event_type": "create_object",
+      "details": {
+        "name": "internal_next",
+        "dim": 128
+      },
+      "trigger_condition": "dynamic_creation",
+      "free_energy_before": 852.4579467773438,
+      "free_energy_after": 852.4579467773438
+    }
+  ],
+  "evolution_summary": {
+    "total_steps": 0,
+    "total_events": 15,
+    "stats": {
+      "objects_created": 15,
+      "aspects_created": 0,
+      "pipelines_created": 0,
+      "pruned_count": 0
+    },
+    "recent_events": [
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 765.4476928710938,
+        "F_after": 765.4476928710938
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 773.7769165039062,
+        "F_after": 773.7769165039062
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 802.30419921875,
+        "F_after": 802.30419921875
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 711.649169921875,
+        "F_after": 711.649169921875
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 472.17718505859375,
+        "F_after": 472.17718505859375
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 707.4902954101562,
+        "F_after": 707.4902954101562
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 914.0358276367188,
+        "F_after": 914.0358276367188
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 829.052490234375,
+        "F_after": 829.052490234375
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 648.7003784179688,
+        "F_after": 648.7003784179688
+      },
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 852.4579467773438,
+        "F_after": 852.4579467773438
+      }
+    ]
+  },
+  "evolution_decisions": []
+}

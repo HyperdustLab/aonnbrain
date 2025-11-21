@@ -23,6 +23,7 @@ from aonn.aspects.llm_aspect import LLMAspect
 from aonn.aspects.world_model_aspects import WorldModelAspectSet
 from aonn.aspects.pipeline_aspect import PipelineAspect
 from aonn.aspects.classification_aspect import ClassificationAspect
+from aonn.aspects.encoder_aspect import EncoderAspect
 
 
 class AONNBrainV3(nn.Module):
@@ -664,6 +665,62 @@ class AONNBrainV3(nn.Module):
             self.sanitize_states()
             return
         
+        # 【自动创建 vision -> internal 编码器】检查是否需要创建编码器
+        # 检查 vision -> internal 的 Pipeline 或 Encoder 是否存在
+        has_vision_encoder = any(
+            ("vision" in asp.src_names and "internal" in asp.dst_names) and
+            (isinstance(asp, PipelineAspect) or 
+             isinstance(asp, EncoderAspect) or
+             (hasattr(asp, 'name') and 'encoder' in asp.name.lower()))
+            for asp in self.aspects
+        )
+        
+        # 如果自由能高且没有 vision encoder，自动创建（使用配置参数）
+        if not has_vision_encoder and F_current > self.evolution.free_energy_threshold:
+            # 检查是否有 vision sense
+            if "vision" in self.senses and "internal" in self.objects:
+                # 使用配置中的参数，而不是硬编码
+                vision_dim = self.sense_dims.get("vision", 784)
+                state_dim = self.config.get("state_dim", 128)
+                
+                # 检查配置中是否指定了使用 Pipeline 还是 Encoder
+                pipeline_cfg = self.config.get("pipeline_growth", {})
+                use_pipeline_for_encoder = pipeline_cfg.get("use_pipeline_for_encoder", False)
+                
+                if use_pipeline_for_encoder:
+                    # 使用 PipelineAspect（使用配置参数）
+                    num_aspects = pipeline_cfg.get("initial_width", 32)
+                    depth = pipeline_cfg.get("initial_depth", 4)
+                    vision_pipeline = self.create_unified_aspect(
+                        aspect_type="pipeline",
+                        src_names=["vision"],
+                        dst_names=["internal"],
+                        input_dim=vision_dim,
+                        output_dim=state_dim,
+                        num_aspects=num_aspects,
+                        depth=depth,
+                        name="vision_encoder_pipeline",
+                    )
+                else:
+                    # 使用简单的 EncoderAspect（与参考网络对齐）
+                    vision_encoder = EncoderAspect(
+                        sensory_name="vision",
+                        internal_name="internal",
+                        input_dim=vision_dim,
+                        output_dim=state_dim,
+                        name="vision_encoder",
+                    )
+                    self.aspects.append(vision_encoder)
+                    if hasattr(self, 'aspect_modules'):
+                        self.aspect_modules.append(vision_encoder)
+                    else:
+                        self.aspect_modules = nn.ModuleList([vision_encoder])
+                
+                self.sanitize_states()
+                # 如果配置了禁用批量创建，直接返回
+                if self.batch_growth_cfg.get("max_total", 0) == 0:
+                    return
+        
         # 感官 Aspect 的自由能贡献统计
         sense_error_map = {sense: 0.0 for sense in self.senses}
         sense_aspect_count = {sense: 0 for sense in self.senses}
@@ -716,6 +773,29 @@ class AONNBrainV3(nn.Module):
                     self.create_sensory_aspect_batch(sense, plan)
                     sense_aspect_count[sense] = current_count + plan
                     remaining_capacity = max(0, self.evolution.max_aspects - len(self.aspects))
+        
+        # 【自动创建分类 Aspect】如果存在 target Object 且没有分类 Aspect，自动创建
+        has_classification = any(
+            isinstance(asp, ClassificationAspect) for asp in self.aspects
+        )
+        if not has_classification and "target" in self.objects and "internal" in self.objects:
+            if F_current > self.evolution.free_energy_threshold:
+                state_dim = self.config.get("state_dim", 128)
+                target_dim = self.objects["target"].dim
+                # 使用配置参数或默认值
+                classification_aspect = ClassificationAspect(
+                    internal_name="internal",
+                    target_name="target",
+                    state_dim=state_dim,
+                    num_classes=target_dim if target_dim <= 20 else 10,  # 如果 target 维度合理，使用它
+                    hidden_dim=state_dim,  # 与 state_dim 相同，会简化为直接 Linear
+                    name="classification",
+                )
+                self.aspects.append(classification_aspect)
+                if hasattr(self, 'aspect_modules'):
+                    self.aspect_modules.append(classification_aspect)
+                else:
+                    self.aspect_modules = nn.ModuleList([classification_aspect])
         
         # 检查是否需要创建新 Object（如 action）
         if "action" not in self.objects and F_current > self.evolution.free_energy_threshold:
@@ -895,9 +975,29 @@ class AONNBrainV3(nn.Module):
     
     def get_network_structure(self) -> Dict:
         """获取网络结构信息"""
+        # 计算独立 Aspects 数量（不包括 PipelineAspect 内部的）
+        independent_aspects = len(self.aspects)
+        
+        # 计算 aspect_pipelines 中的 aspect 总数
+        pipeline_aspects_count = 0
+        for p in self.aspect_pipelines:
+            pipeline_aspects_count += p.depth * p.num_aspects
+        
+        # 计算 PipelineAspect 中的 aspect 总数（PipelineAspect 包装的 pipeline）
+        pipeline_aspect_wrapped_count = 0
+        for a in self.aspects:
+            if isinstance(a, PipelineAspect):
+                # PipelineAspect 内部有一个 pipeline，计算其中的 aspects
+                pipeline_aspect_wrapped_count += a.depth * a.num_aspects
+        
+        # 总 aspect 数量 = 独立 aspects + pipeline 中的 aspects + PipelineAspect 包装的 aspects
+        total_aspects = independent_aspects + pipeline_aspects_count + pipeline_aspect_wrapped_count
+        
         return {
             "num_objects": len(self.objects),
-            "num_aspects": len(self.aspects),
+            "num_aspects": total_aspects,  # 包含 pipeline 中的 aspects
+            "num_independent_aspects": independent_aspects,  # 独立 Aspects（不包括 pipeline 内部的）
+            "num_pipeline_aspects": pipeline_aspects_count + pipeline_aspect_wrapped_count,  # Pipeline 中的总 aspect 数
             "num_pipelines": len(self.aspect_pipelines),
             "has_llm_aspect": self.llm_aspect is not None,
             "llm_aspect_name": self.llm_aspect.name if self.llm_aspect is not None else None,
@@ -910,7 +1010,10 @@ class AONNBrainV3(nn.Module):
                     "name": a.name,
                     "src": a.src_names,
                     "dst": a.dst_names,
-                    "type": type(a).__name__
+                    "type": type(a).__name__,
+                    "is_pipeline_aspect": isinstance(a, PipelineAspect),
+                    "pipeline_depth": a.depth if isinstance(a, PipelineAspect) else None,
+                    "pipeline_num_aspects": a.num_aspects if isinstance(a, PipelineAspect) else None,
                 }
                 for a in self.aspects
             ],
@@ -918,6 +1021,7 @@ class AONNBrainV3(nn.Module):
                 {
                     "depth": p.depth,
                     "num_aspects": p.num_aspects,
+                    "total_aspects_in_pipeline": p.depth * p.num_aspects,  # 该 pipeline 中的总 aspect 数
                     "input_dim": p.input_dim,
                     "output_dim": p.output_dim,
                     "spec": self.pipeline_specs[i],
@@ -957,14 +1061,20 @@ class AONNBrainV3(nn.Module):
         for name, info in structure["objects"].items():
             lines.append(f"  - {name}: dim={info['dim']}, ||state||={info['state_norm']:.4f}")
         
-        lines.append(f"\nAspect ({structure['num_aspects']} 个):")
+        lines.append(f"\nAspect (总计 {structure['num_aspects']} 个):")
+        lines.append(f"  - 独立 Aspects: {structure['num_independent_aspects']} 个")
+        lines.append(f"  - Pipeline 中的 Aspects: {structure['num_pipeline_aspects']} 个")
         for aspect_info in structure["aspects"]:
-            lines.append(f"  - {aspect_info['name']}: {aspect_info['src']} → {aspect_info['dst']} ({aspect_info['type']})")
+            aspect_desc = f"  - {aspect_info['name']}: {aspect_info['src']} → {aspect_info['dst']} ({aspect_info['type']})"
+            if aspect_info.get('is_pipeline_aspect'):
+                aspect_desc += f" [Pipeline: depth={aspect_info['pipeline_depth']}, aspects/层={aspect_info['pipeline_num_aspects']}, 总aspects={aspect_info['pipeline_depth'] * aspect_info['pipeline_num_aspects']}]"
+            lines.append(aspect_desc)
         
         lines.append(f"\nPipeline ({structure['num_pipelines']} 个):")
         for i, pipe_info in enumerate(structure["pipelines"]):
             lines.append(f"  - Pipeline {i+1}: {pipe_info['input_dim']}→{pipe_info['output_dim']}, "
-                        f"depth={pipe_info['depth']}, aspects={pipe_info['num_aspects']}")
+                        f"depth={pipe_info['depth']}, aspects/层={pipe_info['num_aspects']}, "
+                        f"总aspects={pipe_info['total_aspects_in_pipeline']}")
         
         if self.evolution:
             stats = self.evolution.get_evolution_summary()

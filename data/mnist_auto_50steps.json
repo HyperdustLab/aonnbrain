@@ -1,0 +1,87 @@
+{
+  "num_steps": 50,
+  "final_free_energy": 438.20135498046875,
+  "final_accuracy": 0.0,
+  "final_structure": {
+    "num_objects": 4,
+    "num_aspects": 4,
+    "num_pipelines": 0,
+    "has_llm_aspect": false,
+    "llm_aspect_name": null,
+    "objects": {
+      "internal": {
+        "dim": 128,
+        "state_norm": 0.3157886862754822
+      },
+      "vision": {
+        "dim": 784,
+        "state_norm": 28.558841705322266
+      },
+      "action": {
+        "dim": 10,
+        "state_norm": 0.0
+      },
+      "target": {
+        "dim": 128,
+        "state_norm": 1.0
+      }
+    },
+    "aspects": [
+      {
+        "name": "dynamics",
+        "src": [
+          "internal",
+          "action"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "DynamicsAspect"
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "ObservationAspect"
+      },
+      {
+        "name": "preference",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "PreferenceAspect"
+      },
+      {
+        "name": "vision_encoder",
+        "src": [
+          "vision"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "EncoderAspect"
+      }
+    ],
+    "pipelines": []
+  },
+  "snapshots": [],
+  "accuracy_history": [],
+  "evolution_summary": {
+    "total_steps": 1,
+    "total_events": 0,
+    "stats": {
+      "objects_created": 0,
+      "aspects_created": 0,
+      "pipelines_created": 0,
+      "pruned_count": 0
+    },
+    "recent_events": []
+  }
+}

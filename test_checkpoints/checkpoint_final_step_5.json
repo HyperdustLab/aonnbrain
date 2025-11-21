@@ -1,0 +1,4694 @@
+{
+  "num_steps": 5,
+  "final_free_energy": 4473234.0,
+  "final_structure": {
+    "num_objects": 13,
+    "num_aspects": 151,
+    "num_pipelines": 6,
+    "objects": {
+      "internal": {
+        "dim": 1024,
+        "state_norm": 119.9573974609375
+      },
+      "vision": {
+        "dim": 512,
+        "state_norm": 8.914436340332031
+      },
+      "language": {
+        "dim": 512,
+        "state_norm": 9.431154251098633
+      },
+      "audio": {
+        "dim": 128,
+        "state_norm": 5.064115524291992
+      },
+      "multimodal": {
+        "dim": 256,
+        "state_norm": 6.591439723968506
+      },
+      "action": {
+        "dim": 256,
+        "state_norm": 2.1465232372283936
+      },
+      "target": {
+        "dim": 1024,
+        "state_norm": 13.177660942077637
+      },
+      "semantic_context": {
+        "dim": 512,
+        "state_norm": 85.0218734741211
+      },
+      "semantic_prediction": {
+        "dim": 512,
+        "state_norm": 0.0
+      },
+      "vision_next": {
+        "dim": 512,
+        "state_norm": 8.792107582092285
+      },
+      "language_next": {
+        "dim": 512,
+        "state_norm": 9.489468574523926
+      },
+      "audio_next": {
+        "dim": 128,
+        "state_norm": 5.371981143951416
+      },
+      "multimodal_next": {
+        "dim": 256,
+        "state_norm": 6.338962554931641
+      }
+    },
+    "aspects": [
+      {
+        "name": "dynamics",
+        "src": [
+          "internal",
+          "action"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "DynamicsAspect"
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "ObservationAspect"
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "ObservationAspect"
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "ObservationAspect"
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "ObservationAspect"
+      },
+      {
+        "name": "preference",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "PreferenceAspect"
+      },
+      {
+        "name": "llm_aspect",
+        "src": [
+          "semantic_context"
+        ],
+        "dst": [
+          "semantic_prediction"
+        ],
+        "type": "LLMAspect"
+      },
+      {
+        "name": "sensory_vision_1",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_2",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_3",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_4",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_1",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_2",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_3",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_4",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_1",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_2",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_3",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_4",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_1",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_2",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_3",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_4",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_5",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_6",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_7",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_8",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_9",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_10",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_11",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_12",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_5",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_6",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_7",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_8",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_9",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_10",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_11",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_12",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_5",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_6",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_7",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_8",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_9",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_10",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_11",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_12",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_5",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_6",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_7",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_8",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_9",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_10",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_11",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_12",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_13",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_14",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_15",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_16",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_17",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_18",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_19",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_20",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_13",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_14",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_15",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_16",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_17",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_18",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_19",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_20",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_13",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_14",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_15",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_16",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_17",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_18",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_19",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_20",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_13",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_14",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_15",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_16",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_17",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_18",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_19",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_20",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_21",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_22",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_23",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_24",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_25",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_26",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_27",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_28",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_21",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_22",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_23",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_24",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_25",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_26",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_27",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_28",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_21",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_22",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_23",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_24",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_25",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_26",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_27",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_28",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_21",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_22",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_23",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_24",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_25",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_26",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_27",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_28",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_29",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_30",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_31",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_32",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_33",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_34",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_35",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_vision_36",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_29",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_30",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_31",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_32",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_33",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_34",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_35",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_language_36",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "language"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_29",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_30",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_31",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_32",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_33",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_34",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_35",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_audio_36",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "audio"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_29",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_30",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_31",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_32",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_33",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_34",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_35",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      },
+      {
+        "name": "sensory_multimodal_36",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "multimodal"
+        ],
+        "type": "LinearGenerativeAspect"
+      }
+    ],
+    "pipelines": [
+      {
+        "depth": 3,
+        "num_aspects": 32,
+        "input_dim": 1024,
+        "output_dim": 1024,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_1"
+          }
+        }
+      },
+      {
+        "depth": 4,
+        "num_aspects": 40,
+        "input_dim": 1024,
+        "output_dim": 1024,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_2"
+          }
+        }
+      },
+      {
+        "depth": 5,
+        "num_aspects": 48,
+        "input_dim": 1024,
+        "output_dim": 1024,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_3"
+          }
+        }
+      },
+      {
+        "depth": 6,
+        "num_aspects": 56,
+        "input_dim": 1024,
+        "output_dim": 1024,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_4"
+          }
+        }
+      },
+      {
+        "depth": 7,
+        "num_aspects": 64,
+        "input_dim": 1024,
+        "output_dim": 1024,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_5"
+          }
+        }
+      },
+      {
+        "depth": 3,
+        "num_aspects": 32,
+        "input_dim": 1024,
+        "output_dim": 256,
+        "spec": {
+          "input": "internal",
+          "output": "action",
+          "metadata": {
+            "stage": "action"
+          }
+        }
+      }
+    ]
+  },
+  "snapshots": [
+    {
+      "step": 0,
+      "free_energy": 651.3571166992188,
+      "structure": {
+        "num_objects": 9,
+        "num_aspects": 23,
+        "num_pipelines": 2,
+        "objects": {
+          "internal": {
+            "dim": 1024,
+            "state_norm": 1.059275507926941
+          },
+          "vision": {
+            "dim": 512,
+            "state_norm": 9.293770790100098
+          },
+          "language": {
+            "dim": 512,
+            "state_norm": 8.79006290435791
+          },
+          "audio": {
+            "dim": 128,
+            "state_norm": 5.160094738006592
+          },
+          "multimodal": {
+            "dim": 256,
+            "state_norm": 6.958666801452637
+          },
+          "action": {
+            "dim": 256,
+            "state_norm": 0.3363816440105438
+          },
+          "target": {
+            "dim": 1024,
+            "state_norm": 3.2346296310424805
+          },
+          "semantic_context": {
+            "dim": 512,
+            "state_norm": 0.0
+          },
+          "semantic_prediction": {
+            "dim": 512,
+            "state_norm": 0.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect"
+          },
+          {
+            "name": "llm_aspect",
+            "src": [
+              "semantic_context"
+            ],
+            "dst": [
+              "semantic_prediction"
+            ],
+            "type": "LLMAspect"
+          },
+          {
+            "name": "sensory_vision_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 3,
+            "num_aspects": 32,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_1"
+              }
+            }
+          },
+          {
+            "depth": 3,
+            "num_aspects": 32,
+            "input_dim": 1024,
+            "output_dim": 256,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "free_energy": 16625.65234375,
+      "structure": {
+        "num_objects": 13,
+        "num_aspects": 87,
+        "num_pipelines": 4,
+        "objects": {
+          "internal": {
+            "dim": 1024,
+            "state_norm": 9.59897518157959
+          },
+          "vision": {
+            "dim": 512,
+            "state_norm": 9.02553653717041
+          },
+          "language": {
+            "dim": 512,
+            "state_norm": 9.241393089294434
+          },
+          "audio": {
+            "dim": 128,
+            "state_norm": 4.970832347869873
+          },
+          "multimodal": {
+            "dim": 256,
+            "state_norm": 6.276764392852783
+          },
+          "action": {
+            "dim": 256,
+            "state_norm": 0.4460732638835907
+          },
+          "target": {
+            "dim": 1024,
+            "state_norm": 12.672391891479492
+          },
+          "semantic_context": {
+            "dim": 512,
+            "state_norm": 6.794310092926025
+          },
+          "semantic_prediction": {
+            "dim": 512,
+            "state_norm": 0.0
+          },
+          "vision_next": {
+            "dim": 512,
+            "state_norm": 8.876501083374023
+          },
+          "language_next": {
+            "dim": 512,
+            "state_norm": 9.275724411010742
+          },
+          "audio_next": {
+            "dim": 128,
+            "state_norm": 4.782620906829834
+          },
+          "multimodal_next": {
+            "dim": 256,
+            "state_norm": 6.668673992156982
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect"
+          },
+          {
+            "name": "llm_aspect",
+            "src": [
+              "semantic_context"
+            ],
+            "dst": [
+              "semantic_prediction"
+            ],
+            "type": "LLMAspect"
+          },
+          {
+            "name": "sensory_vision_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 3,
+            "num_aspects": 32,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_1"
+              }
+            }
+          },
+          {
+            "depth": 4,
+            "num_aspects": 40,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_2"
+              }
+            }
+          },
+          {
+            "depth": 5,
+            "num_aspects": 48,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_3"
+              }
+            }
+          },
+          {
+            "depth": 3,
+            "num_aspects": 32,
+            "input_dim": 1024,
+            "output_dim": 256,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step": 4,
+      "free_energy": 4473234.5,
+      "structure": {
+        "num_objects": 13,
+        "num_aspects": 151,
+        "num_pipelines": 6,
+        "objects": {
+          "internal": {
+            "dim": 1024,
+            "state_norm": 119.9573974609375
+          },
+          "vision": {
+            "dim": 512,
+            "state_norm": 8.914436340332031
+          },
+          "language": {
+            "dim": 512,
+            "state_norm": 9.431154251098633
+          },
+          "audio": {
+            "dim": 128,
+            "state_norm": 5.064115524291992
+          },
+          "multimodal": {
+            "dim": 256,
+            "state_norm": 6.591439723968506
+          },
+          "action": {
+            "dim": 256,
+            "state_norm": 2.1465232372283936
+          },
+          "target": {
+            "dim": 1024,
+            "state_norm": 13.177660942077637
+          },
+          "semantic_context": {
+            "dim": 512,
+            "state_norm": 85.0218734741211
+          },
+          "semantic_prediction": {
+            "dim": 512,
+            "state_norm": 0.0
+          },
+          "vision_next": {
+            "dim": 512,
+            "state_norm": 8.792107582092285
+          },
+          "language_next": {
+            "dim": 512,
+            "state_norm": 9.489468574523926
+          },
+          "audio_next": {
+            "dim": 128,
+            "state_norm": 5.371981143951416
+          },
+          "multimodal_next": {
+            "dim": 256,
+            "state_norm": 6.338962554931641
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "ObservationAspect"
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect"
+          },
+          {
+            "name": "llm_aspect",
+            "src": [
+              "semantic_context"
+            ],
+            "dst": [
+              "semantic_prediction"
+            ],
+            "type": "LLMAspect"
+          },
+          {
+            "name": "sensory_vision_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_1",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_2",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_3",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_4",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_5",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_6",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_7",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_8",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_9",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_10",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_11",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_12",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_13",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_14",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_15",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_16",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_17",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_18",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_19",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_20",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_21",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_22",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_23",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_24",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_25",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_26",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_27",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_28",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_21",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_22",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_23",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_24",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_25",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_26",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_27",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_28",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_21",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_22",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_23",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_24",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_25",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_26",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_27",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_28",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_21",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_22",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_23",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_24",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_25",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_26",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_27",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_28",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_29",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_30",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_31",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_32",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_33",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_34",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_35",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_vision_36",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_29",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_30",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_31",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_32",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_33",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_34",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_35",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_language_36",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "language"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_29",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_30",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_31",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_32",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_33",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_34",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_35",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_audio_36",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "audio"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_29",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_30",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_31",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_32",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_33",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_34",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_35",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          },
+          {
+            "name": "sensory_multimodal_36",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "multimodal"
+            ],
+            "type": "LinearGenerativeAspect"
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 3,
+            "num_aspects": 32,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_1"
+              }
+            }
+          },
+          {
+            "depth": 4,
+            "num_aspects": 40,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_2"
+              }
+            }
+          },
+          {
+            "depth": 5,
+            "num_aspects": 48,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_3"
+              }
+            }
+          },
+          {
+            "depth": 6,
+            "num_aspects": 56,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_4"
+              }
+            }
+          },
+          {
+            "depth": 7,
+            "num_aspects": 64,
+            "input_dim": 1024,
+            "output_dim": 1024,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_5"
+              }
+            }
+          },
+          {
+            "depth": 3,
+            "num_aspects": 32,
+            "input_dim": 1024,
+            "output_dim": 256,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "evolution_summary": {
+    "total_steps": 5,
+    "total_events": 150,
+    "stats": {
+      "objects_created": 0,
+      "aspects_created": 144,
+      "pipelines_created": 6,
+      "pruned_count": 0
+    },
+    "recent_events": [
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 70354.4921875,
+        "F_after": 70354.4921875
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 70634.28125,
+        "F_after": 70634.28125
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 70923.3828125,
+        "F_after": 70923.375
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 71211.5859375,
+        "F_after": 71211.578125
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 71494.9765625,
+        "F_after": 71494.9765625
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 71774.234375,
+        "F_after": 71774.25
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 72056.3828125,
+        "F_after": 72056.375
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 72338.984375,
+        "F_after": 72339.0
+      },
+      {
+        "step": 5,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 72624.125,
+        "F_after": 72624.125
+      },
+      {
+        "step": 5,
+        "type": "create_pipeline",
+        "condition": "dynamic_creation",
+        "F_before": 72624.1328125,
+        "F_after": 72624.1328125
+      }
+    ]
+  }
+}

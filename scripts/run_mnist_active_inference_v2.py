@@ -588,24 +588,30 @@ def run_experiment(
     act_dim = config.get("act_dim", 10)
     
     # 1. Encoder: vision -> internal (p(state | obs))
+    # 使用卷积编码器（MNIST 是 28x28 图像）
     encoder = EncoderAspect(
         sensory_name="vision",
         internal_name="internal",
         input_dim=obs_dim,
         output_dim=state_dim,
         name="vision_encoder",
+        use_conv=True,  # 使用卷积编码器
+        image_size=28,  # MNIST 图像尺寸
     )
     brain.aspects.append(encoder)
     if isinstance(encoder, nn.Module):
         brain.add_module("vision_encoder", encoder)
-    print(f"  ✓ 创建 EncoderAspect: vision -> internal")
+    print(f"  ✓ 创建 EncoderAspect (卷积): vision -> internal")
     
     # 2. Observation: internal -> vision (p(obs | state))
+    # 使用卷积解码器（生成 28x28 图像）
     observation_aspect = ObservationAspect(
         internal_name="internal",
         sensory_name="vision",
         state_dim=state_dim,
         obs_dim=obs_dim,
+        use_conv=True,  # 使用卷积解码器
+        image_size=28,  # MNIST 图像尺寸
     )
     brain.aspects.append(observation_aspect)
     if isinstance(observation_aspect, nn.Module):

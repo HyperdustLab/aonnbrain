@@ -1,0 +1,661 @@
+{
+  "num_steps": 50,
+  "final_free_energy": 247.06637573242188,
+  "final_accuracy": 0.02,
+  "val_accuracy": 0.099,
+  "final_structure": {
+    "num_objects": 5,
+    "num_aspects": 7,
+    "num_independent_aspects": 7,
+    "num_pipeline_aspects": 0,
+    "num_pipelines": 0,
+    "has_llm_aspect": false,
+    "llm_aspect_name": null,
+    "objects": {
+      "internal": {
+        "dim": 128,
+        "state_norm": 1.7995823621749878
+      },
+      "vision": {
+        "dim": 784,
+        "state_norm": 31.786441802978516
+      },
+      "action": {
+        "dim": 10,
+        "state_norm": 0.3190259635448456
+      },
+      "target": {
+        "dim": 128,
+        "state_norm": 1.0
+      },
+      "internal_next": {
+        "dim": 128,
+        "state_norm": 1.7995823621749878
+      }
+    },
+    "aspects": [
+      {
+        "name": "dynamics",
+        "src": [
+          "internal",
+          "action"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "DynamicsAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "ObservationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "preference",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "PreferenceAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "vision_encoder",
+        "src": [
+          "vision"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "EncoderAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "observation",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "vision"
+        ],
+        "type": "ObservationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "dynamics",
+        "src": [
+          "internal",
+          "action"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "DynamicsAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      },
+      {
+        "name": "classification",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "ClassificationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      }
+    ],
+    "pipelines": []
+  },
+  "snapshots": [
+    {
+      "step": 0,
+      "free_energy": 583.0521850585938,
+      "free_energy_obs": 580.751708984375,
+      "free_energy_dyn": 0.0,
+      "free_energy_class": 2.300488233566284,
+      "accuracy": 0.0,
+      "structure": {
+        "num_objects": 4,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.35624322295188904
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 34.10654067993164
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.3165286183357239
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    },
+    {
+      "step": 49,
+      "free_energy": 247.06637573242188,
+      "free_energy_obs": 244.47564697265625,
+      "free_energy_dyn": 0.3229901194572449,
+      "free_energy_class": 2.2677435874938965,
+      "accuracy": 0.02,
+      "structure": {
+        "num_objects": 5,
+        "num_aspects": 7,
+        "num_independent_aspects": 7,
+        "num_pipeline_aspects": 0,
+        "num_pipelines": 0,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 1.7995823621749878
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 29.016788482666016
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.3190259635448456
+          },
+          "target": {
+            "dim": 128,
+            "state_norm": 1.0
+          },
+          "internal_next": {
+            "dim": 128,
+            "state_norm": 1.7995823621749878
+          }
+        },
+        "aspects": [
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "preference",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "PreferenceAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "vision_encoder",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "EncoderAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "observation",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "vision"
+            ],
+            "type": "ObservationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "dynamics",
+            "src": [
+              "internal",
+              "action"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "DynamicsAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          },
+          {
+            "name": "classification",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": []
+      }
+    }
+  ],
+  "free_energy_history": [
+    583.0521850585938,
+    519.4326171875,
+    519.5601806640625,
+    421.2785339355469,
+    199.05723571777344,
+    298.5822448730469,
+    269.5004577636719,
+    266.75079345703125,
+    136.06964111328125,
+    377.20751953125,
+    261.3752136230469,
+    334.3721008300781,
+    436.3551940917969,
+    345.14599609375,
+    516.8814697265625,
+    312.5394287109375,
+    442.44091796875,
+    201.2722625732422,
+    235.1600341796875,
+    293.530029296875,
+    213.43499755859375,
+    231.45748901367188,
+    217.82286071777344,
+    240.90542602539062,
+    250.24542236328125,
+    459.5546569824219,
+    193.3500213623047,
+    197.3209991455078,
+    219.74070739746094,
+    189.7732391357422,
+    214.99072265625,
+    197.62474060058594,
+    229.15692138671875,
+    160.3131103515625,
+    315.8562927246094,
+    304.4676818847656,
+    314.3387756347656,
+    176.0395965576172,
+    194.15025329589844,
+    425.71575927734375,
+    150.763427734375,
+    162.1798858642578,
+    330.4547424316406,
+    218.8009490966797,
+    160.3167266845703,
+    257.0362548828125,
+    539.8820190429688,
+    300.40423583984375,
+    190.1627655029297,
+    247.06637573242188
+  ],
+  "F_obs_history": [
+    580.751708984375,
+    516.8868408203125,
+    517.0189208984375,
+    418.528564453125,
+    196.0023651123047,
+    295.568603515625,
+    266.67974853515625,
+    263.77703857421875,
+    133.37997436523438,
+    374.65478515625,
+    258.67791748046875,
+    331.6840515136719,
+    433.6776123046875,
+    342.4037780761719,
+    514.1051635742188,
+    309.7605285644531,
+    439.270263671875,
+    198.30990600585938,
+    232.83802795410156,
+    290.910888671875,
+    210.42404174804688,
+    228.64932250976562,
+    215.24798583984375,
+    238.5036163330078,
+    247.50405883789062,
+    457.15130615234375,
+    191.00241088867188,
+    194.57818603515625,
+    216.88754272460938,
+    186.9478302001953,
+    212.3626708984375,
+    194.91261291503906,
+    226.43429565429688,
+    157.45880126953125,
+    313.20172119140625,
+    301.70941162109375,
+    311.552978515625,
+    173.50823974609375,
+    191.56039428710938,
+    423.0216979980469,
+    148.31939697265625,
+    159.5872344970703,
+    327.58892822265625,
+    216.03407287597656,
+    157.7841339111328,
+    254.456787109375,
+    536.9878540039062,
+    297.140625,
+    187.50616455078125,
+    244.47564697265625
+  ],
+  "F_dyn_history": [
+    0.0,
+    0.23658519983291626,
+    0.29609978199005127,
+    0.5425727367401123,
+    0.6677231788635254,
+    0.8617854118347168,
+    0.6921735405921936,
+    0.657311201095581,
+    0.409260094165802,
+    0.31934601068496704,
+    0.31592729687690735,
+    0.3237171769142151,
+    0.30970507860183716,
+    0.333579421043396,
+    0.45843517780303955,
+    0.5665181875228882,
+    0.8878074288368225,
+    0.4332067668437958,
+    0.2211613655090332,
+    0.2769557535648346,
+    0.41081953048706055,
+    0.324917733669281,
+    0.26829761266708374,
+    0.27341389656066895,
+    0.3000117540359497,
+    0.19514809548854828,
+    0.23897802829742432,
+    0.37706464529037476,
+    0.47464263439178467,
+    0.37168771028518677,
+    0.4201560914516449,
+    0.6467419862747192,
+    0.357394278049469,
+    0.5027946829795837,
+    0.2189594805240631,
+    0.22659064829349518,
+    0.4602656066417694,
+    0.26552629470825195,
+    0.3184064030647278,
+    0.42441076040267944,
+    0.22455577552318573,
+    0.20514492690563202,
+    0.4048032760620117,
+    0.7491981983184814,
+    0.13481935858726501,
+    0.1832672357559204,
+    0.5343539714813232,
+    0.7913786768913269,
+    0.3957204818725586,
+    0.3229901194572449
+  ],
+  "F_class_history": [
+    2.300488233566284,
+    2.3091957569122314,
+    2.245182991027832,
+    2.207385778427124,
+    2.3871524333953857,
+    2.1518497467041016,
+    2.1285457611083984,
+    2.3164429664611816,
+    2.2804181575775146,
+    2.2333943843841553,
+    2.3813929557800293,
+    2.3643293380737305,
+    2.3678998947143555,
+    2.4086227416992188,
+    2.3178632259368896,
+    2.2123863697052,
+    2.282834529876709,
+    2.5291409492492676,
+    2.1008527278900146,
+    2.3421967029571533,
+    2.6001386642456055,
+    2.483245372772217,
+    2.306586980819702,
+    2.1284074783325195,
+    2.4413459300994873,
+    2.208177089691162,
+    2.108623504638672,
+    2.365751028060913,
+    2.378523826599121,
+    2.4537224769592285,
+    2.2078967094421387,
+    2.065382957458496,
+    2.3652303218841553,
+    2.3515169620513916,
+    2.4356191158294678,
+    2.5316879749298096,
+    2.325533151626587,
+    2.2658164501190186,
+    2.271453380584717,
+    2.269667148590088,
+    2.219484329223633,
+    2.387507677078247,
+    2.4610071182250977,
+    2.0176901817321777,
+    2.39776611328125,
+    2.3961806297302246,
+    2.35982084274292,
+    2.4722166061401367,
+    2.2608721256256104,
+    2.2677435874938965
+  ],
+  "accuracy_history": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

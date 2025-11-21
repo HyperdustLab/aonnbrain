@@ -1,0 +1,932 @@
+{
+  "num_steps": 200,
+  "final_free_energy": 2.2459566593170166,
+  "final_train_accuracy": 0.14,
+  "final_val_accuracy": 0.096,
+  "final_structure": {
+    "num_objects": 4,
+    "num_aspects": 242,
+    "num_independent_aspects": 2,
+    "num_pipeline_aspects": 240,
+    "num_pipelines": 3,
+    "has_llm_aspect": false,
+    "llm_aspect_name": null,
+    "objects": {
+      "internal": {
+        "dim": 128,
+        "state_norm": 0.3222636282444
+      },
+      "vision": {
+        "dim": 784,
+        "state_norm": 28.91716766357422
+      },
+      "target": {
+        "dim": 10,
+        "state_norm": 1.0
+      },
+      "action": {
+        "dim": 10,
+        "state_norm": 0.0
+      }
+    },
+    "aspects": [
+      {
+        "name": "vision_pipeline",
+        "src": [
+          "vision"
+        ],
+        "dst": [
+          "internal"
+        ],
+        "type": "PipelineAspect",
+        "is_pipeline_aspect": true,
+        "pipeline_depth": 4,
+        "pipeline_num_aspects": 32
+      },
+      {
+        "name": "mnist_classifier",
+        "src": [
+          "internal"
+        ],
+        "dst": [
+          "target"
+        ],
+        "type": "ClassificationAspect",
+        "is_pipeline_aspect": false,
+        "pipeline_depth": null,
+        "pipeline_num_aspects": null
+      }
+    ],
+    "pipelines": [
+      {
+        "depth": 2,
+        "num_aspects": 16,
+        "total_aspects_in_pipeline": 32,
+        "input_dim": 128,
+        "output_dim": 128,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_1"
+          }
+        }
+      },
+      {
+        "depth": 3,
+        "num_aspects": 16,
+        "total_aspects_in_pipeline": 48,
+        "input_dim": 128,
+        "output_dim": 128,
+        "spec": {
+          "input": "internal",
+          "output": "internal",
+          "metadata": {
+            "stage": "latent_2"
+          }
+        }
+      },
+      {
+        "depth": 2,
+        "num_aspects": 16,
+        "total_aspects_in_pipeline": 32,
+        "input_dim": 128,
+        "output_dim": 10,
+        "spec": {
+          "input": "internal",
+          "output": "action",
+          "metadata": {
+            "stage": "action"
+          }
+        }
+      }
+    ]
+  },
+  "snapshots": [
+    {
+      "step": 50,
+      "free_energy": 3.1154544067382814,
+      "accuracy": 0.1,
+      "structure": {
+        "num_objects": 4,
+        "num_aspects": 162,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 160,
+        "num_pipelines": 1,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.35126209259033203
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 20.688478469848633
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 1.0
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 10,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step": 100,
+      "free_energy": 2.7065823435783387,
+      "accuracy": 0.12,
+      "structure": {
+        "num_objects": 4,
+        "num_aspects": 194,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 192,
+        "num_pipelines": 2,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.3310254216194153
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 33.819297790527344
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 1.0
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 128,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_1"
+              }
+            }
+          },
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 10,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step": 150,
+      "free_energy": 2.3043459916114806,
+      "accuracy": 0.09,
+      "structure": {
+        "num_objects": 4,
+        "num_aspects": 194,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 192,
+        "num_pipelines": 2,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.3321523666381836
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 26.845233917236328
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 1.0
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 128,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_1"
+              }
+            }
+          },
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 10,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step": 200,
+      "free_energy": 2.299981486797333,
+      "accuracy": 0.14,
+      "structure": {
+        "num_objects": 4,
+        "num_aspects": 242,
+        "num_independent_aspects": 2,
+        "num_pipeline_aspects": 240,
+        "num_pipelines": 3,
+        "has_llm_aspect": false,
+        "llm_aspect_name": null,
+        "objects": {
+          "internal": {
+            "dim": 128,
+            "state_norm": 0.3222636282444
+          },
+          "vision": {
+            "dim": 784,
+            "state_norm": 23.415821075439453
+          },
+          "target": {
+            "dim": 10,
+            "state_norm": 1.0
+          },
+          "action": {
+            "dim": 10,
+            "state_norm": 0.0
+          }
+        },
+        "aspects": [
+          {
+            "name": "vision_pipeline",
+            "src": [
+              "vision"
+            ],
+            "dst": [
+              "internal"
+            ],
+            "type": "PipelineAspect",
+            "is_pipeline_aspect": true,
+            "pipeline_depth": 4,
+            "pipeline_num_aspects": 32
+          },
+          {
+            "name": "mnist_classifier",
+            "src": [
+              "internal"
+            ],
+            "dst": [
+              "target"
+            ],
+            "type": "ClassificationAspect",
+            "is_pipeline_aspect": false,
+            "pipeline_depth": null,
+            "pipeline_num_aspects": null
+          }
+        ],
+        "pipelines": [
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 128,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_1"
+              }
+            }
+          },
+          {
+            "depth": 3,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 48,
+            "input_dim": 128,
+            "output_dim": 128,
+            "spec": {
+              "input": "internal",
+              "output": "internal",
+              "metadata": {
+                "stage": "latent_2"
+              }
+            }
+          },
+          {
+            "depth": 2,
+            "num_aspects": 16,
+            "total_aspects_in_pipeline": 32,
+            "input_dim": 128,
+            "output_dim": 10,
+            "spec": {
+              "input": "internal",
+              "output": "action",
+              "metadata": {
+                "stage": "action"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "accuracy_history": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0
+  ],
+  "free_energy_history": [
+    22.104576110839844,
+    4.760114669799805,
+    3.0414414405822754,
+    5.536824703216553,
+    2.6175169944763184,
+    5.252226829528809,
+    3.437685489654541,
+    4.327962398529053,
+    2.898411989212036,
+    4.4449310302734375,
+    2.831599712371826,
+    2.7708466053009033,
+    2.610030174255371,
+    2.670119524002075,
+    2.463965892791748,
+    2.612943172454834,
+    2.5822083950042725,
+    2.550226926803589,
+    2.691423177719116,
+    2.550452947616577,
+    2.319948673248291,
+    2.440113067626953,
+    2.4236867427825928,
+    2.3971853256225586,
+    2.445817232131958,
+    2.7075443267822266,
+    2.605628490447998,
+    2.3654367923736572,
+    2.365917682647705,
+    2.2529444694519043,
+    2.405914545059204,
+    2.3401880264282227,
+    2.4834184646606445,
+    2.219904661178589,
+    2.3521170616149902,
+    2.2880566120147705,
+    2.271238088607788,
+    2.445049524307251,
+    2.3437180519104004,
+    2.211573362350464,
+    2.3176400661468506,
+    2.5265796184539795,
+    2.3047146797180176,
+    2.303755283355713,
+    2.205228567123413,
+    2.3358054161071777,
+    2.4007551670074463,
+    2.1984565258026123,
+    2.3795928955078125,
+    2.3592827320098877,
+    2.265580654144287,
+    2.3422329425811768,
+    2.209296703338623,
+    2.343111038208008,
+    2.2454991340637207,
+    2.231208562850952,
+    2.335871934890747,
+    2.325011968612671,
+    2.200695037841797,
+    2.3076331615448,
+    2.3081443309783936,
+    2.3251805305480957,
+    2.2038018703460693,
+    2.187615156173706,
+    2.349090576171875,
+    2.322075128555298,
+    2.1973702907562256,
+    2.306121826171875,
+    2.2999839782714844,
+    2.4845945835113525,
+    2.33040714263916,
+    2.188145160675049,
+    2.172456741333008,
+    2.2427616119384766,
+    2.3191628456115723,
+    2.158073902130127,
+    2.3068206310272217,
+    2.2992141246795654,
+    2.477917194366455,
+    2.294541835784912,
+    2.4581077098846436,
+    2.310706615447998,
+    2.2922303676605225,
+    2.291738271713257,
+    2.2919118404388428,
+    2.438406229019165,
+    2.254796028137207,
+    2.2812016010284424,
+    2.2876110076904297,
+    2.175290107727051,
+    2.2432608604431152,
+    2.36824107170105,
+    2.2221028804779053,
+    2.4377098083496094,
+    2.2953290939331055,
+    2.420078992843628,
+    2.2802042961120605,
+    2.26320743560791,
+    2.4049415588378906,
+    2.2888176441192627,
+    2.2746543884277344,
+    2.2275750637054443,
+    2.3696951866149902,
+    2.2538528442382812,
+    2.355159282684326,
+    2.3997764587402344,
+    2.3813722133636475,
+    2.36173152923584,
+    2.2742810249328613,
+    2.2600178718566895,
+    2.3699214458465576,
+    2.2513492107391357,
+    2.312424659729004,
+    2.205834150314331,
+    2.3717823028564453,
+    2.3494038581848145,
+    2.2572765350341797,
+    2.3581418991088867,
+    2.3610455989837646,
+    2.2805168628692627,
+    2.3389198780059814,
+    2.2493977546691895,
+    2.3255081176757812,
+    2.3013241291046143,
+    2.3691465854644775,
+    2.3566744327545166,
+    2.349407434463501,
+    2.3298280239105225,
+    2.2473270893096924,
+    2.273003339767456,
+    2.3226754665374756,
+    2.271981716156006,
+    2.3526082038879395,
+    2.225531816482544,
+    2.303976058959961,
+    2.3073363304138184,
+    2.3652827739715576,
+    2.3462576866149902,
+    2.27299165725708,
+    2.2943954467773438,
+    2.338595390319824,
+    2.246161460876465,
+    2.2708849906921387,
+    2.2997183799743652,
+    2.283517599105835,
+    2.367847204208374,
+    2.3338961601257324,
+    2.3132238388061523,
+    2.34080171585083,
+    2.275052070617676,
+    2.2501983642578125,
+    2.2689321041107178,
+    2.250535726547241,
+    2.242708444595337,
+    2.2345404624938965,
+    2.3332040309906006,
+    2.2212369441986084,
+    2.3672702312469482,
+    2.348836898803711,
+    2.297112226486206,
+    2.3251380920410156,
+    2.244922399520874,
+    2.234434127807617,
+    2.315986156463623,
+    2.29707932472229,
+    2.2307145595550537,
+    2.336775302886963,
+    2.2828309535980225,
+    2.235625743865967,
+    2.2968528270721436,
+    2.2793385982513428,
+    2.362839698791504,
+    2.3523056507110596,
+    2.3258461952209473,
+    2.3311712741851807,
+    2.305579900741577,
+    2.329575300216675,
+    2.3538599014282227,
+    2.236210346221924,
+    2.217268705368042,
+    2.3274130821228027,
+    2.32413649559021,
+    2.206295967102051,
+    2.2601583003997803,
+    2.317366361618042,
+    2.258265495300293,
+    2.3025214672088623,
+    2.28189754486084,
+    2.3179962635040283,
+    2.361036777496338,
+    2.336324453353882,
+    2.2573440074920654,
+    2.292208433151245,
+    2.31978440284729,
+    2.213838577270508,
+    2.2776315212249756,
+    2.3045291900634766,
+    2.197551965713501,
+    2.337876081466675,
+    2.2459566593170166
+  ],
+  "evolution_summary": {
+    "total_steps": 200,
+    "total_events": 7,
+    "stats": {
+      "objects_created": 2,
+      "aspects_created": 2,
+      "pipelines_created": 3,
+      "pruned_count": 0
+    },
+    "recent_events": [
+      {
+        "step": 0,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 0.0,
+        "F_after": 0.0
+      },
+      {
+        "step": 0,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 0.05134190246462822,
+        "F_after": 0.05134190246462822
+      },
+      {
+        "step": 0,
+        "type": "create_aspect",
+        "condition": "dynamic_creation",
+        "F_before": 2.412665605545044,
+        "F_after": 2.412665605545044
+      },
+      {
+        "step": 1,
+        "type": "create_object",
+        "condition": "dynamic_creation",
+        "F_before": 24.17222023010254,
+        "F_after": 24.17222023010254
+      },
+      {
+        "step": 1,
+        "type": "create_pipeline",
+        "condition": "dynamic_creation",
+        "F_before": 24.17222023010254,
+        "F_after": 24.17222023010254
+      },
+      {
+        "step": 80,
+        "type": "create_pipeline",
+        "condition": "dynamic_creation",
+        "F_before": 2.308053970336914,
+        "F_after": 2.308053970336914
+      },
+      {
+        "step": 160,
+        "type": "create_pipeline",
+        "condition": "dynamic_creation",
+        "F_before": 2.315223217010498,
+        "F_after": 2.315223217010498
+      }
+    ]
+  }
+}

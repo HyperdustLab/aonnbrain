@@ -49,12 +49,17 @@ class ClassificationAspect(AspectBase, nn.Module):
         self.num_classes = num_classes
         self.loss_weight = loss_weight
         
-        # 分类器网络
-        self.classifier = nn.Sequential(
-            nn.Linear(state_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Linear(hidden_dim, num_classes),
-        )
+        # 分类器网络（如果 hidden_dim == state_dim，使用简单 Linear，与参考网络对齐）
+        if hidden_dim == state_dim:
+            # 简单 Linear 分类器（与参考网络对齐）
+            self.classifier = nn.Linear(state_dim, num_classes)
+        else:
+            # 带隐藏层的分类器
+            self.classifier = nn.Sequential(
+                nn.Linear(state_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Linear(hidden_dim, num_classes),
+            )
     
     def forward(self, objects: Dict[str, ObjectNode]) -> Dict[str, torch.Tensor]:
         """
@@ -94,20 +99,14 @@ class ClassificationAspect(AspectBase, nn.Module):
         # 获取目标类别索引
         target_class = target.argmax(dim=-1)
         
-        # 交叉熵损失
-        # logits 需要是 [batch, num_classes]，target_class 需要是 [batch]
+        # 交叉熵损失（支持 batch），返回平均自由能
         if logits.dim() == 1:
             logits = logits.unsqueeze(0)
         if target_class.dim() == 0:
             target_class = target_class.unsqueeze(0)
         
-        F = F.cross_entropy(logits, target_class, reduction='none')
-        
-        # 如果原来是标量，返回标量
-        if F.dim() > 0:
-            F = F.squeeze(0)
-        
-        return self.loss_weight * F
+        loss = torch.nn.functional.cross_entropy(logits, target_class, reduction='mean')
+        return self.loss_weight * loss
     
     def predict(self, objects: Dict[str, ObjectNode]) -> torch.Tensor:
         """
