@@ -50,6 +50,7 @@ class OpenAILLMClient(nn.Module):
         summary_size: int = 8,
         max_tokens: int = 120,
         temperature: float = 0.7,
+        verbose: bool = False,
         device: Optional[torch.device] = None,
     ):
         super().__init__()
@@ -61,6 +62,7 @@ class OpenAILLMClient(nn.Module):
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.summary_size = summary_size
+        self.verbose = verbose
 
         api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not api_key or api_key == "your_openai_api_key_here":
@@ -92,6 +94,10 @@ class OpenAILLMClient(nn.Module):
         self._cache_max_size = 100
         self._call_count = 0
         self._cache_hits = 0
+        
+        # 输出控制
+        self.verbose = False  # 是否输出生成的文本
+        self._last_generated_text = None  # 保存最后一次生成的文本
 
     @staticmethod
     def _infer_embedding_dim(model_name: str) -> int:
@@ -177,6 +183,14 @@ class OpenAILLMClient(nn.Module):
             text = self._chat_completion(prompt)
             if not text:
                 raise ValueError("Empty completion")
+            
+            # 保存生成的文本（用于输出）
+            self._last_generated_text = text
+            
+            # 如果启用 verbose，输出生成的文本
+            if self.verbose:
+                print(f"  [LLM] 生成的语义描述: {text}")
+            
             embedding_tensor = self._text_to_embedding(text, dtype=vec.dtype)
             projected = self.output_projector(embedding_tensor)
             

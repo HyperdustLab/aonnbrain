@@ -58,10 +58,11 @@ def run_experiment(num_steps: int, config: Dict, device: torch.device, verbose: 
                 loop = ActiveInferenceLoop(
                     brain.objects,
                     brain.aspects,
-                    infer_lr=0.02,
+                    infer_lr=0.01,  # 降低推理学习率，更稳定
+                    max_grad_norm=100.0,  # 梯度裁剪
                     device=device,
                 )
-                loop.infer_states(target_objects=("internal",), num_iters=2)
+                loop.infer_states(target_objects=("internal",), num_iters=5, sanitize_callback=brain.sanitize_states)  # 保持5次迭代
                 brain.sanitize_states()
             except Exception:
                 pass
@@ -82,7 +83,7 @@ def run_experiment(num_steps: int, config: Dict, device: torch.device, verbose: 
                 action=prev_action,
                 next_observation=obs,
                 target_state=world.get_true_state(),
-                learning_rate=0.0005,
+                learning_rate=0.0015,  # 适度提高学习率，加快学习
             )
 
         prev_obs = {sense: value.clone() for sense, value in obs.items()}
@@ -136,8 +137,8 @@ def main():
         "enable_world_model_learning": True,
         "world_model": {
             "noise_config": {
-                "chemo": {"std": 0.08, "amplitude": 0.8, "spatial_scale": 2.5},
-                "thermo": {"std": 0.06, "amplitude": 0.5, "spatial_scale": 3.5},
+                "chemo": {"std": 0.04, "amplitude": 0.4, "spatial_scale": 2.5},  # 降低噪声：std 0.08→0.04, amplitude 0.8→0.4
+                "thermo": {"std": 0.03, "amplitude": 0.25, "spatial_scale": 3.5},  # 降低噪声：std 0.06→0.03, amplitude 0.5→0.25
             },
             "preferred_temp": 0.1,
         },
@@ -145,12 +146,12 @@ def main():
             "free_energy_threshold": 0.08,
             "prune_threshold": 0.01,
             "max_objects": 80,
-            "max_aspects": 280,
+            "max_aspects": 500,  # 增加 Aspect 数量上限，提供更多学习容量
             "error_ema_alpha": 0.5,
             "batch_growth": {
                 "base": 8,
                 "max_per_step": 32,
-                "max_total": 120,
+                "max_total": 200,  # 增加每个感官的最大 Aspect 数量
                 "min_per_sense": 6,
                 "error_threshold": 0.07,
                 "error_multiplier": 0.7,

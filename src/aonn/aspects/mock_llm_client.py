@@ -74,6 +74,9 @@ class MockLLMClient(nn.Module):
         if not trainable:
             for param in self.parameters():
                 param.requires_grad = False
+        
+        # 用于存储最后一次生成的文本描述（模拟真实 LLM）
+        self._last_generated_text = ""
     
     def _init_weights(self):
         """初始化 MLP 权重"""
@@ -119,6 +122,32 @@ class MockLLMClient(nn.Module):
         if self.noise_scale > 0 and self.training:
             noise = torch.randn_like(pred) * self.noise_scale
             pred = pred + noise
+        
+        # 生成模拟的语义描述文本（基于输入向量的特征）
+        # 提取前几个维度作为特征，生成描述性文本
+        context_summary = context_vec.detach().cpu()
+        if len(context_summary.shape) > 1:
+            context_summary = context_summary[0]
+        
+        # 转换为 numpy 用于计算
+        context_np = context_summary.numpy() if hasattr(context_summary, 'numpy') else context_summary.detach().cpu().numpy()
+        
+        # 生成一个基于数值特征的描述
+        max_val = float(context_np.max()) if len(context_np) > 0 else 0.0
+        min_val = float(context_np.min()) if len(context_np) > 0 else 0.0
+        mean_val = float(context_np.mean()) if len(context_np) > 0 else 0.0
+        
+        # 根据特征值生成描述性文本
+        if abs(mean_val) < 0.1:
+            desc = "语义状态接近中性，无明显倾向"
+        elif mean_val > 0.5:
+            desc = f"语义状态呈现正向激活（峰值{max_val:.2f}），可能表示积极意图或目标导向"
+        elif mean_val < -0.5:
+            desc = f"语义状态呈现负向激活（谷值{min_val:.2f}），可能表示回避或抑制"
+        else:
+            desc = f"语义状态处于中等水平（均值{mean_val:.2f}），包含混合特征"
+        
+        self._last_generated_text = desc
         
         # 恢复原始形状
         if was_1d:

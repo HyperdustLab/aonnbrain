@@ -225,6 +225,18 @@ class AONNBrainV3(nn.Module):
     ) -> AspectBase:
         """
         动态创建新 Aspect
+        
+        Args:
+            aspect_type: Aspect 类型
+            src_names: 源 Object 名称列表
+            dst_names: 目标 Object 名称列表
+            name: Aspect 名称
+            **kwargs: 额外参数，包括：
+                - obs_dim: 观察维度
+                - init_weight: 初始权重（可选）
+                - reference_aspect: 参考 Aspect（可选）
+                - init_scale: 初始化缩放因子（默认 0.1）
+                - noise_scale: 从参考复制时的噪声缩放（默认 0.01）
         """
         if aspect_type == "sensory":
             aspect = LinearGenerativeAspect(
@@ -233,6 +245,10 @@ class AONNBrainV3(nn.Module):
                 state_dim=self.objects[src_names[0]].dim,
                 obs_dim=kwargs.get("obs_dim", self.objects[dst_names[0]].dim),
                 name=name,
+                init_weight=kwargs.get("init_weight"),
+                reference_aspect=kwargs.get("reference_aspect"),
+                init_scale=kwargs.get("init_scale", 0.1),
+                noise_scale=kwargs.get("noise_scale", 0.01),
             )
         elif aspect_type == "llm":
             aspect = LLMAspect(
@@ -266,17 +282,110 @@ class AONNBrainV3(nn.Module):
         
         return aspect
     
+    def update_semantic_context(self, source: Optional[str] = None, world_semantic_state: Optional[torch.Tensor] = None):
+        """
+        更新 semantic_context Object 的状态
+        
+        优先级：
+        1. 如果提供了 world_semantic_state，直接使用（从世界模型同步）
+        2. 如果 source 指定了 Object 名称，从该 Object 提取语义部分
+        3. 默认从 internal Object 提取前 sem_dim 维作为语义状态
+        
+        Args:
+            source: 源 Object 名称（如 "internal"），默认为 "internal"
+            world_semantic_state: 世界模型的语义状态向量（可选）
+        """
+        if "semantic_context" not in self.objects:
+            return
+        
+        sem_dim = self.objects["semantic_context"].dim
+        
+        if world_semantic_state is not None:
+            # 方案 1: 从世界模型的语义状态同步
+            # 检查 world_semantic_state 是否全为零或包含 NaN/Inf
+            if torch.all(world_semantic_state == 0) or not torch.isfinite(world_semantic_state).all():
+                # 如果全为零或包含 NaN/Inf，则从 internal 提取
+                if "internal" in self.objects:
+                    internal_state = self.objects["internal"].state
+                    if internal_state.shape[-1] >= sem_dim:
+                        semantic_vec = internal_state[:sem_dim].detach().clone()
+                    else:
+                        padding = torch.zeros(sem_dim - internal_state.shape[-1], device=internal_state.device)
+                        semantic_vec = torch.cat([internal_state.detach().clone(), padding], dim=-1)
+                    self.objects["semantic_context"].set_state(semantic_vec)
+                return
+            if world_semantic_state.shape[-1] >= sem_dim:
+                semantic_vec = world_semantic_state[:sem_dim].detach().clone()
+            else:
+                # 如果维度不够，用零填充
+                padding = torch.zeros(sem_dim - world_semantic_state.shape[-1], device=world_semantic_state.device)
+                semantic_vec = torch.cat([world_semantic_state.detach().clone(), padding], dim=-1)
+            # 清理 NaN/Inf
+            semantic_vec = torch.nan_to_num(semantic_vec, nan=0.0, posinf=1.0, neginf=-1.0)
+            self.objects["semantic_context"].set_state(semantic_vec)
+        elif source is None or source == "internal":
+            # 方案 2: 从 internal Object 提取语义部分
+            if "internal" in self.objects:
+                internal_state = self.objects["internal"].state
+                if internal_state.shape[-1] >= sem_dim:
+                    # 提取前 sem_dim 维
+                    semantic_vec = internal_state[:sem_dim].detach().clone()
+                else:
+                    # 如果维度不够，用零填充
+                    padding = torch.zeros(sem_dim - internal_state.shape[-1], device=internal_state.device)
+                    semantic_vec = torch.cat([internal_state.detach().clone(), padding], dim=-1)
+                self.objects["semantic_context"].set_state(semantic_vec)
+        elif source in self.objects:
+            # 方案 3: 从指定的 Object 提取
+            source_state = self.objects[source].state
+            if source_state.shape[-1] >= sem_dim:
+                semantic_vec = source_state[:sem_dim].detach().clone()
+            else:
+                padding = torch.zeros(sem_dim - source_state.shape[-1], device=source_state.device)
+                semantic_vec = torch.cat([source_state.detach().clone(), padding], dim=-1)
+            self.objects["semantic_context"].set_state(semantic_vec)
+    
     def create_sensory_aspect_batch(
         self,
         sense_name: str,
         count: int,
+        use_weight_copy: bool = True,
+        noise_scale: float = 0.01,
     ) -> List[AspectBase]:
         """
-        批量创建感官 Aspect，用于快速扩展“神经元”数量
+        批量创建感官 Aspect，用于快速扩展"神经元"数量
+        
+        Args:
+            sense_name: 感官名称
+            count: 要创建的数量
+            use_weight_copy: 是否从已有 Aspects 复制权重（默认 True）
+            noise_scale: 复制权重时的噪声缩放因子（默认 0.01）
+        
+        策略：
+        1. 如果已有同类型的 Aspects，从其中随机选择一个复制权重
+        2. 如果没有，使用随机初始化
+        3. 复制时添加小噪声，保持多样性
         """
         created: List[AspectBase] = []
         if count <= 0:
             return created
+        
+        # 查找已有的同类型 Aspects（相同 sensory_name）
+        existing_aspects = [
+            asp for asp in self.aspects
+            if isinstance(asp, LinearGenerativeAspect) and asp.dst_names[0] == sense_name
+        ]
+        
+        # 选择参考 Aspect（如果有的话）
+        reference_aspect = None
+        if use_weight_copy and len(existing_aspects) > 0:
+            # 选择自由能贡献最小的 Aspect 作为参考（通常学习得最好）
+            ref_contribs = [
+                (asp, asp.free_energy_contrib(self.objects).item())
+                for asp in existing_aspects
+            ]
+            ref_contribs.sort(key=lambda x: x[1])  # 按自由能贡献排序
+            reference_aspect = ref_contribs[0][0]  # 选择贡献最小的
         
         for _ in range(count):
             self._sensory_aspect_counters[sense_name] += 1
@@ -288,6 +397,8 @@ class AONNBrainV3(nn.Module):
                     dst_names=[sense_name],
                     name=asp_name,
                     obs_dim=self.sense_dims[sense_name],
+                    reference_aspect=reference_aspect,
+                    noise_scale=noise_scale,
                 )
             )
         return created
@@ -379,15 +490,20 @@ class AONNBrainV3(nn.Module):
             return
         if len(self.aspect_pipelines) >= self.pipeline_growth_cfg.get("max_stages", 3):
             return
+        # 检测 NaN/Inf，如果是则不扩展
+        import math
+        if not math.isfinite(free_energy_value):
+            return
         step = self.evolution.step_count
         last_expand = self.pipeline_growth_state.get("last_expand_step", 0)
         if step - last_expand < self.pipeline_growth_cfg.get("min_interval", 80):
             return
         trigger = self.pipeline_growth_cfg.get("free_energy_trigger")
-        if trigger is not None and free_energy_value > trigger:
+        # 如果设置了自由能触发阈值，只有当自由能高于阈值时才扩展
+        if trigger is not None and free_energy_value <= trigger:
             return
         stage_index = len(self.aspect_pipelines) - 1  # 预留最后一个动作头
-        width = max(4, self.pipeline_growth_cfg.get("initial_width", 16) + stage_index * self.pipeline_growth_cfg.get("width_increment", 0))
+        width = max(1, self.pipeline_growth_cfg.get("initial_width", 16) + stage_index * self.pipeline_growth_cfg.get("width_increment", 0))
         depth = min(
             self.pipeline_growth_cfg.get("initial_depth", 2) + stage_index * self.pipeline_growth_cfg.get("depth_increment", 1),
             self.pipeline_growth_cfg.get("max_depth", 8),
@@ -437,8 +553,17 @@ class AONNBrainV3(nn.Module):
         if target is not None and "target" in self.objects:
             self.objects["target"].set_state(target)
         
+        # 更新 semantic_context（从 internal 状态提取语义部分）
+        self.update_semantic_context(source="internal")
+        
         # 计算当前自由能
         F_current = self.compute_free_energy().item()
+        
+        # 如果自由能是 NaN/Inf，清理状态并跳过演化
+        import math
+        if not math.isfinite(F_current):
+            self.sanitize_states()
+            return
         
         # 感官 Aspect 的自由能贡献统计
         sense_error_map = {sense: 0.0 for sense in self.senses}
@@ -505,7 +630,14 @@ class AONNBrainV3(nn.Module):
     
     def compute_free_energy(self) -> torch.Tensor:
         """计算总自由能"""
-        return compute_total_free_energy(self.objects, self.aspects)
+        F = compute_total_free_energy(self.objects, self.aspects)
+        # 检测 NaN/Inf，如果出现则返回 0 并清理状态
+        if not torch.isfinite(F):
+            # 清理所有状态
+            self.sanitize_states()
+            # 返回一个小的非零值，避免完全停止演化
+            return torch.tensor(1e-6, device=F.device, dtype=F.dtype)
+        return F
     
     def learn_world_model(
         self,
@@ -530,10 +662,35 @@ class AONNBrainV3(nn.Module):
         
         # 创建优化器（如果还没有）
         if not hasattr(self, '_world_model_optimizer'):
+            # 收集所有可学习参数：world_model_aspects + LinearGenerativeAspect
+            all_params = list(self.world_model_aspects.get_all_parameters())
+            # 添加 LinearGenerativeAspect 的参数（包括 touch Aspects）
+            for aspect in self.aspects:
+                if isinstance(aspect, LinearGenerativeAspect):
+                    all_params.extend(aspect.parameters())
             self._world_model_optimizer = torch.optim.Adam(
-                self.world_model_aspects.get_all_parameters(),
+                all_params,
                 lr=learning_rate
             )
+        else:
+            # 如果优化器已存在，检查是否需要添加新的 LinearGenerativeAspect 参数
+            optimizer_param_ids = set()
+            for group in self._world_model_optimizer.param_groups:
+                for p in group['params']:
+                    optimizer_param_ids.add(id(p))
+            
+            # 检查是否有新的 LinearGenerativeAspect 参数未加入优化器
+            new_params = []
+            for aspect in self.aspects:
+                if isinstance(aspect, LinearGenerativeAspect):
+                    for p in aspect.parameters():
+                        if id(p) not in optimizer_param_ids:
+                            new_params.append(p)
+                            optimizer_param_ids.add(id(p))
+            
+            # 如果有新参数，添加到优化器
+            if new_params:
+                self._world_model_optimizer.add_param_group({'params': new_params, 'lr': learning_rate})
         
         # 设置感官 Object 状态（使用 detach 避免梯度图问题）
         for sense, value in observation.items():
@@ -578,10 +735,15 @@ class AONNBrainV3(nn.Module):
         # 重新设置 internal 为可微的（用于计算梯度）
         self.objects["internal"].set_state(pred_next_internal)
         
-        # 只计算世界模型 Aspect 的自由能
+        # 计算自由能：世界模型 Aspect + LinearGenerativeAspect（包括 touch Aspects）
         F = torch.tensor(0.0, device=self.device)
+        # 世界模型 Aspect 的自由能
         for aspect in self.world_model_aspects.aspects:
             F = F + aspect.free_energy_contrib(self.objects)
+        # LinearGenerativeAspect 的自由能（包括 touch Aspects）
+        for aspect in self.aspects:
+            if isinstance(aspect, LinearGenerativeAspect):
+                F = F + aspect.free_energy_contrib(self.objects)
         
         F.backward(retain_graph=False)  # 世界模型学习后不需要保留图
         self._world_model_optimizer.step()
@@ -599,6 +761,10 @@ class AONNBrainV3(nn.Module):
         
         # 恢复 internal 为 detach 状态
         self.objects["internal"].set_state(pred_next_internal.detach())
+        
+        # 更新 semantic_context（从 internal 状态提取语义部分）
+        self.update_semantic_context(source="internal")
+        
         self.sanitize_states()
     
     def set_world_model_target(self, target_state: torch.Tensor):
@@ -634,6 +800,8 @@ class AONNBrainV3(nn.Module):
             "num_objects": len(self.objects),
             "num_aspects": len(self.aspects),
             "num_pipelines": len(self.aspect_pipelines),
+            "has_llm_aspect": self.llm_aspect is not None,
+            "llm_aspect_name": self.llm_aspect.name if self.llm_aspect is not None else None,
             "objects": {
                 name: {"dim": obj.dim, "state_norm": torch.norm(obj.state).item()}
                 for name, obj in self.objects.items()

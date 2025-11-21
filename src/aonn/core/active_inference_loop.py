@@ -20,16 +20,23 @@ class ActiveInferenceLoop:
         objects: Dict[str, ObjectNode],
         aspects: List[AspectBase],
         infer_lr: float = 0.1,
+        max_grad_norm: float = None,
         device=None,
     ):
         self.objects = objects
         self.aspects = aspects
         self.infer_lr = infer_lr
+        self.max_grad_norm = max_grad_norm  # 梯度裁剪阈值
         self.device = device or torch.device("cpu")
 
-    def infer_states(self, target_objects=("internal", "action"), num_iters: int = 5):
+    def infer_states(self, target_objects=("internal", "action"), num_iters: int = 5, sanitize_callback=None):
         """
         对指定 Object 节点（如 internal, action）执行有限步自由能下降更新。
+        
+        Args:
+            target_objects: 要推理的 Object 名称列表
+            num_iters: 推理迭代次数
+            sanitize_callback: 可选的清理回调函数，在每次迭代后调用（用于状态裁剪）
         """
         for iter_idx in range(num_iters):
             # 为每个待推理 Object 重置为可微叶子节点
@@ -75,8 +82,18 @@ class ActiveInferenceLoop:
                     mu = self.objects[name].state
                     # 只处理叶子张量的梯度
                     if mu.requires_grad and mu.is_leaf and mu.grad is not None:
-                        mu = mu - self.infer_lr * mu.grad
+                        grad = mu.grad
+                        # 梯度裁剪（如果设置了 max_grad_norm）
+                        if self.max_grad_norm is not None and self.max_grad_norm > 0:
+                            grad_norm = torch.norm(grad)
+                            if grad_norm > self.max_grad_norm:
+                                grad = grad * (self.max_grad_norm / grad_norm)
+                        mu = mu - self.infer_lr * grad
                     self.objects[name].state = mu.detach()
+            
+            # 在每次迭代后调用清理回调（用于状态裁剪）
+            if sanitize_callback is not None:
+                sanitize_callback()
 
         return self.objects
 
