@@ -8,6 +8,8 @@ from .aonn_brain_v3 import AONNBrainV3
 from .world_model import SimpleWorldModel, WorldModelInterface
 from .lineworm_world_model import LineWormWorldModel, LineWormWorldInterface
 from .general_ai_world_model import GeneralAIWorldModel, GeneralAIWorldInterface
+from .office_ai_world_model import OfficeAIWorldModel, OfficeAIWorldInterface
+from .mnist_world_model import MNISTWorldModel, MNISTWorldInterface
 
 __all__ = [
     "AONNBrain",
@@ -19,5 +21,9 @@ __all__ = [
     "LineWormWorldInterface",
     "GeneralAIWorldModel",
     "GeneralAIWorldInterface",
+    "OfficeAIWorldModel",
+    "OfficeAIWorldInterface",
+    "MNISTWorldModel",
+    "MNISTWorldInterface",
 ]
 

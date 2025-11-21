@@ -21,6 +21,8 @@ from aonn.core.evolution import NetworkEvolution, EvolutionEvent
 from aonn.aspects.sensory_aspect import LinearGenerativeAspect
 from aonn.aspects.llm_aspect import LLMAspect
 from aonn.aspects.world_model_aspects import WorldModelAspectSet
+from aonn.aspects.pipeline_aspect import PipelineAspect
+from aonn.aspects.classification_aspect import ClassificationAspect
 
 
 class AONNBrainV3(nn.Module):
@@ -170,11 +172,14 @@ class AONNBrainV3(nn.Module):
             }
             self.objects.update(self.semantic_objects)
             
+            llm_config = config.get("llm", {})
             self.llm_aspect = LLMAspect(
                 src_names=("semantic_context",),
                 dst_names=("semantic_prediction",),
                 llm_client=llm_client,
-                llm_config=config.get("llm", {}),
+                llm_config=llm_config,
+                call_frequency=llm_config.get("call_frequency", "last_iter_only"),  # 默认只在最后一次迭代调用
+                call_every_n_steps=llm_config.get("call_every_n_steps", 1),
             )
             self.aspects.append(self.llm_aspect)
         
@@ -251,12 +256,38 @@ class AONNBrainV3(nn.Module):
                 noise_scale=kwargs.get("noise_scale", 0.01),
             )
         elif aspect_type == "llm":
+            llm_config = kwargs.get("llm_config", {})
             aspect = LLMAspect(
                 name=name or "llm_aspect",
                 src_names=src_names,
                 dst_names=dst_names,
                 llm_client=kwargs.get("llm_client"),
-                llm_config=kwargs.get("llm_config", {}),
+                llm_config=llm_config,
+                call_frequency=llm_config.get("call_frequency", "last_iter_only"),
+                call_every_n_steps=llm_config.get("call_every_n_steps", 1),
+            )
+        elif aspect_type == "pipeline":
+            # 创建 Pipeline Aspect（向量化）
+            aspect = PipelineAspect(
+                src_names=src_names,
+                dst_names=dst_names,
+                input_dim=kwargs.get("input_dim"),
+                output_dim=kwargs.get("output_dim"),
+                num_aspects=kwargs.get("num_aspects", 32),
+                depth=kwargs.get("depth", 2),
+                name=name or "pipeline_aspect",
+                use_gate=kwargs.get("use_gate", False),
+            )
+        elif aspect_type == "classification":
+            # 创建分类 Aspect
+            aspect = ClassificationAspect(
+                internal_name=src_names[0],
+                target_name=dst_names[0],
+                state_dim=kwargs.get("state_dim", self.objects[src_names[0]].dim if src_names[0] in self.objects else 256),
+                num_classes=kwargs.get("num_classes", self.objects[dst_names[0]].dim if dst_names[0] in self.objects else 10),
+                hidden_dim=kwargs.get("hidden_dim", 128),
+                name=name or "classification",
+                loss_weight=kwargs.get("loss_weight", 1.0),
             )
         else:
             raise ValueError(f"Unknown aspect type: {aspect_type}")
@@ -281,6 +312,74 @@ class AONNBrainV3(nn.Module):
             )
         
         return aspect
+    
+    def create_unified_aspect(
+        self,
+        aspect_type: str,  # "pipeline", "individual", "classification", etc.
+        src_names: List[str],
+        dst_names: List[str],
+        name: Optional[str] = None,
+        **kwargs
+    ) -> AspectBase:
+        """
+        统一创建 Aspect，自动选择最优实现方式
+        
+        Args:
+            aspect_type: Aspect 类型
+                - "pipeline": 向量化 Pipeline（高效批量处理）
+                - "individual": 独立 Aspect（灵活、可解释）
+                - "classification": 分类 Aspect
+                - "sensory": 感官 Aspect
+                - "llm": LLM Aspect
+            src_names: 源 Object 名称列表
+            dst_names: 目标 Object 名称列表
+            name: Aspect 名称
+            **kwargs: 额外参数
+                - use_pipeline: 是否强制使用 Pipeline
+                - input_dim, output_dim, num_aspects, depth: Pipeline 参数
+                - state_dim, num_classes, hidden_dim: 分类器参数
+        
+        Returns:
+            AspectBase 实例
+        """
+        # 自动选择：如果指定 use_pipeline 或 aspect_type == "pipeline"
+        use_pipeline = kwargs.get("use_pipeline", False) or aspect_type == "pipeline"
+        
+        if use_pipeline:
+            # 使用向量化 Pipeline（高效批量处理）
+            # 计算输入维度（所有源 Object 的总维度）
+            input_dim = kwargs.get("input_dim")
+            if input_dim is None:
+                input_dim = sum(self.objects[name].dim for name in src_names if name in self.objects)
+            
+            # 计算输出维度（目标 Object 的维度）
+            output_dim = kwargs.get("output_dim")
+            if output_dim is None:
+                output_dim = self.objects[dst_names[0]].dim if dst_names[0] in self.objects else input_dim
+            
+            return self.create_aspect(
+                aspect_type="pipeline",
+                src_names=src_names,
+                dst_names=dst_names,
+                name=name,
+                input_dim=input_dim,
+                output_dim=output_dim,
+                num_aspects=kwargs.get("num_aspects", 32),
+                depth=kwargs.get("depth", 2),
+                use_gate=kwargs.get("use_gate", False),
+            )
+        else:
+            # 使用独立 Aspect（灵活、可解释）
+            individual_type = kwargs.get("individual_type", aspect_type)
+            return self.create_aspect(
+                aspect_type=individual_type,
+                src_names=src_names,
+                dst_names=dst_names,
+                name=name,
+                **{k: v for k, v in kwargs.items() 
+                   if k not in ["use_pipeline", "input_dim", "output_dim", 
+                               "num_aspects", "depth", "individual_type"]}
+            )
     
     def update_semantic_context(self, source: Optional[str] = None, world_semantic_state: Optional[torch.Tensor] = None):
         """
