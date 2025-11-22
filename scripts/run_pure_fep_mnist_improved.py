@@ -453,6 +453,19 @@ def run_pure_fep_experiment(
     final_acc = evaluate_accuracy(fep_system, train_interface, num_samples=1000, device=device)
     val_acc = evaluate_accuracy(fep_system, val_interface, num_samples=1000, device=device)
     
+    # 保存模型权重
+    model_output = output.replace('.json', '_model.pth')
+    checkpoint = {
+        "config": config,
+        "encoder": fep_system.encoder.state_dict(),
+        "observation": fep_system.observation.state_dict(),
+        "dynamics": fep_system.dynamics.state_dict(),
+        "preference": fep_system.preference.state_dict(),
+        "classifier": fep_system.classifier.state_dict(),
+    }
+    torch.save(checkpoint, model_output)
+    print(f"✅ 模型权重已保存到: {model_output}")
+    
     # 保存结果
     results = {
         "config": config,
@@ -460,6 +473,7 @@ def run_pure_fep_experiment(
         "final_free_energy": free_energy_history[-1] if free_energy_history else 0.0,
         "final_accuracy": final_acc,
         "val_accuracy": val_acc,
+        "model_path": model_output,
         "snapshots": snapshots,
         "free_energy_history": free_energy_history,
         "accuracy_history": accuracy_history,

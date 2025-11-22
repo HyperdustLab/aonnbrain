@@ -44,6 +44,8 @@ data/synthetic/*.jsonl
 checkpoints/
 *.pt
 *.pth
+# Exception: allow trained model weights for demos
+!data/pure_fep_mnist_improved_*_model.pth
 
 # Logs
 *.log
