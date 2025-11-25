@@ -22,7 +22,7 @@ Office AI 世界模型：模拟办公场景的智能体环境
 - 比 GeneralAI 简单（状态 768 vs 2112，观察 448 vs 1408）
 - 比 LineWorm 复杂（多模态、结构化数据）
 """
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -85,6 +85,7 @@ class OfficeAIWorldModel(nn.Module):
         self.task_state = torch.zeros(task_dim, device=self.device)
         self.schedule_state = torch.randn(schedule_dim, device=self.device) * 0.1
         self.context_state = torch.randn(context_dim, device=self.device) * 0.1
+        self.context_metadata: Optional[Dict[str, Any]] = None
         
         # ========== 状态转移模型 ==========
         hidden_dim = max(256, self.total_state_dim // 2)
@@ -151,6 +152,7 @@ class OfficeAIWorldModel(nn.Module):
         self.task_state = torch.zeros(self.task_dim, device=self.device)
         self.schedule_state = torch.randn(self.schedule_dim, device=self.device) * 0.1
         self.context_state = torch.randn(self.context_dim, device=self.device) * 0.1
+        self.context_metadata = None
         return self.get_observation()
     
     def step(self, action: torch.Tensor) -> Tuple[Dict[str, torch.Tensor], torch.Tensor, bool]:
@@ -205,6 +207,12 @@ class OfficeAIWorldModel(nn.Module):
     def get_true_state(self) -> torch.Tensor:
         """获取真实状态（用于学习）"""
         return self._get_full_state().detach().clone()
+
+    def set_context_metadata(self, metadata: Optional[Dict[str, Any]]):
+        self.context_metadata = metadata
+
+    def get_context_metadata(self) -> Optional[Dict[str, Any]]:
+        return self.context_metadata
 
 
 class OfficeAIWorldInterface:

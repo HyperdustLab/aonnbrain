@@ -8,7 +8,7 @@ AONN Brain V3：支持动态演化的自由能大脑
 3. 支持世界模型交互
 4. 自我模型观察和可视化
 """
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 import torch
 import torch.nn as nn
 
@@ -18,7 +18,6 @@ from aonn.core.aspect_layer import AspectLayer, AspectPipeline
 from aonn.core.aspect_base import AspectBase
 from aonn.core.free_energy import compute_total_free_energy
 from aonn.core.evolution import NetworkEvolution, EvolutionEvent
-from aonn.aspects.sensory_aspect import LinearGenerativeAspect
 from aonn.aspects.llm_aspect import LLMAspect
 from aonn.aspects.world_model_aspects import WorldModelAspectSet
 from aonn.aspects.pipeline_aspect import PipelineAspect
@@ -122,6 +121,12 @@ class AONNBrainV3(nn.Module):
             "max_depth": pipeline_cfg.get("max_depth", 8),
         }
         self.pipeline_growth_state = {"last_expand_step": 0}
+        sensory_pipeline_cfg = config.get("sensory_pipeline", {})
+        self.sensory_pipeline_cfg = {
+            "depth": max(1, sensory_pipeline_cfg.get("depth", self.pipeline_growth_cfg["initial_depth"])),
+            "width": max(1, sensory_pipeline_cfg.get("width", self.pipeline_growth_cfg["initial_width"])),
+            "use_gate": sensory_pipeline_cfg.get("use_gate", False),
+        }
         
         # ========== 演化管理器 ==========
         if enable_evolution:
@@ -184,6 +189,9 @@ class AONNBrainV3(nn.Module):
             )
             self.aspects.append(self.llm_aspect)
         
+        if self.config.get("use_world_model_pipelines", False):
+            self._init_sensory_pipelines_from_world_model()
+        
         # ========== 网络拓扑 ==========
         self.topology = None  # 将在需要时构建
         
@@ -245,17 +253,30 @@ class AONNBrainV3(nn.Module):
                 - noise_scale: 从参考复制时的噪声缩放（默认 0.01）
         """
         if aspect_type == "sensory":
-            aspect = LinearGenerativeAspect(
-                internal_name=src_names[0],
-                sensory_name=dst_names[0],
-                state_dim=self.objects[src_names[0]].dim,
-                obs_dim=kwargs.get("obs_dim", self.objects[dst_names[0]].dim),
-                name=name,
-                init_weight=kwargs.get("init_weight"),
-                reference_aspect=kwargs.get("reference_aspect"),
-                init_scale=kwargs.get("init_scale", 0.1),
-                noise_scale=kwargs.get("noise_scale", 0.01),
+            input_dim = kwargs.get("input_dim")
+            if input_dim is None:
+                input_dim = sum(self.objects[src].dim for src in src_names if src in self.objects)
+            output_dim = kwargs.get("obs_dim", self.objects[dst_names[0]].dim if dst_names and dst_names[0] in self.objects else input_dim)
+            if input_dim == 0 and src_names:
+                fallback_src = src_names[0]
+                if fallback_src in self.objects:
+                    input_dim = self.objects[fallback_src].dim
+                elif "internal" in self.objects:
+                    input_dim = self.objects["internal"].dim
+                else:
+                    input_dim = self.config.get("state_dim", output_dim)
+            aspect = PipelineAspect(
+                src_names=src_names,
+                dst_names=dst_names,
+                input_dim=input_dim,
+                output_dim=output_dim,
+                num_aspects=kwargs.get("num_aspects", self.sensory_pipeline_cfg["width"]),
+                depth=kwargs.get("depth", self.sensory_pipeline_cfg["depth"]),
+                name=name or f"sensory_pipeline_{dst_names[0]}",
+                use_gate=kwargs.get("use_gate", self.sensory_pipeline_cfg["use_gate"]),
             )
+            metadata = kwargs.get("metadata") or {"kind": "sensory", "sense": dst_names[0] if dst_names else None}
+            setattr(aspect, "metadata", metadata)
         elif aspect_type == "llm":
             llm_config = kwargs.get("llm_config", {})
             aspect = LLMAspect(
@@ -382,7 +403,12 @@ class AONNBrainV3(nn.Module):
                                "num_aspects", "depth", "individual_type"]}
             )
     
-    def update_semantic_context(self, source: Optional[str] = None, world_semantic_state: Optional[torch.Tensor] = None):
+    def update_semantic_context(
+        self,
+        source: Optional[str] = None,
+        world_semantic_state: Optional[torch.Tensor] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ):
         """
         更新 semantic_context Object 的状态
         
@@ -400,6 +426,8 @@ class AONNBrainV3(nn.Module):
         
         sem_dim = self.objects["semantic_context"].dim
         
+        target_obj = self.objects.get("semantic_context")
+
         if world_semantic_state is not None:
             # 方案 1: 从世界模型的语义状态同步
             # 检查 world_semantic_state 是否全为零或包含 NaN/Inf
@@ -422,7 +450,7 @@ class AONNBrainV3(nn.Module):
                 semantic_vec = torch.cat([world_semantic_state.detach().clone(), padding], dim=-1)
             # 清理 NaN/Inf
             semantic_vec = torch.nan_to_num(semantic_vec, nan=0.0, posinf=1.0, neginf=-1.0)
-            self.objects["semantic_context"].set_state(semantic_vec)
+            target_obj.set_state(semantic_vec)
         elif source is None or source == "internal":
             # 方案 2: 从 internal Object 提取语义部分
             if "internal" in self.objects:
@@ -434,7 +462,7 @@ class AONNBrainV3(nn.Module):
                     # 如果维度不够，用零填充
                     padding = torch.zeros(sem_dim - internal_state.shape[-1], device=internal_state.device)
                     semantic_vec = torch.cat([internal_state.detach().clone(), padding], dim=-1)
-                self.objects["semantic_context"].set_state(semantic_vec)
+                target_obj.set_state(semantic_vec)
         elif source in self.objects:
             # 方案 3: 从指定的 Object 提取
             source_state = self.objects[source].state
@@ -443,7 +471,10 @@ class AONNBrainV3(nn.Module):
             else:
                 padding = torch.zeros(sem_dim - source_state.shape[-1], device=source_state.device)
                 semantic_vec = torch.cat([source_state.detach().clone(), padding], dim=-1)
-            self.objects["semantic_context"].set_state(semantic_vec)
+            target_obj.set_state(semantic_vec)
+        
+        if metadata is not None:
+            target_obj.set_metadata(metadata)
     
     def create_sensory_aspect_batch(
         self,
@@ -470,23 +501,6 @@ class AONNBrainV3(nn.Module):
         if count <= 0:
             return created
         
-        # 查找已有的同类型 Aspects（相同 sensory_name）
-        existing_aspects = [
-            asp for asp in self.aspects
-            if isinstance(asp, LinearGenerativeAspect) and asp.dst_names[0] == sense_name
-        ]
-        
-        # 选择参考 Aspect（如果有的话）
-        reference_aspect = None
-        if use_weight_copy and len(existing_aspects) > 0:
-            # 选择自由能贡献最小的 Aspect 作为参考（通常学习得最好）
-            ref_contribs = [
-                (asp, asp.free_energy_contrib(self.objects).item())
-                for asp in existing_aspects
-            ]
-            ref_contribs.sort(key=lambda x: x[1])  # 按自由能贡献排序
-            reference_aspect = ref_contribs[0][0]  # 选择贡献最小的
-        
         for _ in range(count):
             self._sensory_aspect_counters[sense_name] += 1
             asp_name = f"sensory_{sense_name}_{self._sensory_aspect_counters[sense_name]}"
@@ -497,11 +511,46 @@ class AONNBrainV3(nn.Module):
                     dst_names=[sense_name],
                     name=asp_name,
                     obs_dim=self.sense_dims[sense_name],
-                    reference_aspect=reference_aspect,
-                    noise_scale=noise_scale,
+                    num_aspects=self.sensory_pipeline_cfg["width"],
+                    depth=self.sensory_pipeline_cfg["depth"],
+                    use_gate=self.sensory_pipeline_cfg["use_gate"],
+                    metadata={"kind": "sensory", "sense": sense_name},
                 )
             )
         return created
+    
+    def _init_sensory_pipelines_from_world_model(self):
+        """
+        根据世界模型配置预先创建感官 Pipeline
+        """
+        wm_cfg = self.config.get("world_model", {})
+        mapping = self.config.get("world_model_pipeline_map") or {
+            "document": "document_dim",
+            "table": "task_dim",
+            "calendar": "schedule_dim",
+        }
+        for sense_name, dim in self.sense_dims.items():
+            world_key = mapping.get(sense_name)
+            if world_key is None:
+                continue
+            num_aspects = wm_cfg.get(world_key, self.sensory_pipeline_cfg["width"])
+            num_aspects = max(1, int(num_aspects))
+            self.create_aspect(
+                "sensory",
+                src_names=["internal"],
+                dst_names=[sense_name],
+                name=f"world_pipeline_{sense_name}",
+                obs_dim=dim,
+                num_aspects=num_aspects,
+                depth=self.sensory_pipeline_cfg["depth"],
+                use_gate=self.sensory_pipeline_cfg["use_gate"],
+                metadata={
+                    "kind": "sensory",
+                    "sense": sense_name,
+                    "source": "world_model",
+                    "world_key": world_key,
+                },
+            )
     
     def create_pipeline(
         self,
@@ -775,10 +824,11 @@ class AONNBrainV3(nn.Module):
                     remaining_capacity = max(0, self.evolution.max_aspects - len(self.aspects))
         
         # 【自动创建分类 Aspect】如果存在 target Object 且没有分类 Aspect，自动创建
+        auto_classification_enabled = self.config.get("auto_classification_aspect", True)
         has_classification = any(
             isinstance(asp, ClassificationAspect) for asp in self.aspects
         )
-        if not has_classification and "target" in self.objects and "internal" in self.objects:
+        if auto_classification_enabled and not has_classification and "target" in self.objects and "internal" in self.objects:
             if F_current > self.evolution.free_energy_threshold:
                 state_dim = self.config.get("state_dim", 128)
                 target_dim = self.objects["target"].dim

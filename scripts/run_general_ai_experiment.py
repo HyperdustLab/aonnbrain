@@ -134,7 +134,7 @@ def run_experiment(
         config=config,
         llm_client=llm_client,
         device=device,
-        enable_evolution=True,
+        enable_evolution=config.get("enable_evolution", True),
     )
     
     # 验证 LLMAspect 是否启用

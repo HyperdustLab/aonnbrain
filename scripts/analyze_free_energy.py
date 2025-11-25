@@ -45,7 +45,7 @@ def analyze_free_energy(config: Dict, device: torch.device, num_steps: int = 5):
         config=config,
         llm_client=llm_client,
         device=device,
-        enable_evolution=True,
+        enable_evolution=config.get("enable_evolution", True),
     )
     
     # 运行几步

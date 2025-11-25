@@ -46,7 +46,7 @@ def diagnose_state_explosion(config: Dict, device: torch.device):
         config=config,
         llm_client=llm_client,
         device=device,
-        enable_evolution=True,
+        enable_evolution=config.get("enable_evolution", True),
     )
     
     # 运行几步

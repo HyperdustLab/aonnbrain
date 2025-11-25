@@ -73,7 +73,12 @@ def profile_step():
     )
     
     # 创建 Brain
-    brain = AONNBrainV3(config, llm_client=llm_client, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        llm_client=llm_client,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     
     # 初始化
     obs = world_interface.reset()

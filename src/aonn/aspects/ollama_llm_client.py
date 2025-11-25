@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Optional
+from typing import Dict, Optional
 import warnings
 
 import torch
@@ -118,7 +118,7 @@ class OllamaLLMClient(nn.Module):
         # 默认值（大多数现代模型使用 4096）
         return 4096
 
-    def _vector_to_prompt(self, context_vec: torch.Tensor) -> str:
+    def _vector_to_prompt(self, context_vec: torch.Tensor, context_metadata: Optional[Dict[str, Any]] = None) -> str:
         """
         将语义向量转换为 prompt 字符串
         """
@@ -130,7 +130,16 @@ class OllamaLLMClient(nn.Module):
                 f"{values[i]:.3f}"
                 for i in range(min(self.summary_size, len(values)))
             )
-        return self.prompt_template.format(summary=summary)
+        sections = []
+        if context_metadata:
+            if context_metadata.get("text"):
+                sections.append(f"Scenario: {context_metadata['text']}")
+            keywords = context_metadata.get("keywords") or context_metadata.get("labels")
+            if keywords:
+                joined = ", ".join(keywords[:12])
+                sections.append(f"Key terms: {joined}")
+        sections.append(self.prompt_template.format(summary=summary))
+        return "\n".join(sections)
 
     def _chat_completion(self, prompt: str) -> str:
         """
@@ -265,7 +274,7 @@ class OllamaLLMClient(nn.Module):
         
         return torch.tensor(features, dtype=dtype, device=self.device)
 
-    def semantic_predict(self, context_vec: torch.Tensor, use_cache: bool = True, **kwargs) -> torch.Tensor:
+    def semantic_predict(self, context_vec: torch.Tensor, use_cache: bool = True, context_metadata: Optional[Dict[str, Any]] = None, **kwargs) -> torch.Tensor:
         """
         语义预测：从语义上下文向量生成预测语义向量
         
@@ -278,15 +287,15 @@ class OllamaLLMClient(nn.Module):
             预测的语义向量 [d] 或 [batch, d]
         """
         if context_vec.dim() == 1:
-            return self._predict_single(context_vec, use_cache=use_cache, **kwargs)
+            return self._predict_single(context_vec, use_cache=use_cache, context_metadata=context_metadata, **kwargs)
         
         # 批量处理
         preds = []
         for row in context_vec:
-            preds.append(self._predict_single(row, use_cache=use_cache, **kwargs))
+            preds.append(self._predict_single(row, use_cache=use_cache, context_metadata=context_metadata, **kwargs))
         return torch.stack(preds, dim=0)
 
-    def _predict_single(self, vec: torch.Tensor, use_cache: bool = True, **kwargs) -> torch.Tensor:
+    def _predict_single(self, vec: torch.Tensor, use_cache: bool = True, context_metadata: Optional[Dict[str, Any]] = None, **kwargs) -> torch.Tensor:
         """
         单个向量的预测
         """
@@ -305,7 +314,7 @@ class OllamaLLMClient(nn.Module):
             
             self._call_count += 1
         
-        prompt = self._vector_to_prompt(vec)
+        prompt = self._vector_to_prompt(vec, context_metadata=context_metadata)
         try:
             text = self._chat_completion(prompt)
             if not text or text.strip() == "":

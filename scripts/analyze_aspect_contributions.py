@@ -30,7 +30,11 @@ def analyze_aspect_contributions(config: Dict, device: torch.device, num_steps: 
     world_interface = LineWormWorldInterface(world)
     
     # 创建 AONN Brain
-    brain = AONNBrainV3(config=config, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     
     # 运行几步让网络演化
     obs = world_interface.reset()

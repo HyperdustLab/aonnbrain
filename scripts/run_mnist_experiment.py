@@ -52,7 +52,11 @@ def run_experiment(
     )
     
     # 创建 AONN Brain
-    brain = AONNBrainV3(config=config, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     
     # 创建 target Object（必须在创建 Aspect 之前）
     brain.create_object("target", dim=10)

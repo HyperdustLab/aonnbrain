@@ -114,7 +114,7 @@ def test_aspect_count_impact(max_aspects: int, num_steps: int = 100, verbose: bo
         config=config,
         llm_client=llm_client,
         device=device,
-        enable_evolution=True,
+        enable_evolution=config.get("enable_evolution", True),
     )
     
     # 运行演化

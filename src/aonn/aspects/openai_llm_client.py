@@ -5,7 +5,7 @@ OpenAI LLM 客户端：把 OpenAI Chat/Embedding API 封装成 LLMAspect 可调�
 from __future__ import annotations
 
 import os
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import torch
 import torch.nn as nn
@@ -107,7 +107,7 @@ class OpenAILLMClient(nn.Module):
         # 默认使用 text-embedding-3-small 的维度
         return 1536
 
-    def _vector_to_prompt(self, context_vec: torch.Tensor) -> str:
+    def _vector_to_prompt(self, context_vec: torch.Tensor, context_metadata: Optional[Dict[str, Any]] = None) -> str:
         values = context_vec.detach().cpu().tolist()
         if not values:
             summary = "0"
@@ -116,7 +116,15 @@ class OpenAILLMClient(nn.Module):
                 f"{values[i]:.3f}"
                 for i in range(min(self.summary_size, len(values)))
             )
-        return self.prompt_template.format(summary=summary)
+        sections = []
+        if context_metadata:
+            if context_metadata.get("text"):
+                sections.append(f"Scenario: {context_metadata['text']}")
+            keywords = context_metadata.get("keywords") or context_metadata.get("labels")
+            if keywords:
+                sections.append(f"Key terms: {', '.join(keywords[:12])}")
+        sections.append(self.prompt_template.format(summary=summary))
+        return "\n".join(sections)
 
     def _chat_completion(self, prompt: str) -> str:
         try:
@@ -158,19 +166,19 @@ class OpenAILLMClient(nn.Module):
             nn.init.zeros_(self.output_projector.bias)
         return emb_tensor
 
-    def semantic_predict(self, context_vec: torch.Tensor, use_cache: bool = True, **kwargs) -> torch.Tensor:
+    def semantic_predict(self, context_vec: torch.Tensor, use_cache: bool = True, context_metadata: Optional[Dict[str, Any]] = None, **kwargs) -> torch.Tensor:
         """
         Args:
             context_vec: [input_dim] 或 [batch, input_dim] 的语义向量
         """
         if context_vec.dim() == 1:
-            return self._predict_single(context_vec, **kwargs)
+            return self._predict_single(context_vec, context_metadata=context_metadata, **kwargs)
         preds = []
         for row in context_vec:
-            preds.append(self._predict_single(row, **kwargs))
+            preds.append(self._predict_single(row, context_metadata=context_metadata, **kwargs))
         return torch.stack(preds, dim=0)
 
-    def _predict_single(self, vec: torch.Tensor, use_cache: bool = True, **kwargs) -> torch.Tensor:
+    def _predict_single(self, vec: torch.Tensor, use_cache: bool = True, context_metadata: Optional[Dict[str, Any]] = None, **kwargs) -> torch.Tensor:
         # 使用向量哈希作为缓存键（只使用前几个值）
         vec_key = tuple(vec[:8].detach().cpu().tolist()) if use_cache else None
         
@@ -178,7 +186,7 @@ class OpenAILLMClient(nn.Module):
             self._cache_hits += 1
             return self._cache[vec_key].to(vec.device)
         
-        prompt = self._vector_to_prompt(vec)
+        prompt = self._vector_to_prompt(vec, context_metadata=context_metadata)
         try:
             text = self._chat_completion(prompt)
             if not text:

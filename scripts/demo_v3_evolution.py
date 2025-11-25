@@ -71,7 +71,11 @@ def demo_v3_evolution():
     
     # ========== 1. 创建最小初始网络 ==========
     print("\n[步骤 1] 创建最小初始网络...")
-    brain = AONNBrainV3(config=config, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     senses = brain.senses
     print("初始网络结构:")
     print(brain.visualize_network())

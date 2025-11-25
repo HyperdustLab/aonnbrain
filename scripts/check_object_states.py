@@ -62,7 +62,7 @@ def check_object_states(config: dict, device: torch.device, num_steps: int = 10)
         config=config,
         llm_client=llm_client,
         device=device,
-        enable_evolution=True,
+        enable_evolution=config.get("enable_evolution", True),
     )
     
     # 获取 state_clip_value

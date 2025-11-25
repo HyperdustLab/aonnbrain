@@ -19,7 +19,11 @@ from aonn.core.active_inference_loop import ActiveInferenceLoop
 
 
 def run_experiment(num_steps: int, config: Dict, device: torch.device, verbose: bool = False):
-    brain = AONNBrainV3(config=config, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     world = LineWormWorldModel(
         state_dim=config["state_dim"],
         action_dim=config["act_dim"],

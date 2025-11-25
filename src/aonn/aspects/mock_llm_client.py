@@ -90,6 +90,7 @@ class MockLLMClient(nn.Module):
         self,
         context_vec: torch.Tensor,
         temperature: float = 1.0,
+        context_metadata: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> torch.Tensor:
         """
@@ -137,15 +138,25 @@ class MockLLMClient(nn.Module):
         min_val = float(context_np.min()) if len(context_np) > 0 else 0.0
         mean_val = float(context_np.mean()) if len(context_np) > 0 else 0.0
         
-        # 根据特征值生成描述性文本
+        # Generate descriptive text based on feature values
         if abs(mean_val) < 0.1:
-            desc = "语义状态接近中性，无明显倾向"
+            desc = "Semantic state near neutral, no clear tendency"
         elif mean_val > 0.5:
-            desc = f"语义状态呈现正向激活（峰值{max_val:.2f}），可能表示积极意图或目标导向"
+            desc = f"Semantic state shows positive activation (peak {max_val:.2f}), possibly indicating positive intent or goal-oriented behavior"
         elif mean_val < -0.5:
-            desc = f"语义状态呈现负向激活（谷值{min_val:.2f}），可能表示回避或抑制"
+            desc = f"Semantic state shows negative activation (trough {min_val:.2f}), possibly indicating avoidance or inhibition"
         else:
-            desc = f"语义状态处于中等水平（均值{mean_val:.2f}），包含混合特征"
+            desc = f"Semantic state at moderate level (mean {mean_val:.2f}), containing mixed features"
+
+        if context_metadata:
+            extra = []
+            if context_metadata.get("text"):
+                extra.append(f"Scenario: {context_metadata['text']}")
+            keywords = context_metadata.get("keywords")
+            if keywords:
+                extra.append(f"Keywords: {', '.join(keywords[:8])}")
+            if extra:
+                desc = desc + "; " + "; ".join(extra)
         
         self._last_generated_text = desc
         

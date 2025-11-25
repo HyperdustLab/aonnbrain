@@ -566,7 +566,11 @@ def run_experiment(
     val_interface = MNISTWorldInterface(val_world)
     
     # 创建 AONN Brain
-    brain = AONNBrainV3(config=config, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     
     # 创建必要的 Objects（如果不存在）
     if "target" not in brain.objects:

@@ -354,11 +354,15 @@ class WorldModelAspectSet:
         # Observation aspects（多感官）
         self.observation_aspects = []
         for sense_name, dim in self.observation_dims.items():
+            # 只有在 28x28 图像（784 维）时才使用卷积解码器，其余场景使用线性解码器
+            use_conv = dim == 784
             aspect = ObservationAspect(
                 internal_name="internal",
                 sensory_name=sense_name,
                 state_dim=state_dim,
                 obs_dim=dim,
+                use_conv=use_conv,
+                image_size=28 if use_conv else None,
             ).to(self.device)
             self.observation_aspects.append(aspect)
         

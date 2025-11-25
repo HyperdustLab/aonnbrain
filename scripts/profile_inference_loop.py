@@ -144,7 +144,12 @@ def profile_experiment(num_steps: int, config: Dict, device: torch.device, use_l
     
     # 创建 AONN Brain
     profiler.start("brain_init")
-    brain = AONNBrainV3(config=config, llm_client=llm_client, device=device, enable_evolution=True)
+    brain = AONNBrainV3(
+        config=config,
+        llm_client=llm_client,
+        device=device,
+        enable_evolution=config.get("enable_evolution", True),
+    )
     profiler.end("brain_init")
     
     # 初始化环境
