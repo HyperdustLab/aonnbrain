@@ -32,6 +32,7 @@ class PipelineAspect(AspectBase, nn.Module):
         depth: int,
         name: str = "pipeline_aspect",
         use_gate: bool = False,
+        progressive_expansion: bool = False,
     ):
         """
         Args:
@@ -43,6 +44,7 @@ class PipelineAspect(AspectBase, nn.Module):
             depth: Pipeline 深度（Aspect Layer 层数）
             name: Aspect 名称
             use_gate: 是否使用 gate 机制
+            progressive_expansion: 是否逐步扩展维度（True：逐步扩展，False：第一层就扩展到输出维度）
         """
         AspectBase.__init__(self, name=name, src_names=src_names, dst_names=dst_names)
         nn.Module.__init__(self)
@@ -59,6 +61,7 @@ class PipelineAspect(AspectBase, nn.Module):
             num_aspects=num_aspects,
             depth=depth,
             use_gate=use_gate,
+            progressive_expansion=progressive_expansion,
         )
     
     def forward(self, objects: Dict[str, ObjectNode]) -> Dict[str, torch.Tensor]:

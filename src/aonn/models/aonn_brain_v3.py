@@ -191,6 +191,7 @@ class AONNBrainV3(nn.Module):
         
         if self.config.get("use_world_model_pipelines", False):
             self._init_sensory_pipelines_from_world_model()
+            self._init_inference_pipelines_from_world_model()
         
         # ========== 网络拓扑 ==========
         self.topology = None  # 将在需要时构建
@@ -299,7 +300,10 @@ class AONNBrainV3(nn.Module):
                 depth=kwargs.get("depth", 2),
                 name=name or "pipeline_aspect",
                 use_gate=kwargs.get("use_gate", False),
+                progressive_expansion=kwargs.get("progressive_expansion", False),
             )
+            metadata = kwargs.get("metadata") or {"kind": "pipeline"}
+            setattr(aspect, "metadata", metadata)
         elif aspect_type == "classification":
             # 创建分类 Aspect
             aspect = ClassificationAspect(
@@ -521,7 +525,7 @@ class AONNBrainV3(nn.Module):
     
     def _init_sensory_pipelines_from_world_model(self):
         """
-        根据世界模型配置预先创建感官 Pipeline
+        根据世界模型配置预先创建感官 Pipeline（观察网络：internal → sensory）
         """
         wm_cfg = self.config.get("world_model", {})
         mapping = self.config.get("world_model_pipeline_map") or {
@@ -546,6 +550,53 @@ class AONNBrainV3(nn.Module):
                 use_gate=self.sensory_pipeline_cfg["use_gate"],
                 metadata={
                     "kind": "sensory",
+                    "sense": sense_name,
+                    "source": "world_model",
+                    "world_key": world_key,
+                },
+            )
+    
+    def _init_inference_pipelines_from_world_model(self):
+        """
+        根据世界模型配置预先创建推理 Pipeline（推理网络：sensory → internal）
+        与观察网络反向，形成对称结构
+        """
+        wm_cfg = self.config.get("world_model", {})
+        mapping = self.config.get("world_model_pipeline_map") or {
+            "document": "document_dim",
+            "table": "task_dim",
+            "calendar": "schedule_dim",
+        }
+        inference_cfg = self.config.get("inference_pipeline", {})
+        depth = inference_cfg.get("depth", self.sensory_pipeline_cfg["depth"])
+        use_gate = inference_cfg.get("use_gate", self.sensory_pipeline_cfg["use_gate"])
+        # 推理网络使用逐步扩展维度
+        progressive_expansion = inference_cfg.get("progressive_expansion", True)
+        
+        # 获取 internal 维度
+        internal_dim = self.objects["internal"].dim if "internal" in self.objects else self.config.get("state_dim", 576)
+        
+        for sense_name, dim in self.sense_dims.items():
+            world_key = mapping.get(sense_name)
+            if world_key is None:
+                continue
+            # 推理网络的宽度可以配置，默认使用 sensory 的宽度
+            num_aspects = inference_cfg.get("width") or wm_cfg.get(world_key, self.sensory_pipeline_cfg["width"])
+            num_aspects = max(1, int(num_aspects))
+            
+            self.create_aspect(
+                "pipeline",
+                src_names=[sense_name],
+                dst_names=["internal"],
+                name=f"inference_pipeline_{sense_name}",
+                input_dim=dim,
+                output_dim=internal_dim,
+                num_aspects=num_aspects,
+                depth=depth,
+                use_gate=use_gate,
+                progressive_expansion=progressive_expansion,
+                metadata={
+                    "kind": "inference",
                     "sense": sense_name,
                     "source": "world_model",
                     "world_key": world_key,

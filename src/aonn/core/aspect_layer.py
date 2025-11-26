@@ -130,6 +130,7 @@ class AspectPipeline(nn.Module):
         num_aspects: int,
         depth: int,
         use_gate: bool = False,
+        progressive_expansion: bool = False,
     ):
         """
         Args:
@@ -138,28 +139,46 @@ class AspectPipeline(nn.Module):
             num_aspects: 每层 Aspect 数量
             depth: Aspect Layer 的深度
             use_gate: 是否使用 gate
+            progressive_expansion: 是否逐步扩展维度（True：逐步扩展，False：第一层就扩展到输出维度）
         """
         super().__init__()
         self.input_dim = input_dim
         self.output_dim = output_dim
         self.num_aspects = num_aspects
         self.depth = depth
+        self.progressive_expansion = progressive_expansion
         
         # 堆叠多个 Aspect Layer
         layers = []
         for i in range(depth):
-            # 第一层：input_dim -> hidden_dim
-            # 中间层：hidden_dim -> hidden_dim
-            # 最后一层：hidden_dim -> output_dim
-            if i == 0:
-                layer_input_dim = input_dim
+            if progressive_expansion:
+                # 逐步扩展维度
+                if i == 0:
+                    layer_input_dim = input_dim
+                    # 第一层：扩展到中间维度（input_dim 和 output_dim 之间的某个值）
+                    # 使用线性插值：input_dim + (output_dim - input_dim) / depth
+                    layer_output_dim = int(input_dim + (output_dim - input_dim) / depth)
+                elif i == depth - 1:
+                    # 最后一层：从中间维度扩展到输出维度
+                    prev_output_dim = int(input_dim + (output_dim - input_dim) * (depth - 1) / depth)
+                    layer_input_dim = prev_output_dim
+                    layer_output_dim = output_dim
+                else:
+                    # 中间层：逐步扩展
+                    prev_output_dim = int(input_dim + (output_dim - input_dim) * i / depth)
+                    layer_input_dim = prev_output_dim
+                    layer_output_dim = int(input_dim + (output_dim - input_dim) * (i + 1) / depth)
             else:
-                layer_input_dim = output_dim  # 中间层保持维度
-            
-            if i == depth - 1:
-                layer_output_dim = output_dim
-            else:
-                layer_output_dim = output_dim  # 中间层保持维度
+                # 原始行为：第一层就扩展到输出维度
+                if i == 0:
+                    layer_input_dim = input_dim
+                else:
+                    layer_input_dim = output_dim  # 中间层保持维度
+                
+                if i == depth - 1:
+                    layer_output_dim = output_dim
+                else:
+                    layer_output_dim = output_dim  # 中间层保持维度
             
             layers.append(
                 AspectLayer(

@@ -70,9 +70,11 @@ def run_experiment(
         task_dim=config.get("world_model", {}).get("task_dim", 128),
         schedule_dim=config.get("world_model", {}).get("schedule_dim", 64),
         context_dim=config.get("world_model", {}).get("context_dim", 128),
+        prompt_dim=config.get("world_model", {}).get("prompt_dim", 128),
         document_obs_dim=config["sense_dims"]["document"],
         table_obs_dim=config["sense_dims"]["table"],
         calendar_obs_dim=config["sense_dims"]["calendar"],
+        prompt_obs_dim=config["sense_dims"].get("prompt", 128),
         action_dim=config["act_dim"],
         device=device,
         state_noise_std=config.get("world_model", {}).get("state_noise_std", 0.01),
@@ -419,15 +421,16 @@ def main():
     
     # 配置（使用 LineWorm 的参数配置，因为 Office AI 复杂度介于 LineWorm 和 GeneralAI 之间）
     config = {
-        "state_dim": 576,  # Office AI 总状态维度（256+128+64+128）
+        "state_dim": 704,  # Office AI 总状态维度（256+128+64+128+128，包含 prompt_dim）
         "act_dim": 128,    # Office AI 动作维度
-        "obs_dim": 448,    # Office AI 总观察维度（256+128+64）
+        "obs_dim": 576,    # Office AI 总观察维度（256+128+64+128，包含 prompt_obs_dim）
         "auto_classification_aspect": False,  # Office AI 场景不需要自动分类器
         "sem_dim": 128,    # 语义维度
         "sense_dims": {
             "document": 256,  # 文档观察
             "table": 128,     # 表格观察
             "calendar": 64,   # 日历观察
+            "prompt": 128,    # 用户提示词观察
         },
         "enable_evolution": False,
         "use_world_model_pipelines": True,
@@ -435,6 +438,7 @@ def main():
             "document": "document_dim",
             "table": "task_dim",
             "calendar": "schedule_dim",
+            "prompt": "prompt_dim",
         },
         "sensory_pipeline": {
             "depth": 3,
@@ -451,6 +455,7 @@ def main():
             "task_dim": 128,
             "schedule_dim": 64,
             "context_dim": 128,
+            "prompt_dim": 128,  # 用户提示词状态维度
             "state_noise_std": 0.01,
             "observation_noise_std": 0.01,
         },

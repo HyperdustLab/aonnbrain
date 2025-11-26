@@ -21,7 +21,7 @@ except ImportError:
 import json
 import math
 import time
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Tuple
 from dataclasses import dataclass
 
 import torch
@@ -71,8 +71,98 @@ EVENT_LIBRARY: List[OfficeEvent] = [
         schedule_scale=0.80,
         context_scale=0.40,
     ),
-    # ... other events can be added here if needed
+    OfficeEvent(
+        name="compliance_audit_ping",
+        description="Compliance sends a fresh audit checklist that must be annotated item-by-item while updating the approval calendar.",
+        expectations=[
+            "Document signals emphasize checklists, annotations and reviewer notes",
+            "Task state shows many pending items transitioning to review",
+            "Schedule state adds multiple audit-review blocks",
+        ],
+        keywords=["audit", "compliance", "checklist", "review"],
+        seed=22,
+        document_scale=0.35,
+        task_scale=0.75,
+        schedule_scale=0.55,
+        context_scale=0.30,
+    ),
+    OfficeEvent(
+        name="product_launch_briefing",
+        description="During launch week the team prepares a cross-functional briefing combining marketing copy, sales sheets, and meeting logistics.",
+        expectations=[
+            "Document and table observations spike together with marketing / sales semantics",
+            "LLM output should mention launch timeline, go-to-market, enablement materials",
+            "Recommended actions focus on meeting orchestration and collateral distribution",
+        ],
+        keywords=["launch", "marketing", "sales", "briefing", "timeline"],
+        seed=33,
+        document_scale=0.55,
+        task_scale=0.40,
+        schedule_scale=0.60,
+        context_scale=0.50,
+    ),
+    OfficeEvent(
+        name="finance_budget_adjustment",
+        description="A quarterly budget adjustment request from the CFO requires spreadsheet edits and updated approval meetings.",
+        expectations=[
+            "Table modality dominates with cost / budget / variance semantics",
+            "Actions lean toward editing spreadsheets and sending approval notices",
+            "Schedule state reflects several finance review calls",
+        ],
+        keywords=["budget", "finance", "cost", "variance", "approval"],
+        seed=44,
+        document_scale=0.30,
+        task_scale=0.55,
+        schedule_scale=0.70,
+        context_scale=0.35,
+    ),
+    OfficeEvent(
+        name="security_incident_notification",
+        description="Security operations issues a potential intrusion alert that must be triaged immediately and broadcast to stakeholders.",
+        expectations=[
+            "Task and context states surge to reflect incident response urgency",
+            "LLM semantics should emphasize alert, containment, investigation wording",
+            "Recommended actions include broadcasting notices and creating high-priority tasks",
+        ],
+        keywords=["security", "incident", "alert", "response"],
+        seed=55,
+        document_scale=0.25,
+        task_scale=0.85,
+        schedule_scale=0.40,
+        context_scale=0.65,
+    ),
 ]
+
+
+def parse_event_sequence(sequence: Optional[str]) -> Optional[List[Tuple[str, int]]]:
+    if not sequence:
+        return None
+    events: List[Tuple[str, int]] = []
+    for token in sequence.split(","):
+        token = token.strip()
+        if not token:
+            continue
+        if "@" not in token:
+            raise ValueError(f"Invalid event token '{token}', expected format name@step")
+        name, step_str = token.split("@", 1)
+        name = name.strip()
+        step_str = step_str.strip()
+        if not name or not step_str:
+            raise ValueError(f"Invalid event token '{token}', expected format name@step")
+        try:
+            step = int(step_str)
+        except ValueError as exc:
+            raise ValueError(f"Invalid step '{step_str}' in token '{token}'") from exc
+        events.append((name, step))
+    events.sort(key=lambda x: x[1])
+    return events if events else None
+
+
+def get_event_by_name(name: str) -> OfficeEvent:
+    for event in EVENT_LIBRARY:
+        if event.name == name:
+            return event
+    raise KeyError(f"Event '{name}' not found in EVENT_LIBRARY")
 
 def generate_state(world: OfficeAIWorldModel, event: OfficeEvent, context_override: Optional[torch.Tensor] = None) -> None:
     torch.manual_seed(event.seed)
@@ -97,6 +187,7 @@ def run_experiment(
     device: torch.device,
     event_name: Optional[str] = None,
     injection_step: int = 10,
+    event_sequence: Optional[List[Tuple[str, int]]] = None,
     *,
     verbose: bool = False,
     use_openai_llm: bool = False,
@@ -115,9 +206,11 @@ def run_experiment(
         task_dim=config.get("world_model", {}).get("task_dim", 128),
         schedule_dim=config.get("world_model", {}).get("schedule_dim", 64),
         context_dim=config.get("world_model", {}).get("context_dim", 128),
+        prompt_dim=config.get("world_model", {}).get("prompt_dim", 128),
         document_obs_dim=config["sense_dims"]["document"],
         table_obs_dim=config["sense_dims"]["table"],
         calendar_obs_dim=config["sense_dims"]["calendar"],
+        prompt_obs_dim=config["sense_dims"].get("prompt", 128),
         action_dim=config["act_dim"],
         device=device,
         state_noise_std=config.get("world_model", {}).get("state_noise_std", 0.01),
@@ -176,6 +269,19 @@ def run_experiment(
         enable_evolution=config.get("enable_evolution", True),
     )
     
+    # Prepare event plan
+    event_plan: Dict[int, List[OfficeEvent]] = {}
+    if event_sequence:
+        for name, step in event_sequence:
+            event_plan.setdefault(step, []).append(get_event_by_name(name))
+    elif event_name:
+        event_plan.setdefault(injection_step, []).append(get_event_by_name(event_name))
+    
+    special_snapshot_steps = {num_steps - 1}
+    for step in event_plan:
+        special_snapshot_steps.add(step)
+        special_snapshot_steps.add(step + 1)
+    
     # Initialize Environment
     obs = world_interface.reset()
     for sense, value in obs.items():
@@ -185,6 +291,7 @@ def run_experiment(
     prev_obs = None
     prev_action = None
     snapshots = []
+    event_log: List[Dict] = []
     
     action = torch.randn(config["act_dim"], device=device) * 0.1
     
@@ -195,27 +302,29 @@ def run_experiment(
             step_start_time = time.perf_counter()
             
             # --- Event Injection Logic ---
-            if event_name and step == injection_step:
-                if verbose:
-                    print(f"\n[Step {step}] Injecting event: {event_name}")
-                
-                # Find the event
-                event = next((e for e in EVENT_LIBRARY if e.name == event_name), None)
-                if event:
-                    # Inject state into world model
+            injected = False
+            if step in event_plan:
+                for event in event_plan[step]:
+                    if verbose:
+                        print(f"\n[Step {step}] Injecting event: {event.name}")
                     generate_state(world_model, event)
-                    
-                    # Force observation update immediately
                     obs = world_interface.get_observation()
-                    
-                    # Log injection
+                    injected = True
+                    event_log.append(
+                        {
+                            "step": step,
+                            "event_name": event.name,
+                            "description": event.description,
+                            "keywords": event.keywords,
+                        }
+                    )
                     if verbose:
                         print(f"  Event '{event.name}' injected. Description: {event.description}")
+            if not injected:
+                if step > 0:
+                    obs, reward = world_interface.step(action)
                 else:
-                    print(f"  Warning: Event '{event_name}' not found in library.")
-            
-            elif step > 0:
-                obs, reward = world_interface.step(action)
+                    obs = world_interface.get_observation()
             
             # Set observations to brain
             for sense, value in obs.items():
@@ -314,7 +423,7 @@ def run_experiment(
             self_model_snapshot = brain.observe_self_model()
             structure = self_model_snapshot.get("structure", {})
             
-            if step % save_interval == 0 or step == num_steps - 1 or step == injection_step or step == injection_step + 1:
+            if step % save_interval == 0 or step in special_snapshot_steps:
                 snapshot = {
                     "step": step,
                     "free_energy": F,
@@ -347,9 +456,15 @@ def run_experiment(
         "final_structure": final_snapshot.get("structure", {}),
         "snapshots": snapshots,
         "evolution_summary": brain.evolution.get_evolution_summary() if brain.evolution else {},
+        "event_log": event_log,
+        "event_sequence": [
+            {"event": evt.name, "step": step}
+            for step, events in sorted(event_plan.items())
+            for evt in events
+        ],
     }
     
-    return result
+    return result, brain
 
 def main():
     parser = argparse.ArgumentParser(description="Office AI Event Injection Experiment")
@@ -358,6 +473,12 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("data/office_ai_injection_results.json"), help="Output file")
     parser.add_argument("--event-name", type=str, default=None, help="Name of event to inject")
     parser.add_argument("--injection-step", type=int, default=10, help="Step to inject event")
+    parser.add_argument(
+        "--event-sequence",
+        type=str,
+        default=None,
+        help="Comma separated list of event@step entries (e.g. urgent_board_meeting@10,compliance_audit_ping@25). Overrides --event-name/--injection-step.",
+    )
     parser.add_argument("--verbose", action="store_true", help="Verbose output")
     parser.add_argument("--use-openai-llm", action="store_true", help="Use OpenAI LLM")
     parser.add_argument("--use-ollama-llm", action="store_true", help="Use Ollama LLM")
@@ -369,15 +490,16 @@ def main():
     device = torch.device(args.device)
     
     config = {
-        "state_dim": 576,
+        "state_dim": 704,  # 更新：576 → 704 (包含 prompt_dim 128)
         "act_dim": 128,
-        "obs_dim": 448,
+        "obs_dim": 576,  # 更新：448 → 576 (包含 prompt_obs_dim 128)
         "auto_classification_aspect": False,
         "sem_dim": 128,
         "sense_dims": {
             "document": 256,
             "table": 128,
             "calendar": 64,
+            "prompt": 128,  # 新增 prompt 观察维度
         },
         "enable_evolution": False,
         "use_world_model_pipelines": True,
@@ -385,11 +507,18 @@ def main():
             "document": "document_dim",
             "table": "task_dim",
             "calendar": "schedule_dim",
+            "prompt": "prompt_dim",  # 新增 prompt 映射
         },
         "sensory_pipeline": {
             "depth": 3,
             "width": 32,
             "use_gate": False,
+        },
+        "inference_pipeline": {  # 新增推理网络配置
+            "depth": 5,
+            "width": 256,
+            "use_gate": False,
+            "progressive_expansion": True,
         },
         "enable_world_model_learning": True,
         "llm": {
@@ -401,6 +530,7 @@ def main():
             "task_dim": 128,
             "schedule_dim": 64,
             "context_dim": 128,
+            "prompt_dim": 128,  # 新增 prompt 状态维度
         },
         "evolution": {
             "free_energy_threshold": 0.08,
@@ -435,17 +565,23 @@ def main():
         "max_grad_norm": 100.0,
     }
     
+    event_sequence = parse_event_sequence(args.event_sequence)
     print("=" * 80)
-    print(f"Office AI Event Injection: {args.event_name} at step {args.injection_step}")
+    if event_sequence:
+        seq_text = ", ".join(f"{name}@{step}" for name, step in event_sequence)
+        print(f"Office AI Event Injection sequence: {seq_text}")
+    else:
+        print(f"Office AI Event Injection: {args.event_name} at step {args.injection_step}")
     print(f"LLM: {'Ollama (' + args.ollama_model + ')' if args.use_ollama_llm else 'Mock'}")
     print("=" * 80)
     
-    result = run_experiment(
+    result, brain = run_experiment(
         num_steps=args.steps,
         config=config,
         device=device,
         event_name=args.event_name,
         injection_step=args.injection_step,
+        event_sequence=event_sequence,
         verbose=args.verbose,
         use_openai_llm=args.use_openai_llm,
         use_ollama_llm=args.use_ollama_llm,
@@ -460,6 +596,45 @@ def main():
         json.dump(result, f, indent=2, default=str)
     
     print(f"\nResults saved to: {output_path}")
+    
+    # Save model weights
+    weights_path = output_path.with_suffix('.pth')
+    try:
+        # Collect all trainable parameters from brain
+        checkpoint = {
+            "config": config,
+            "brain_state_dict": brain.state_dict(),
+            "num_steps": args.steps,
+            "final_free_energy": result["final_free_energy"],
+        }
+        
+        # Also save aspect pipeline weights if they exist
+        if hasattr(brain, 'aspect_pipelines') and len(brain.aspect_pipelines) > 0:
+            pipeline_weights = {}
+            for i, pipeline in enumerate(brain.aspect_pipelines):
+                if hasattr(pipeline, 'state_dict'):
+                    pipeline_weights[f"pipeline_{i}"] = pipeline.state_dict()
+            checkpoint["pipeline_weights"] = pipeline_weights
+        
+        # Save aspect module weights
+        if hasattr(brain, 'aspect_modules') and len(brain.aspect_modules) > 0:
+            aspect_weights = {}
+            for i, aspect in enumerate(brain.aspect_modules):
+                if hasattr(aspect, 'state_dict'):
+                    aspect_weights[f"aspect_{i}"] = aspect.state_dict()
+            checkpoint["aspect_weights"] = aspect_weights
+        
+        torch.save(checkpoint, weights_path)
+        result["weights_path"] = str(weights_path)
+        print(f"✓ Model weights saved to: {weights_path}")
+        
+        # Update result file with weights path
+        with open(output_path, "w") as f:
+            json.dump(result, f, indent=2, default=str)
+    except Exception as e:
+        print(f"⚠️  Failed to save weights: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()

@@ -342,14 +342,15 @@ def main():
     
     # 配置
     config = {
-        "state_dim": 576,
+        "state_dim": 704,  # 更新：576 → 704 (包含 prompt_dim 128)
         "act_dim": 128,
-        "obs_dim": 448,
+        "obs_dim": 576,  # 更新：448 → 576 (包含 prompt_obs_dim 128)
         "sem_dim": 128,
         "sense_dims": {
             "document": 256,
             "table": 128,
             "calendar": 64,
+            "prompt": 128,
         },
         "enable_world_model_learning": True,
         "llm": {
@@ -361,6 +362,7 @@ def main():
             "task_dim": 128,
             "schedule_dim": 64,
             "context_dim": 128,
+            "prompt_dim": 128,
             "state_noise_std": 0.01,
             "observation_noise_std": 0.01,
         },
